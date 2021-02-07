@@ -10,7 +10,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { hash } from 'bcryptjs';
 
-import UserEntity from '../user/user.entity';
+import UserEntity from '../user/entities/user.entity';
 import UserInterface from '../user/interfaces/user.interface';
 import UserService from '../user/user.service';
 import RegisterDto from './dto/register.dto';
