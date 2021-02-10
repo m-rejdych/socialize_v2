@@ -10,7 +10,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { hash } from 'bcryptjs';
 
-import UserEntity from '../user/entities/user.entity';
+import User from '../user/user.entity';
 import UserInterface from '../user/interfaces/user.interface';
 import UserService from '../user/user.service';
 import RegisterDto from './dto/register.dto';
@@ -20,8 +20,8 @@ import AuthResponseDto from './dto/authResponse.dto';
 @Injectable()
 class AuthService {
   constructor(
-    @InjectRepository(UserEntity)
-    private userRepository: Repository<UserEntity>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
     private userService: UserService,
     private jwtService: JwtService,
   ) {}

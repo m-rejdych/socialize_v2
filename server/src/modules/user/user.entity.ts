@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 
-import UserInfoEntity from './userInfo.entity';
+import UserInfo from '../userInfo/userInfo.entity';
 
 @Entity()
 class User {
@@ -34,10 +34,10 @@ class User {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToOne(() => UserInfoEntity, (userInfo) => userInfo.user, {
+  @OneToOne(() => UserInfo, (userInfo) => userInfo.user, {
     cascade: ['insert', 'update'],
   })
-  userInfo: UserInfoEntity;
+  userInfo: UserInfo;
 }
 
 export default User;
