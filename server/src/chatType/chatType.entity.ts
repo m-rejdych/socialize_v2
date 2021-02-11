@@ -1,7 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
-import Chat from '../chat/chat.entity';
-
 @Entity()
 class ChatType {
   @PrimaryGeneratedColumn()

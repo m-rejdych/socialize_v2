@@ -10,6 +10,7 @@ import {
 
 import User from '../user/user.entity';
 import PostReaction from '../postReaction/postReaction.entity';
+import Comment from '../comment/comment.entity';
 
 @Entity()
 class Post {
@@ -33,6 +34,9 @@ class Post {
 
   @OneToMany(() => PostReaction, (postReaction) => postReaction.post)
   reactions: PostReaction[];
+
+  @OneToMany(() => Comment, (comment) => comment.post)
+  comments: Comment[];
 }
 
 export default Post;
