@@ -4,6 +4,7 @@ import {
   PrimaryGeneratedColumn,
   OneToOne,
   OneToMany,
+  ManyToMany,
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -14,6 +15,9 @@ import PostReaction from '../postReaction/postReaction.entity';
 import Post from '../post/post.entity';
 import Comment from '../comment/comment.entity';
 import CommentReaction from '../commentReaction/commentReaction.entity';
+import Chat from '../chat/chat.entity';
+import Message from '../message/message.entity';
+import MessageReaction from '../messageReaction/messageReaction.entity';
 
 @Entity()
 class User {
@@ -55,6 +59,15 @@ class User {
 
   @OneToMany(() => CommentReaction, (commentReaction) => commentReaction.user)
   commentReactions: CommentReaction[];
+
+  @ManyToMany(() => Chat, (chat) => chat.members)
+  chats: Chat[];
+
+  @OneToMany(() => Message, (message) => message.author)
+  messages: Message[];
+
+  @OneToMany(() => MessageReaction, (messageReaction) => messageReaction.user)
+  messageReactions: MessageReaction[];
 }
 
 export default User;
