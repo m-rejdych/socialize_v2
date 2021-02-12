@@ -34,13 +34,15 @@ class Post {
 
   @OneToMany(() => PostReaction, (postReaction) => postReaction.post, {
     cascade: ['insert', 'update'],
+    nullable: true,
   })
-  reactions: PostReaction[];
+  reactions?: PostReaction[];
 
   @OneToMany(() => Comment, (comment) => comment.post, {
     cascade: ['insert', 'update'],
+    nullable: true,
   })
-  comments: Comment[];
+  comments?: Comment[];
 }
 
 export default Post;

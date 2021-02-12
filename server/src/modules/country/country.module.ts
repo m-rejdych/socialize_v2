@@ -7,6 +7,7 @@ import CountryService from './country.service';
 @Module({
   imports: [TypeOrmModule.forFeature([Country])],
   providers: [CountryService],
+  exports: [CountryService],
 })
 class CountryModule {}
 

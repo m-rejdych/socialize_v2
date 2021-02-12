@@ -50,38 +50,45 @@ class User {
 
   @OneToMany(() => Post, (post) => post.author, {
     cascade: ['insert', 'update'],
+    nullable: true,
   })
-  posts: Post[];
+  posts?: Post[];
 
   @OneToMany(() => PostReaction, (postReaction) => postReaction.user, {
     cascade: ['insert', 'update'],
+    nullable: true,
   })
-  postReactions: PostReaction[];
+  postReactions?: PostReaction[];
 
   @OneToMany(() => Comment, (comment) => comment.author, {
     cascade: ['insert', 'update'],
+    nullable: true,
   })
-  comments: Comment[];
+  comments?: Comment[];
 
   @OneToMany(() => CommentReaction, (commentReaction) => commentReaction.user, {
     cascade: ['insert', 'update'],
+    nullable: true,
   })
-  commentReactions: CommentReaction[];
+  commentReactions?: CommentReaction[];
 
   @ManyToMany(() => Chat, (chat) => chat.members, {
     cascade: ['insert', 'update'],
+    nullable: true,
   })
-  chats: Chat[];
+  chats?: Chat[];
 
   @OneToMany(() => Message, (message) => message.author, {
     cascade: ['insert', 'update'],
+    nullable: true,
   })
-  messages: Message[];
+  messages?: Message[];
 
   @OneToMany(() => MessageReaction, (messageReaction) => messageReaction.user, {
     cascade: ['insert', 'update'],
+    nullable: true,
   })
-  messageReactions: MessageReaction[];
+  messageReactions?: MessageReaction[];
 }
 
 export default User;

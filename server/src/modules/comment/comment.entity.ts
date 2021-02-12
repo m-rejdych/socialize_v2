@@ -35,9 +35,9 @@ class Comment {
   @OneToMany(
     () => CommentReaction,
     (commentReaction) => commentReaction.comment,
-    { cascade: ['insert', 'update'] },
+    { cascade: ['insert', 'update'], nullable: true },
   )
-  reactions: CommentReaction[];
+  reactions?: CommentReaction[];
 }
 
 export default Comment;

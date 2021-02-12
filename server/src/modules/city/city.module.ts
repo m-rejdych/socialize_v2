@@ -7,6 +7,7 @@ import CityService from './city.service';
 @Module({
   imports: [TypeOrmModule.forFeature([City])],
   providers: [CityService],
+  exports: [CityService],
 })
 class CityModule {}
 

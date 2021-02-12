@@ -20,16 +20,16 @@ class UserInfo {
   id: number;
 
   @Column({ nullable: true })
-  age: number;
+  age?: number;
 
-  @ManyToOne(() => Country)
-  country: Country;
+  @ManyToOne(() => Country, { nullable: true })
+  country?: Country;
 
-  @ManyToOne(() => City)
-  city: City;
+  @ManyToOne(() => City, { nullable: true })
+  city?: City;
 
-  @ManyToOne(() => Relationship)
-  relaitonship: Relationship;
+  @ManyToOne(() => Relationship, { nullable: true })
+  relaitonship?: Relationship;
 
   @CreateDateColumn()
   createdAt: Date;

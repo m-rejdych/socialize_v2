@@ -35,9 +35,9 @@ class Message {
   @OneToMany(
     () => MessageReaction,
     (messageReaction) => messageReaction.message,
-    { cascade: ['insert', 'update'] },
+    { cascade: ['insert', 'update'], nullable: true },
   )
-  reactions: MessageReaction[];
+  reactions?: MessageReaction[];
 }
 
 export default Message;
