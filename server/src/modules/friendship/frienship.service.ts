@@ -13,8 +13,8 @@ class FriendshipService {
   ) {}
 
   async findOneByFriendId(
-    userId: string,
-    friendId: string,
+    userId: number,
+    friendId: number,
   ): Promise<FriendshipInterface | null> {
     const friendship = await this.friendshipRepository
       .createQueryBuilder('friendship')

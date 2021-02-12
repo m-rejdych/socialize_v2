@@ -10,7 +10,7 @@ import {
 import AuthService from './auth.service';
 import RegisterDto from './dto/register.dto';
 import AuthResponseDto from './dto/authResponse.dto';
-import LocalAuthGuard from './guards/local.guard';
+import LocalAuthGuard from '../../guards/local.guard';
 import LocalRequest from './interfaces/localRequest.interface';
 
 @Controller('auth')

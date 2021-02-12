@@ -1,6 +1,6 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
 
-import JwtGuard from '../auth/guards/jwt.guard';
+import JwtGuard from '../../guards/jwt.guard';
 
 @Controller('friendship')
 class FriendshipController {

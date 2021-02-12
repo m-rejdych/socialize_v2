@@ -22,13 +22,13 @@ class UserInfo {
   @Column({ nullable: true })
   age: number;
 
-  @ManyToOne(() => Country, (country) => country.userInfos)
+  @ManyToOne(() => Country)
   country: Country;
 
-  @ManyToOne(() => City, (city) => city.userInfos)
+  @ManyToOne(() => City)
   city: City;
 
-  @ManyToOne(() => Relationship, (relationship) => relationship.userInfos)
+  @ManyToOne(() => Relationship)
   relaitonship: Relationship;
 
   @CreateDateColumn({ nullable: true })

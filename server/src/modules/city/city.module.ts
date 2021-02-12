@@ -2,10 +2,11 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import City from './city.entity';
-import UserInfo from '../userInfo/userInfo.entity';
+import CityService from './city.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([City, UserInfo])],
+  imports: [TypeOrmModule.forFeature([City])],
+  providers: [CityService],
 })
 class CityModule {}
 

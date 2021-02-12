@@ -9,7 +9,7 @@ import {
   ClassSerializerInterceptor,
 } from '@nestjs/common';
 
-import JwtAuthGuard from '../auth/guards/jwt.guard';
+import JwtAuthGuard from '../../guards/jwt.guard';
 import JwtRequest from '../auth/interfaces/jwtRequest.interface';
 import UserInterface from './interfaces/user.interface';
 import UserService from './user.service';
