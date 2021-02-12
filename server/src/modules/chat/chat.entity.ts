@@ -24,14 +24,16 @@ class Chat {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToMany(() => User, (user) => user.chats)
+  @ManyToMany(() => User, (user) => user.chats, { cascade: true })
   @JoinTable()
   members: User[];
 
   @ManyToOne(() => ChatType)
   type: ChatType;
 
-  @OneToMany(() => Message, (message) => message.chat)
+  @OneToMany(() => Message, (message) => message.chat, {
+    cascade: ['insert', 'update'],
+  })
   messages: Message[];
 }
 

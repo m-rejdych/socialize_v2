@@ -31,10 +31,10 @@ class UserInfo {
   @ManyToOne(() => Relationship)
   relaitonship: Relationship;
 
-  @CreateDateColumn({ nullable: true })
+  @CreateDateColumn()
   createdAt: Date;
 
-  @UpdateDateColumn({ nullable: true })
+  @UpdateDateColumn()
   updatedAt: Date;
 
   @OneToOne(() => User, (user) => user.userInfo, { cascade: true })

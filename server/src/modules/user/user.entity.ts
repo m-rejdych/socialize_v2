@@ -48,25 +48,39 @@ class User {
   })
   userInfo: UserInfo;
 
-  @OneToMany(() => PostReaction, (postReaction) => postReaction.user)
-  postReactions: PostReaction[];
-
-  @OneToMany(() => Post, (post) => post.author)
+  @OneToMany(() => Post, (post) => post.author, {
+    cascade: ['insert', 'update'],
+  })
   posts: Post[];
 
-  @OneToMany(() => Comment, (comment) => comment.author)
+  @OneToMany(() => PostReaction, (postReaction) => postReaction.user, {
+    cascade: ['insert', 'update'],
+  })
+  postReactions: PostReaction[];
+
+  @OneToMany(() => Comment, (comment) => comment.author, {
+    cascade: ['insert', 'update'],
+  })
   comments: Comment[];
 
-  @OneToMany(() => CommentReaction, (commentReaction) => commentReaction.user)
+  @OneToMany(() => CommentReaction, (commentReaction) => commentReaction.user, {
+    cascade: ['insert', 'update'],
+  })
   commentReactions: CommentReaction[];
 
-  @ManyToMany(() => Chat, (chat) => chat.members)
+  @ManyToMany(() => Chat, (chat) => chat.members, {
+    cascade: ['insert', 'update'],
+  })
   chats: Chat[];
 
-  @OneToMany(() => Message, (message) => message.author)
+  @OneToMany(() => Message, (message) => message.author, {
+    cascade: ['insert', 'update'],
+  })
   messages: Message[];
 
-  @OneToMany(() => MessageReaction, (messageReaction) => messageReaction.user)
+  @OneToMany(() => MessageReaction, (messageReaction) => messageReaction.user, {
+    cascade: ['insert', 'update'],
+  })
   messageReactions: MessageReaction[];
 }
 

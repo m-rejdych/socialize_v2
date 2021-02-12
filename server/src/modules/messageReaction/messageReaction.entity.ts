@@ -9,10 +9,10 @@ class MessageReaction {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, (user) => user.messageReactions)
+  @ManyToOne(() => User, (user) => user.messageReactions, { cascade: true })
   user: User;
 
-  @ManyToOne(() => Message, (message) => message.reactions)
+  @ManyToOne(() => Message, (message) => message.reactions, { cascade: true })
   message: Message;
 
   @ManyToOne(() => ReactionType)

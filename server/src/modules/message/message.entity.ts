@@ -26,15 +26,16 @@ class Message {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToOne(() => User, (user) => user.messages)
+  @ManyToOne(() => User, (user) => user.messages, { cascade: true })
   author: User;
 
-  @ManyToOne(() => Chat, (chat) => chat.messages)
+  @ManyToOne(() => Chat, (chat) => chat.messages, { cascade: true })
   chat: Chat;
 
   @OneToMany(
     () => MessageReaction,
     (messageReaction) => messageReaction.message,
+    { cascade: ['insert', 'update'] },
   )
   reactions: MessageReaction[];
 }

@@ -26,15 +26,16 @@ class Comment {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToOne(() => Post, (post) => post.comments)
+  @ManyToOne(() => Post, (post) => post.comments, { cascade: true })
   post: Post;
 
-  @ManyToOne(() => User, (user) => user.comments)
+  @ManyToOne(() => User, (user) => user.comments, { cascade: true })
   author: User;
 
   @OneToMany(
     () => CommentReaction,
     (commentReaction) => commentReaction.comment,
+    { cascade: ['insert', 'update'] },
   )
   reactions: CommentReaction[];
 }
