@@ -23,18 +23,9 @@ class UserInfoService {
     private relationshipService: RelationshipService,
   ) {}
 
-  async createUserInfo(userId: string): Promise<UserInfoInterface> {
-    const foundUserInfo = await this.userInfoRepository
-      .createQueryBuilder('userInfo')
-      .leftJoinAndSelect('userInfo.user', 'user', 'user.id = :userId', {
-        userId,
-      })
-      .getOne();
-    if (foundUserInfo) {
-      throw new BadRequestException('This user already has user info!');
-    }
-
+  async createUserInfo(): Promise<UserInfoInterface> {
     const userInfo = this.userInfoRepository.create({});
+    await this.userInfoRepository.save(userInfo);
 
     return userInfo;
   }

@@ -6,11 +6,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compare } from 'bcryptjs';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { hash } from 'bcryptjs';
 
-import User from '../user/user.entity';
 import UserInterface from '../user/interfaces/user.interface';
 import UserService from '../user/user.service';
 import RegisterDto from './dto/register.dto';
@@ -20,8 +16,6 @@ import AuthResponseDto from './dto/authResponse.dto';
 @Injectable()
 class AuthService {
   constructor(
-    @InjectRepository(User)
-    private userRepository: Repository<User>,
     private userService: UserService,
     private jwtService: JwtService,
   ) {}
@@ -38,17 +32,10 @@ class AuthService {
     throw new UnauthorizedException('Wrong email or password!');
   }
 
-  async register({ email, password }: RegisterDto): Promise<AuthResponseDto> {
-    const foundUser = await this.userService.findByEmail(email);
-    if (foundUser) throw new ConflictException('Email already in use!');
+  async register(data: RegisterDto): Promise<AuthResponseDto> {
+    const { email } = data;
 
-    const hashedPassword = await hash(password, 12);
-
-    const user = this.userRepository.create({
-      email,
-      password: hashedPassword,
-    });
-    await this.userRepository.save(user);
+    const user = await this.userService.createUser(data);
 
     const token = this.jwtService.sign({ email, id: user.id });
 

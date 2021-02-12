@@ -18,6 +18,7 @@ import UserInfoService from './userInfo.service';
     RelationshipModule,
   ],
   providers: [UserInfoService],
+  exports: [UserInfoService],
 })
 class UserInfoModule {}
 
