@@ -31,12 +31,13 @@ class UserInfoService {
   }
 
   async getByUserId(userId: number): Promise<UserInfoInterface> {
+    console.log(userId);
     const userInfo = await this.userInfoRepository
       .createQueryBuilder('userInfo')
-      .leftJoinAndSelect('userInfo.user', 'user', 'user.id = :userId', {
-        userId,
-      })
+      .leftJoinAndSelect('userInfo.user', 'user')
+      .where('user.id = :userId', { userId })
       .getOne();
+    console.log(userInfo);
 
     if (!userInfo) throw new NotFoundException('User info not found!');
 
@@ -49,9 +50,8 @@ class UserInfoService {
   ): Promise<UserInfoInterface> {
     const userInfo = await this.userInfoRepository
       .createQueryBuilder('userInfo')
-      .leftJoinAndSelect('userInfo.user', 'user', 'user.id = :userId', {
-        userId,
-      })
+      .leftJoinAndSelect('userInfo.user', 'user')
+      .where('user.id = :userId', { userId })
       .getOne();
     if (!userInfo) throw new NotFoundException('User info not found!');
 

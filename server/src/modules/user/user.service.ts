@@ -27,11 +27,9 @@ class UserService {
     email: string,
     options?: FindByEmailOptions,
   ): Promise<UserInterface | null> {
-    const { addPassword } = options;
-
     let user: UserInterface | undefined;
 
-    if (addPassword) {
+    if (options?.addPassword) {
       user = await this.userRepository
         .createQueryBuilder('user')
         .addSelect('user.password')

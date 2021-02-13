@@ -22,6 +22,14 @@ class UserInfoController {
   constructor(private userInfoService: UserInfoService) {}
 
   @UseGuards(JwtGuard)
+  @Get('get-me')
+  async getMe(@Req() req: JwtRequest): Promise<UserInfoInterface> {
+    const { id } = req.user;
+
+    return await this.userInfoService.getByUserId(id);
+  }
+
+  @UseGuards(JwtGuard)
   @Get('get-by-user-id/:id')
   async getByUserId(
     @Param('id', ParseIntPipe) id: number,
@@ -31,11 +39,8 @@ class UserInfoController {
 
   @UseGuards(JwtGuard)
   @UsePipes(CapitalizationPipe)
-  @Put('update')
-  async updateByUserId(
-    @Body() data: UpdateUserInfoDto,
-    @Req() req: JwtRequest,
-  ) {
+  @Put('update-me')
+  async updateMe(@Body() data: UpdateUserInfoDto, @Req() req: JwtRequest) {
     const { id } = req.user;
 
     return await this.userInfoService.updateByUserId(id, data);
