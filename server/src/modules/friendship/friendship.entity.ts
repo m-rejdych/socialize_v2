@@ -14,7 +14,7 @@ class Friendship {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ default: false })
   isAccpted: boolean;
 
   @CreateDateColumn()

@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import Country from './country.entity';
-import CountryInterface from './interfaces/country.interface';
 
 @Injectable()
 class CountryService {
@@ -11,7 +10,7 @@ class CountryService {
     @InjectRepository(Country) private countryRepository: Repository<Country>,
   ) {}
 
-  async findOrCreateCountry(name: string): Promise<CountryInterface> {
+  async findOrCreateCountry(name: string): Promise<Country> {
     const foundCountry = await this.countryRepository.findOne({
       where: { name },
     });

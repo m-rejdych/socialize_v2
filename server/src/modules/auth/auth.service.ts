@@ -1,13 +1,12 @@
 import {
   Injectable,
-  ConflictException,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compare } from 'bcryptjs';
 
-import UserInterface from '../user/interfaces/user.interface';
+import User from '../user/user.entity';
 import UserService from '../user/user.service';
 import RegisterDto from './dto/register.dto';
 import LoginDto from './dto/login.dto';
@@ -20,7 +19,7 @@ class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async validateUser(email: string, password: string): Promise<UserInterface> {
+  async validateUser(email: string, password: string): Promise<User> {
     const user = await this.userService.findByEmail(email, {
       addPassword: true,
     });

@@ -10,7 +10,6 @@ import UserInfo from './userInfo.entity';
 import CountryService from '../country/country.service';
 import CityService from '../city/city.service';
 import RelationshipService from '../relationship/relationship.service';
-import UserInfoInterface from './interfaces/userInfo.interface';
 import UpdateUserInfoDto from './dto/updateUserInfo.dto';
 
 @Injectable()
@@ -23,14 +22,14 @@ class UserInfoService {
     private relationshipService: RelationshipService,
   ) {}
 
-  async createUserInfo(): Promise<UserInfoInterface> {
+  async createUserInfo(): Promise<UserInfo> {
     const userInfo = this.userInfoRepository.create({});
     await this.userInfoRepository.save(userInfo);
 
     return userInfo;
   }
 
-  async getByUserId(userId: number): Promise<UserInfoInterface> {
+  async findOneByUserId(userId: number): Promise<UserInfo> {
     console.log(userId);
     const userInfo = await this.userInfoRepository
       .createQueryBuilder('userInfo')
@@ -47,7 +46,7 @@ class UserInfoService {
   async updateByUserId(
     userId: number,
     { city, country, relationship, age }: UpdateUserInfoDto,
-  ): Promise<UserInfoInterface> {
+  ): Promise<UserInfo> {
     const userInfo = await this.userInfoRepository
       .createQueryBuilder('userInfo')
       .leftJoinAndSelect('userInfo.user', 'user')

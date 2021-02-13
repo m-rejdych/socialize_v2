@@ -1,8 +1,8 @@
 import { Request } from 'express';
-import UserInterface from '../../user/interfaces/user.interface';
+import User from '../../user/user.entity';
 
 interface LocalRequest extends Request {
-  user: UserInterface;
+  user: User;
 }
 
 export default LocalRequest;

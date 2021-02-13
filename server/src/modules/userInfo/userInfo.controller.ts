@@ -10,7 +10,7 @@ import {
   ParseIntPipe,
 } from '@nestjs/common';
 
-import UserInfoInterface from './interfaces/userInfo.interface';
+import UserInfo from './userInfo.entity';
 import JwtGuard from '../../guards/jwt.guard';
 import JwtRequest from '../auth/interfaces/jwtRequest.interface';
 import UserInfoService from './userInfo.service';
@@ -23,18 +23,16 @@ class UserInfoController {
 
   @UseGuards(JwtGuard)
   @Get('get-me')
-  async getMe(@Req() req: JwtRequest): Promise<UserInfoInterface> {
+  async getMe(@Req() req: JwtRequest): Promise<UserInfo> {
     const { id } = req.user;
 
-    return await this.userInfoService.getByUserId(id);
+    return await this.userInfoService.findOneByUserId(id);
   }
 
   @UseGuards(JwtGuard)
   @Get('get-by-user-id/:id')
-  async getByUserId(
-    @Param('id', ParseIntPipe) id: number,
-  ): Promise<UserInfoInterface> {
-    return await this.userInfoService.getByUserId(id);
+  async getByUserId(@Param('id', ParseIntPipe) id: number): Promise<UserInfo> {
+    return await this.userInfoService.findOneByUserId(id);
   }
 
   @UseGuards(JwtGuard)

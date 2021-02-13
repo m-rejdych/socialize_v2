@@ -11,8 +11,8 @@ import {
 
 import JwtAuthGuard from '../../guards/jwt.guard';
 import JwtRequest from '../auth/interfaces/jwtRequest.interface';
-import UserInterface from './interfaces/user.interface';
 import UserService from './user.service';
+import User from './user.entity';
 
 @Controller('user')
 class UserController {
@@ -21,14 +21,14 @@ class UserController {
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(ClassSerializerInterceptor)
   @Get('get-me')
-  async getMe(@Req() req: JwtRequest): Promise<UserInterface> {
+  async getMe(@Req() req: JwtRequest): Promise<User> {
     return await this.userService.findById(req.user.id);
   }
 
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(ClassSerializerInterceptor)
   @Get('get-user/:id')
-  async getUser(@Param('id', ParseIntPipe) id: number): Promise<UserInterface> {
+  async getUser(@Param('id', ParseIntPipe) id: number): Promise<User> {
     return await this.userService.findById(id);
   }
 }

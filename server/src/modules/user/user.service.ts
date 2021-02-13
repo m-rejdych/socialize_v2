@@ -4,7 +4,6 @@ import { Repository } from 'typeorm';
 import { hash } from 'bcryptjs';
 
 import User from './user.entity';
-import UserInterface from './interfaces/user.interface';
 import FindByEmailOptions from './interfaces/findByEmailOptions.interface';
 import UserInfoService from '../userInfo/userInfo.service';
 import RegisterDto from '../auth/dto/register.dto';
@@ -17,7 +16,7 @@ class UserService {
     private userInfoService: UserInfoService,
   ) {}
 
-  async findById(id: number): Promise<UserInterface | null> {
+  async findById(id: number): Promise<User | null> {
     const user = await this.userRepository.findOne(id);
 
     return user || null;
@@ -26,8 +25,8 @@ class UserService {
   async findByEmail(
     email: string,
     options?: FindByEmailOptions,
-  ): Promise<UserInterface | null> {
-    let user: UserInterface | undefined;
+  ): Promise<User | null> {
+    let user: User | undefined;
 
     if (options?.addPassword) {
       user = await this.userRepository
@@ -42,11 +41,7 @@ class UserService {
     return user || null;
   }
 
-  async createUser({
-    email,
-    password,
-    ...rest
-  }: RegisterDto): Promise<UserInterface> {
+  async createUser({ email, password, ...rest }: RegisterDto): Promise<User> {
     const foundUser = await this.findByEmail(email);
     if (foundUser) throw new BadRequestException('Email already in use!');
 

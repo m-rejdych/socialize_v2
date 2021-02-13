@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import Relationship from './relationship.entity';
-import RelationshipInterface from './interfaces/relationship.interface';
 
 @Injectable()
 class RelationshipService {
@@ -12,7 +11,7 @@ class RelationshipService {
     private relationshipRepository: Repository<Relationship>,
   ) {}
 
-  async findOneByName(name: string): Promise<RelationshipInterface> {
+  async findOneByName(name: string): Promise<Relationship> {
     const relationship = await this.relationshipRepository.findOne({
       where: { name },
     });
