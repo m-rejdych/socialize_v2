@@ -24,6 +24,12 @@ class FriendshipService {
     friendId: number,
     options?: FindOneOptions,
   ): Promise<Friendship | null> {
+    if (userId === friendId) {
+      throw new BadRequestException(
+        'User id and friend id can not be the same!',
+      );
+    }
+
     let friendship: Friendship | null;
 
     if (options?.addressedToMe) {
@@ -63,6 +69,12 @@ class FriendshipService {
     userId: number,
     friendId: number,
   ): Promise<Friendship> {
+    if (userId === friendId) {
+      throw new BadRequestException(
+        'User id and friend id can not be the same!',
+      );
+    }
+
     const foundFriendship = await this.findOne(userId, friendId);
     if (foundFriendship) {
       throw new BadRequestException('Friendship already exists!');
@@ -87,12 +99,22 @@ class FriendshipService {
     userId: number,
     friendId: number,
   ): Promise<Friendship> {
-    const friendship = await this.findOne(userId, friendId, {
-      addressedToMe: true,
-    });
+    if (userId === friendId) {
+      throw new BadRequestException(
+        'User id and friend id can not be the same!',
+      );
+    }
+
+    const friendship = await this.findOne(userId, friendId);
+    if (friendship.requestedBy.id === userId) {
+      throw new BadRequestException(
+        'You can not accept friendship requested by yourself!',
+      );
+    }
     if (!friendship) throw new NotFoundException('Friendhsip not found!');
-    if (friendship.isAccpted)
+    if (friendship.isAccpted) {
       throw new BadRequestException('Friendship already accepted!');
+    }
 
     friendship.isAccpted = true;
     this.friendshipRepository.save(friendship);
@@ -104,6 +126,12 @@ class FriendshipService {
     userId: number,
     friendId: number,
   ): Promise<DeleteFriendshipReponseDto> {
+    if (userId === friendId) {
+      throw new BadRequestException(
+        'User id and friend id can not be the same!',
+      );
+    }
+
     const friendship = await this.findOne(userId, friendId);
     if (!friendship) throw new NotFoundException('Friendship not found!');
 
