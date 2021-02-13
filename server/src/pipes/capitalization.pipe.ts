@@ -1,11 +1,31 @@
 import { PipeTransform, Injectable } from '@nestjs/common';
 
 @Injectable()
-class CapitalizationPipe implements PipeTransform<string, string> {
-  transform(value: string) {
-    const lowerCaseValue = value.toLowerCase();
+class CapitalizationPipe implements PipeTransform<unknown, unknown> {
+  transform(value: unknown) {
+    switch (typeof value) {
+      case 'string':
+        const lowerCaseValue = value.toLowerCase();
 
-    return lowerCaseValue.slice(0, 1).toUpperCase() + value.slice(1);
+        return lowerCaseValue.slice(0, 1).toUpperCase() + value.slice(1);
+      case 'object':
+        const capitalizedValues = Object.keys(value).reduce((acc, key) => {
+          if (typeof value[key] === 'string') {
+            const lowerCaseValue = value[key].toLowerCase();
+            acc[key] =
+              lowerCaseValue.slice(0, 1).toUpperCase() +
+              lowerCaseValue.slice(1);
+          } else {
+            acc[key] = value[key];
+          }
+
+          return acc;
+        }, {});
+
+        return capitalizedValues;
+      default:
+        return value;
+    }
   }
 }
 
