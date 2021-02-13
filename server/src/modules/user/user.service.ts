@@ -5,6 +5,7 @@ import { hash } from 'bcryptjs';
 
 import User from './user.entity';
 import UserInterface from './interfaces/user.interface';
+import FindByEmailOptions from './interfaces/findByEmailOptions.interface';
 import UserInfoService from '../userInfo/userInfo.service';
 import RegisterDto from '../auth/dto/register.dto';
 
@@ -17,15 +18,28 @@ class UserService {
   ) {}
 
   async findById(id: number): Promise<UserInterface | null> {
-    const user = await this.userRepository.findOne(id, {
-      relations: ['userInfo'],
-    });
+    const user = await this.userRepository.findOne(id);
 
     return user || null;
   }
 
-  async findByEmail(email: string): Promise<UserInterface | null> {
-    const user = await this.userRepository.findOne({ where: { email } });
+  async findByEmail(
+    email: string,
+    options?: FindByEmailOptions,
+  ): Promise<UserInterface | null> {
+    const { addPassword } = options;
+
+    let user: UserInterface | undefined;
+
+    if (addPassword) {
+      user = await this.userRepository
+        .createQueryBuilder('user')
+        .addSelect('user.password')
+        .where('user.email = :email', { email })
+        .getOne();
+    } else {
+      user = await this.userRepository.findOne({ where: { email } });
+    }
 
     return user || null;
   }

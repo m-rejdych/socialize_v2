@@ -21,15 +21,17 @@ class AuthService {
   ) {}
 
   async validateUser(email: string, password: string): Promise<UserInterface> {
-    const user = await this.userService.findByEmail(email);
+    const user = await this.userService.findByEmail(email, {
+      addPassword: true,
+    });
 
     if (!user) throw new NotFoundException('User not found!');
 
     const isValid = await compare(password, user.password);
 
-    if (isValid) return user;
+    if (!isValid) throw new UnauthorizedException('Wrong email or password!');
 
-    throw new UnauthorizedException('Wrong email or password!');
+    return user;
   }
 
   async register(data: RegisterDto): Promise<AuthResponseDto> {

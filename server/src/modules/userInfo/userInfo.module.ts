@@ -9,6 +9,7 @@ import CountryModule from '../country/country.module';
 import CityModule from '../city/city.module';
 import RelationshipModule from '../relationship/relationship.module';
 import UserInfoService from './userInfo.service';
+import UserInfoController from './userInfo.controller';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import UserInfoService from './userInfo.service';
     RelationshipModule,
   ],
   providers: [UserInfoService],
+  controllers: [UserInfoController],
   exports: [UserInfoService],
 })
 class UserInfoModule {}
