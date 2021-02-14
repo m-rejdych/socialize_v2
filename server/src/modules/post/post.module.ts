@@ -18,6 +18,7 @@ import PostReactionModule from '../postReaction/postReaction.module';
   ],
   providers: [PostService],
   controllers: [PostController],
+  exports: [PostService],
 })
 class PostModule {}
 
