@@ -19,6 +19,8 @@ import Comment from './comment.entity';
 import CreateCommentDto from './dto/createComment.dto';
 import UpdateCommentDto from './dto/updateComment.dto';
 import DeleteCommentResponseDto from './dto/deleteCommentResponse.dto';
+import AddCommentReactionDto from './dto/addCommentReaction.dto';
+import DeleteCommentReactionResponseDto from '../commentReaction/dto/deleteCommentReactionResponse.dto';
 
 @Controller('comment')
 class CommentController {
@@ -61,6 +63,28 @@ class CommentController {
     const { id } = req.user;
 
     return await this.commentService.deleteComment(id, commentId);
+  }
+
+  @UseGuards(JwtGuard)
+  @Put('add-reaction')
+  async addCommentReaction(
+    @Body() data: AddCommentReactionDto,
+    @Req() req: JwtRequest,
+  ): Promise<Comment> {
+    const { id } = req.user;
+
+    return await this.commentService.addCommentReaction(id, data);
+  }
+
+  @UseGuards(JwtGuard)
+  @Delete('delete-reaction')
+  async deleteReaction(
+    @Query('commentId', ParseIntPipe) commentId: number,
+    @Req() req: JwtRequest,
+  ): Promise<DeleteCommentReactionResponseDto> {
+    const { id } = req.user;
+
+    return await this.commentService.deleteCommentReaction(id, commentId);
   }
 }
 
