@@ -18,6 +18,7 @@ import PostService from './post.service';
 import JwtRequest from '../auth/interfaces/jwtRequest.interface';
 import CreatePostDto from './dto/createPost.dto';
 import UpdatePostDto from './dto/updatePost.dto';
+import AddPostReactionDto from './dto/addPostReaction.dto';
 import DeletePostResponseDto from './dto/deletePostResponse.dto';
 import PostEntity from './post.entity';
 
@@ -67,6 +68,17 @@ class PostController {
     const { id } = req.user;
 
     return await this.postService.deletePost(id, postId);
+  }
+
+  @UseGuards(JwtGuard)
+  @Put('add-reaction')
+  async addReaction(
+    @Body() data: AddPostReactionDto,
+    @Req() req: JwtRequest,
+  ): Promise<PostEntity> {
+    const { id } = req.user;
+
+    return await this.postService.addPostReaction(id, data);
   }
 }
 

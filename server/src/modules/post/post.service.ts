@@ -27,6 +27,7 @@ class PostService {
       .createQueryBuilder('post')
       .leftJoinAndSelect('post.author', 'author')
       .leftJoinAndSelect('post.reactions', 'reactions')
+      .leftJoinAndSelect('reactions.type', 'reactionsType')
       .leftJoinAndSelect('reactions.user', 'reactionsUser')
       .leftJoinAndSelect('post.comments', 'comments')
       .where('post.id = :id', { id })
@@ -97,14 +98,21 @@ class PostService {
     );
 
     if (foundReaction) {
-      await this.postReactionService.deleteById(userId, foundReaction.id);
+      const updatedReaction = await this.postReactionService.updatePostReaction(
+        userId,
+        foundReaction.id,
+        reactionName,
+      );
+      post.reactions = post.reactions.map((reaction) =>
+        reaction.id === updatedReaction.id ? updatedReaction : reaction,
+      );
+    } else {
+      const postReaction = await this.postReactionService.createPostReaction(
+        userId,
+        reactionName,
+      );
+      post.reactions = [...post.reactions, postReaction];
     }
-
-    const postReaction = await this.postReactionService.createPostReaction(
-      userId,
-      reactionName,
-    );
-    post.reactions = [...post.reactions, postReaction];
 
     await this.postRepository.save(post);
 

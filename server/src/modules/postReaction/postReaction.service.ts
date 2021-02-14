@@ -54,6 +54,30 @@ class PostReactionService {
     return postReaction;
   }
 
+  async updatePostReaction(
+    userId: number,
+    reactionId: number,
+    reactionName: ReactionName,
+  ): Promise<PostReaction> {
+    const postReaction = await this.postReactionRepository.findOne(reactionId, {
+      relations: ['user'],
+    });
+    if (!postReaction) throw new NotFoundException('Post reaciton not found!');
+    if (postReaction.user.id !== userId) {
+      throw new BadRequestException('You can update only your own reactions!');
+    }
+
+    const reactionType = await this.reactionTypeService.findOneByName(
+      reactionName,
+    );
+    if (!reactionType) throw new BadRequestException('Invalid reaction type!');
+
+    postReaction.type = reactionType;
+    await this.postReactionRepository.save(postReaction);
+
+    return postReaction;
+  }
+
   async deleteByPostAndUserIds(
     userId: number,
     postId: number,
@@ -79,7 +103,7 @@ class PostReactionService {
     reactionId: number,
   ): Promise<DeleteByPostAndUserIdsResponseDto> {
     const postReaction = await this.postReactionRepository.findOne(reactionId, {
-      relations: ['user'],
+      relations: ['user', 'post'],
     });
     if (!postReaction) throw new NotFoundException('Post reaction not found!');
     if (postReaction.user.id !== userId) {
