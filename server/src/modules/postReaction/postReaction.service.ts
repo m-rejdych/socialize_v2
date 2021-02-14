@@ -20,23 +20,25 @@ class PostReactionService {
     private reactionTypeService: ReactionTypeService,
   ) {}
 
-  async createPostReaction(
-    userId: number,
-    reactionName: ReactionName,
-  ): Promise<PostReaction> {
-    const user = await this.userService.findById(userId);
-    if (!user) throw new NotFoundException('User not found!');
+  // async findByUserId
 
-    const type = await this.reactionTypeService.findOneByName(reactionName);
+  // async createPostReaction(
+  //   userId: number,
+  //   reactionName: ReactionName,
+  // ): Promise<PostReaction> {
+  //   const user = await this.userService.findById(userId);
+  //   if (!user) throw new NotFoundException('User not found!');
 
-    const postReaction = this.postReactionRepository.create({
-      user,
-      type,
-    });
-    await this.postReactionRepository.save(postReaction);
+  //   const type = await this.reactionTypeService.findOneByName(reactionName);
 
-    return postReaction;
-  }
+  //   const postReaction = this.postReactionRepository.create({
+  //     user,
+  //     type,
+  //   });
+  //   await this.postReactionRepository.save(postReaction);
+
+  //   return postReaction;
+  // }
 }
 
 export default PostReactionService;
