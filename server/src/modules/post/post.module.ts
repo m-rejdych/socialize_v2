@@ -7,11 +7,13 @@ import PostReaction from '../postReaction/postReaction.entity';
 import Comment from '../comment/comment.entity';
 import UserModule from '../user/user.module';
 import PostService from './post.service';
+import PostReactionModule from '../postReaction/postReaction.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Post, User, PostReaction, Comment]),
     UserModule,
+    PostReactionModule,
   ],
   providers: [PostService],
 })

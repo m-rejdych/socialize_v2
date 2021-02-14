@@ -10,6 +10,7 @@ import PostReaction from './postReaction.entity';
 import UserService from '../user/user.service';
 import ReactionTypeService from '../reactionType/reactionType.service';
 import ReactionName from '../reactionType/types/reactionName.type';
+import DeleteByPostAndUserIdsResponseDto from './dto/deleteByPostAndUserIdsResponse.dto';
 
 @Injectable()
 class PostReactionService {
@@ -20,25 +21,81 @@ class PostReactionService {
     private reactionTypeService: ReactionTypeService,
   ) {}
 
-  // async findByUserId
+  async findByUserAndPostIds(
+    userId: number,
+    postId: number,
+  ): Promise<PostReaction | null> {
+    const postReaction = await this.postReactionRepository
+      .createQueryBuilder('postReaction')
+      .leftJoinAndSelect('postReaction.user', 'user')
+      .leftJoinAndSelect('postReaction.post', 'post')
+      .where('post.id = :postId', { postId })
+      .where('user.id = :userId', { userId })
+      .getOne();
 
-  // async createPostReaction(
-  //   userId: number,
-  //   reactionName: ReactionName,
-  // ): Promise<PostReaction> {
-  //   const user = await this.userService.findById(userId);
-  //   if (!user) throw new NotFoundException('User not found!');
+    return postReaction || null;
+  }
 
-  //   const type = await this.reactionTypeService.findOneByName(reactionName);
+  async createPostReaction(
+    userId: number,
+    reactionName: ReactionName,
+  ): Promise<PostReaction> {
+    const user = await this.userService.findById(userId);
+    if (!user) throw new NotFoundException('User not found!');
 
-  //   const postReaction = this.postReactionRepository.create({
-  //     user,
-  //     type,
-  //   });
-  //   await this.postReactionRepository.save(postReaction);
+    const type = await this.reactionTypeService.findOneByName(reactionName);
 
-  //   return postReaction;
-  // }
+    const postReaction = this.postReactionRepository.create({
+      user,
+      type,
+    });
+    await this.postReactionRepository.save(postReaction);
+
+    return postReaction;
+  }
+
+  async deleteByPostAndUserIds(
+    userId: number,
+    postId: number,
+  ): Promise<DeleteByPostAndUserIdsResponseDto> {
+    const postReaction = await this.findByUserAndPostIds(userId, postId);
+    const reactionId = postReaction.id;
+    if (!postReaction) {
+      throw new BadRequestException('Post reaction not found!');
+    }
+
+    await this.postReactionRepository.remove(postReaction);
+
+    return {
+      postId,
+      userId,
+      reactionId,
+      deleted: true,
+    };
+  }
+
+  async deleteById(
+    userId: number,
+    reactionId: number,
+  ): Promise<DeleteByPostAndUserIdsResponseDto> {
+    const postReaction = await this.postReactionRepository.findOne(reactionId, {
+      relations: ['user'],
+    });
+    if (!postReaction) throw new NotFoundException('Post reaction not found!');
+    if (postReaction.user.id !== userId) {
+      throw new BadRequestException('You can delete only your own reactions!');
+    }
+    const postId = postReaction.post.id;
+
+    await this.postReactionRepository.remove(postReaction);
+
+    return {
+      postId,
+      userId,
+      reactionId,
+      deleted: true,
+    };
+  }
 }
 
 export default PostReactionService;

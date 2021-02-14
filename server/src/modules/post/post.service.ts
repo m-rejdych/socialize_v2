@@ -10,13 +10,16 @@ import Post from './post.entity';
 import CreatePostDto from './dto/createPost.dto';
 import UpdatePostDto from './dto/updatePost.dto';
 import DeletePostResponseDto from './dto/deletePostResponse.dto';
+import AddPostReactionDto from './dto/addPostReaction.dto';
 import UserService from '../user/user.service';
+import PostReactionService from '../postReaction/postReaction.service';
 
 @Injectable()
 class PostService {
   constructor(
     @InjectRepository(Post) private postRepository: Repository<Post>,
     private userService: UserService,
+    private postReactionService: PostReactionService,
   ) {}
 
   async findById(id: number): Promise<Post | null> {
@@ -24,6 +27,7 @@ class PostService {
       .createQueryBuilder('post')
       .leftJoinAndSelect('post.author', 'author')
       .leftJoinAndSelect('post.reactions', 'reactions')
+      .leftJoinAndSelect('reactions.user', 'reactionsUser')
       .leftJoinAndSelect('post.comments', 'comments')
       .where('post.id = :id', { id })
       .getOne();
@@ -77,6 +81,33 @@ class PostService {
       authorId: userId,
       deleted: true,
     };
+  }
+
+  async addPostReaction(
+    userId: number,
+    { postId, reactionName }: AddPostReactionDto,
+  ): Promise<Post> {
+    const post = await this.findById(postId);
+    if (!post) throw new NotFoundException('Post not found!');
+
+    const foundReaction = await this.postReactionService.findByUserAndPostIds(
+      userId,
+      postId,
+    );
+
+    if (foundReaction) {
+      await this.postReactionService.deleteById(userId, foundReaction.id);
+    }
+
+    const postReaction = await this.postReactionService.createPostReaction(
+      userId,
+      reactionName,
+    );
+    post.reactions = [...post.reactions, postReaction];
+
+    await this.postRepository.save(post);
+
+    return post;
   }
 }
 
