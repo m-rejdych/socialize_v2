@@ -9,13 +9,19 @@ class CommentReaction {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Comment, (comment) => comment.reactions, { cascade: true })
+  @ManyToOne(() => Comment, (comment) => comment.reactions, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   comment: Comment;
 
   @ManyToOne(() => ReactionType)
   type: ReactionType;
 
-  @ManyToOne(() => User, (user) => user.commentReactions, { cascade: true })
+  @ManyToOne(() => User, (user) => user.commentReactions, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   user: User;
 }
 

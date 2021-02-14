@@ -37,7 +37,10 @@ class UserInfo {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToOne(() => User, (user) => user.userInfo, { cascade: true })
+  @OneToOne(() => User, (user) => user.userInfo, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn()
   user: User;
 }

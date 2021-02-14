@@ -9,10 +9,16 @@ class PostReaction {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Post, (post) => post.reactions, { cascade: true })
+  @ManyToOne(() => Post, (post) => post.reactions, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   post: Post;
 
-  @ManyToOne(() => User, (user) => user.postReactions, { cascade: true })
+  @ManyToOne(() => User, (user) => user.postReactions, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   user: User;
 
   @ManyToOne(() => ReactionType)

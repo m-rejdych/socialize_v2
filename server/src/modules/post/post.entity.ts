@@ -29,7 +29,10 @@ class Post {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToOne(() => User, (user) => user.posts, { cascade: true })
+  @ManyToOne(() => User, (user) => user.posts, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   author: User;
 
   @OneToMany(() => PostReaction, (postReaction) => postReaction.post, {

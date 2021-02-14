@@ -24,7 +24,10 @@ class Chat {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToMany(() => User, (user) => user.chats, { cascade: true })
+  @ManyToMany(() => User, (user) => user.chats, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   @JoinTable()
   members: User[];
 

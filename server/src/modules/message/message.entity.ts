@@ -26,10 +26,16 @@ class Message {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToOne(() => User, (user) => user.messages, { cascade: true })
+  @ManyToOne(() => User, (user) => user.messages, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   author: User;
 
-  @ManyToOne(() => Chat, (chat) => chat.messages, { cascade: true })
+  @ManyToOne(() => Chat, (chat) => chat.messages, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   chat: Chat;
 
   @OneToMany(

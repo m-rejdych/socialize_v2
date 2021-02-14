@@ -30,7 +30,7 @@ class PostReactionService {
       .leftJoinAndSelect('postReaction.user', 'user')
       .leftJoinAndSelect('postReaction.post', 'post')
       .where('post.id = :postId', { postId })
-      .where('user.id = :userId', { userId })
+      .andWhere('user.id = :userId', { userId })
       .getOne();
 
     return postReaction || null;
