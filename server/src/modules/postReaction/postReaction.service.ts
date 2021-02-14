@@ -10,7 +10,7 @@ import PostReaction from './postReaction.entity';
 import UserService from '../user/user.service';
 import ReactionTypeService from '../reactionType/reactionType.service';
 import ReactionName from '../reactionType/types/reactionName.type';
-import DeleteByPostAndUserIdsResponseDto from './dto/deleteByPostAndUserIdsResponse.dto';
+import DeletePostReactionResponseDto from './dto/deletePostReactionResponse.dto';
 
 @Injectable()
 class PostReactionService {
@@ -81,7 +81,7 @@ class PostReactionService {
   async deleteByPostAndUserIds(
     userId: number,
     postId: number,
-  ): Promise<DeleteByPostAndUserIdsResponseDto> {
+  ): Promise<DeletePostReactionResponseDto> {
     const postReaction = await this.findByUserAndPostIds(userId, postId);
     if (!postReaction) {
       throw new BadRequestException('Post reaction not found!');
@@ -101,7 +101,7 @@ class PostReactionService {
   async deleteById(
     userId: number,
     reactionId: number,
-  ): Promise<DeleteByPostAndUserIdsResponseDto> {
+  ): Promise<DeletePostReactionResponseDto> {
     const postReaction = await this.postReactionRepository.findOne(reactionId, {
       relations: ['user', 'post'],
     });

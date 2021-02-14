@@ -20,7 +20,7 @@ import CreatePostDto from './dto/createPost.dto';
 import UpdatePostDto from './dto/updatePost.dto';
 import AddPostReactionDto from './dto/addPostReaction.dto';
 import DeletePostResponseDto from './dto/deletePostResponse.dto';
-import DeleteByPostAndUserIdsResponseDto from '../postReaction/dto/deleteByPostAndUserIdsResponse.dto';
+import DeleteByPostAndUserIdsResponseDto from '../postReaction/dto/deletePostReactionResponse.dto';
 import PostEntity from './post.entity';
 
 @Controller('post')
