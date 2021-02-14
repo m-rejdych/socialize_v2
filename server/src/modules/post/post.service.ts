@@ -31,6 +31,10 @@ class PostService {
       .leftJoinAndSelect('reactions.type', 'reactionsType')
       .leftJoinAndSelect('reactions.user', 'reactionsUser')
       .leftJoinAndSelect('post.comments', 'comments')
+      .leftJoinAndSelect('comments.author', 'commentsAuthor')
+      .leftJoinAndSelect('comments.reactions', 'commentsReactions')
+      .leftJoinAndSelect('commentsReactions.user', 'commentsReactionsUser')
+      .leftJoinAndSelect('commentsReactions.type', 'commentsReactionsType')
       .where('post.id = :id', { id })
       .getOne();
 

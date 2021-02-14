@@ -8,6 +8,7 @@ import CommentReaction from '../commentReaction/commentReaction.entity';
 import PostModule from '../post/post.module';
 import UserModule from '../user/user.module';
 import CommentService from './comment.service';
+import CommentController from './comment.controller';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import CommentService from './comment.service';
     UserModule,
   ],
   providers: [CommentService],
+  controllers: [CommentController],
 })
 class CommentModule {}
 
