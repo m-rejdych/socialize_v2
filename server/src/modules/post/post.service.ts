@@ -11,6 +11,7 @@ import CreatePostDto from './dto/createPost.dto';
 import UpdatePostDto from './dto/updatePost.dto';
 import DeletePostResponseDto from './dto/deletePostResponse.dto';
 import AddPostReactionDto from './dto/addPostReaction.dto';
+import DeleteByPostAndUserIdsResponseDto from '../postReaction/dto/deleteByPostAndUserIdsResponse.dto';
 import UserService from '../user/user.service';
 import PostReactionService from '../postReaction/postReaction.service';
 
@@ -117,6 +118,16 @@ class PostService {
     await this.postRepository.save(post);
 
     return post;
+  }
+
+  async deletePostReaction(
+    userId: number,
+    postId: number,
+  ): Promise<DeleteByPostAndUserIdsResponseDto> {
+    return await this.postReactionService.deleteByPostAndUserIds(
+      userId,
+      postId,
+    );
   }
 }
 

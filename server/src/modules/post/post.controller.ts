@@ -20,6 +20,7 @@ import CreatePostDto from './dto/createPost.dto';
 import UpdatePostDto from './dto/updatePost.dto';
 import AddPostReactionDto from './dto/addPostReaction.dto';
 import DeletePostResponseDto from './dto/deletePostResponse.dto';
+import DeleteByPostAndUserIdsResponseDto from '../postReaction/dto/deleteByPostAndUserIdsResponse.dto';
 import PostEntity from './post.entity';
 
 @Controller('post')
@@ -79,6 +80,17 @@ class PostController {
     const { id } = req.user;
 
     return await this.postService.addPostReaction(id, data);
+  }
+
+  @UseGuards(JwtGuard)
+  @Delete('delete-reaction')
+  async deleteReaction(
+    @Query('postId', ParseIntPipe) postId: number,
+    @Req() req: JwtRequest,
+  ): Promise<DeleteByPostAndUserIdsResponseDto> {
+    const { id } = req.user;
+
+    return await this.postService.deletePostReaction(id, postId);
   }
 }
 

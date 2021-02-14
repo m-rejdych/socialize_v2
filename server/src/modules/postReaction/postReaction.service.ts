@@ -83,10 +83,10 @@ class PostReactionService {
     postId: number,
   ): Promise<DeleteByPostAndUserIdsResponseDto> {
     const postReaction = await this.findByUserAndPostIds(userId, postId);
-    const reactionId = postReaction.id;
     if (!postReaction) {
       throw new BadRequestException('Post reaction not found!');
     }
+    const reactionId = postReaction.id;
 
     await this.postReactionRepository.remove(postReaction);
 
