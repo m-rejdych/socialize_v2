@@ -1,4 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import ReactionName from './types/reactionName.type';
 
 @Entity()
 class ReactionType {
@@ -6,7 +7,7 @@ class ReactionType {
   id: number;
 
   @Column()
-  name: string;
+  name: ReactionName;
 }
 
 export default ReactionType;

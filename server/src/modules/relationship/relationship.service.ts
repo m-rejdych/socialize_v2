@@ -11,7 +11,9 @@ class RelationshipService {
     private relationshipRepository: Repository<Relationship>,
   ) {}
 
-  async findOneByName(name: string): Promise<Relationship> {
+  async findOneByName(
+    name: 'Single' | 'In relationship' | 'Married' | 'Divorced',
+  ): Promise<Relationship> {
     const relationship = await this.relationshipRepository.findOne({
       where: { name },
     });
