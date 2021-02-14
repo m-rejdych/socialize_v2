@@ -43,6 +43,7 @@ class PostService {
       ...data,
       author: user,
     });
+    await this.postRepository.save(post);
 
     return post;
   }
