@@ -11,7 +11,6 @@ import ReactionTypeService from '../reactionType/reactionType.service';
 import UserService from '../user/user.service';
 import ReactionName from '../reactionType/types/reactionName.type';
 import DeleteCommentReactionResponseDto from './dto/deleteCommentReactionResponse.dto';
-import UpdateCommentReactionDto from './dto/updateCommentReaction.dto';
 
 @Injectable()
 class CommentReacitonService {
@@ -66,7 +65,8 @@ class CommentReacitonService {
 
   async updateCommentReaction(
     userId: number,
-    { reactionId, reactionName }: UpdateCommentReactionDto,
+    reactionId: number,
+    reactionName: ReactionName,
   ): Promise<CommentReaction> {
     const commentReaction = await this.findById(reactionId);
     if (!commentReaction) {
@@ -110,7 +110,7 @@ class CommentReacitonService {
     };
   }
 
-  async deleteByUserAndCommenIds(
+  async deleteByUserAndCommentIds(
     userId: number,
     commentId: number,
   ): Promise<DeleteCommentReactionResponseDto> {

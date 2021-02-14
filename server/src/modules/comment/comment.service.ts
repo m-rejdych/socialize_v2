@@ -9,9 +9,12 @@ import { Repository } from 'typeorm';
 import Comment from './comment.entity';
 import CreateCommentDto from './dto/createComment.dto';
 import DeleteCommentResponseDto from './dto/deleteCommentResponse.dto';
+import DeleteCommentReactionResponseDto from '../commentReaction/dto/deleteCommentReactionResponse.dto';
 import UpdateCommentDto from './dto/updateComment.dto';
+import AddCommentReactionDto from './dto/addCommentReaction.dto';
 import PostService from '../post/post.service';
 import UserService from '../user/user.service';
+import CommentReacitonService from '../commentReaction/commentReaction.service';
 
 @Injectable()
 class CommentService {
@@ -19,6 +22,7 @@ class CommentService {
     @InjectRepository(Comment) private commentRepository: Repository<Comment>,
     private postService: PostService,
     private userService: UserService,
+    private commentReactionService: CommentReacitonService,
   ) {}
 
   async findById(commentId: number): Promise<Comment | null> {
@@ -91,6 +95,52 @@ class CommentService {
       authorId: userId,
       deleted: true,
     };
+  }
+
+  async addCommentReaction(
+    userId: number,
+    { commentId, reactionName }: AddCommentReactionDto,
+  ): Promise<Comment> {
+    const comment = await this.findById(commentId);
+    if (!comment) throw new NotFoundException('Comment not found!');
+
+    const foundCommentReaction = await this.commentReactionService.findByUserAndCommentIds(
+      userId,
+      commentId,
+    );
+
+    if (foundCommentReaction) {
+      const updatedCommentReaction = await this.commentReactionService.updateCommentReaction(
+        userId,
+        foundCommentReaction.id,
+        reactionName,
+      );
+      comment.reactions = comment.reactions.map((reaction) =>
+        reaction.id === updatedCommentReaction.id
+          ? updatedCommentReaction
+          : reaction,
+      );
+    } else {
+      const commentReaction = await this.commentReactionService.createCommentReaction(
+        userId,
+        reactionName,
+      );
+      comment.reactions = [...comment.reactions, commentReaction];
+    }
+
+    await this.commentRepository.save(comment);
+
+    return comment;
+  }
+
+  async deleteCommentReaction(
+    userId: number,
+    commentId: number,
+  ): Promise<DeleteCommentReactionResponseDto> {
+    return await this.commentReactionService.deleteByUserAndCommentIds(
+      userId,
+      commentId,
+    );
   }
 }
 

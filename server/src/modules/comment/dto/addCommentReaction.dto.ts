@@ -3,12 +3,12 @@ import { IsInt, IsIn } from 'class-validator';
 import ReactionName from '../../reactionType/types/reactionName.type';
 import reactionNames from '../../reactionType/constants/reactionNames.constant';
 
-class UpdateCommentReactionDto {
+class AddCommentReactionDto {
   @IsInt()
-  reactionId: number;
+  commentId: number;
 
   @IsIn(reactionNames)
   reactionName: ReactionName;
 }
 
-export default UpdateCommentReactionDto;
+export default AddCommentReactionDto;
