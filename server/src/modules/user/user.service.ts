@@ -22,6 +22,12 @@ class UserService {
     return user || null;
   }
 
+  async findByIds(ids: number[]): Promise<User[]> {
+    const users = await this.userRepository.findByIds(ids);
+
+    return users;
+  }
+
   async findByEmail(
     email: string,
     options?: FindByEmailOptions,
