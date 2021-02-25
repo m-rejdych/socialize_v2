@@ -17,6 +17,7 @@ import Friendship from './friendship.entity';
 import FriendshipService from './frienship.service';
 import CreateFriendshipDto from './dto/createFriendship.dto';
 import DeleteFriendshipReponseDto from './dto/deleteFriendshipResponse.dto';
+import CreateFriendshipResponseDto from './dto/createFriendshipResponse.dto';
 
 @Controller('friendship')
 class FriendshipController {
@@ -49,7 +50,7 @@ class FriendshipController {
   async acceptFriendship(
     @Body() { friendId }: CreateFriendshipDto,
     @Req() req: JwtRequest,
-  ): Promise<Friendship> {
+  ): Promise<CreateFriendshipResponseDto> {
     const { id } = req.user;
 
     return await this.friendshipService.acceptFriendship(id, friendId);

@@ -9,7 +9,9 @@ import { Repository } from 'typeorm';
 import Friendship from './friendship.entity';
 import FindOneOptions from './interfaces/findOneOptions.interface';
 import UserService from '../user/user.service';
+import ChatService from '../chat/chat.service';
 import DeleteFriendshipReponseDto from './dto/deleteFriendshipResponse.dto';
+import CreateFriendshipResponseDto from './dto/createFriendshipResponse.dto';
 
 @Injectable()
 class FriendshipService {
@@ -17,6 +19,7 @@ class FriendshipService {
     @InjectRepository(Friendship)
     private friendshipRepository: Repository<Friendship>,
     private userService: UserService,
+    private chatService: ChatService,
   ) {}
 
   async findOne(
@@ -53,12 +56,14 @@ class FriendshipService {
         .createQueryBuilder('friendship')
         .leftJoinAndSelect('friendship.requestedBy', 'requestedBy')
         .leftJoinAndSelect('friendship.addressedTo', 'addressedTo')
-        .where('requestedBy.id = :userId OR addressedTo.id = :userId', {
+        .where('requestedBy.id = :userId', {
           userId,
         })
-        .andWhere('requestedBy.id = :friendId OR addressedTo.id = :friendId', {
+        .andWhere('addressedTo.id = :friendId', {
           friendId,
         })
+        .orWhere('addressedTo.id = :userId', { userId })
+        .andWhere('requestedBy.id = :friendId', { friendId })
         .getOne();
     }
 
@@ -98,7 +103,7 @@ class FriendshipService {
   async acceptFriendship(
     userId: number,
     friendId: number,
-  ): Promise<Friendship> {
+  ): Promise<CreateFriendshipResponseDto> {
     if (userId === friendId) {
       throw new BadRequestException(
         'User id and friend id can not be the same!',
@@ -119,7 +124,19 @@ class FriendshipService {
     friendship.isAccpted = true;
     this.friendshipRepository.save(friendship);
 
-    return friendship;
+    let chat = await this.chatService.findFriendChatByIds([userId, friendId]);
+
+    if (!chat) {
+      chat = await this.chatService.createChat({
+        type: 'friend',
+        membersIds: [userId, friendId],
+      });
+    }
+
+    return {
+      friendship,
+      chat,
+    };
   }
 
   async deleteFriendship(

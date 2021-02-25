@@ -1,4 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import ChatName from './types/chatName.type';
 
 @Entity()
 class ChatType {
@@ -6,7 +7,7 @@ class ChatType {
   id: number;
 
   @Column()
-  name: string;
+  name: ChatName;
 }
 
 export default ChatType;
