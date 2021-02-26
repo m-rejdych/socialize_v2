@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -6,6 +10,7 @@ import Chat from './chat.entity';
 import CreateChatDto from './dto/createChat.dto';
 import UserService from '../user/user.service';
 import ChatTypeService from '../chatType/chatType.service';
+import FindOptions from './interfaces/findOptions.interface';
 
 @Injectable()
 class ChatService {
@@ -15,10 +20,27 @@ class ChatService {
     private chatTypeService: ChatTypeService,
   ) {}
 
-  async findById(id: number): Promise<Chat | null> {
-    const chat = await this.chatRepository.findOne(id);
+  async findById(id: number, options?: FindOptions): Promise<Chat | null> {
+    const chat = await this.chatRepository.findOne(id, options);
 
     return chat || null;
+  }
+
+  async validateMembership(chatId: number, userId: number): Promise<boolean> {
+    const chat = await this.findById(chatId, { relations: ['members'] });
+    if (!chat) throw new NotFoundException('Chat not found!');
+
+    return chat.members.some(({ id }) => id === userId);
+  }
+
+  async findByUserId(userId: number): Promise<Chat[] | null> {
+    const chats = await this.chatRepository
+      .createQueryBuilder('chat')
+      .leftJoin('chat.members', 'members')
+      .where(':userId IN (members.id)', { userId })
+      .getMany();
+
+    return chats?.length ? chats : null;
   }
 
   async findFriendChatByIds(ids: [number, number]): Promise<Chat | null> {

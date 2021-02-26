@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { hash } from 'bcryptjs';
 
 import User from './user.entity';
-import FindByEmailOptions from './interfaces/findByEmailOptions.interface';
+import FindOptions from './interfaces/findOptions.interface';
 import UserInfoService from '../userInfo/userInfo.service';
 import RegisterDto from '../auth/dto/register.dto';
 
@@ -16,8 +16,10 @@ class UserService {
     private userInfoService: UserInfoService,
   ) {}
 
-  async findById(id: number): Promise<User | null> {
-    const user = await this.userRepository.findOne(id);
+  async findById(id: number, options?: FindOptions): Promise<User | null> {
+    const user = await this.userRepository.findOne(id, {
+      relations: options?.relations || [],
+    });
 
     return user || null;
   }
@@ -30,7 +32,7 @@ class UserService {
 
   async findByEmail(
     email: string,
-    options?: FindByEmailOptions,
+    options?: FindOptions,
   ): Promise<User | null> {
     let user: User | undefined;
 
