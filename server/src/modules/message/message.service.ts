@@ -1,6 +1,6 @@
 import {
   Injectable,
-  BadRequestException,
+  ForbiddenException,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -25,7 +25,7 @@ class MessageService {
   ): Promise<Message> {
     const isValid = await this.chatService.validateMembership(chatId, userId);
     if (!isValid) {
-      throw new BadRequestException('You are not a mamber of the chat!');
+      throw new ForbiddenException('You are not a member of the chat!');
     }
 
     const chat = await this.chatService.findById(chatId);

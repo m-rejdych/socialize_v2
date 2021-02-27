@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import Message from './message.entity';
 import MessageService from './message.service';
+import MessageController from './message.controller';
 import MessageReaction from '../messageReaction/messageReaction.entity';
 import Chat from '../chat/chat.entity';
 import User from '../user/user.entity';
@@ -16,6 +17,7 @@ import ChatModule from '../chat/chat.module';
     ChatModule,
   ],
   providers: [MessageService],
+  controllers: [MessageController],
 })
 class MessageModule {}
 
