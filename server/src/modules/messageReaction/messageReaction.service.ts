@@ -74,15 +74,15 @@ class MessageReactionService {
     reactionId: number,
     reactionName: ReactionName,
   ): Promise<MessageReaction> {
-    const messageReaction = await this.findById(reactionId);
+    const messageReaction = await this.findById(reactionId, {
+      relations: ['user'],
+    });
     if (!messageReaction) throw new NotFoundException('Reaction not found!');
     if (messageReaction.user.id !== userId) {
       throw new ForbiddenException('You can update only your own reactions!');
     }
 
-    const user = await this.userService.findById(userId, {
-      relations: ['user'],
-    });
+    const user = await this.userService.findById(userId);
     if (!user) throw new NotFoundException('User not found!');
 
     const reactionType = await this.reactionTypeService.findOneByName(

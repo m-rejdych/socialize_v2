@@ -14,7 +14,6 @@ import AddMessageReactionDto from './dto/addMessageReaction.dto';
 import CreateMessageDto from './dto/createMessage.dto';
 import DeleteReactionResponseDto from '../messageReaction/dto/deleteReaction.dto';
 import FindOptions from './interface/findOptions.interface';
-import DeleteReactionDto from '../messageReaction/dto/deleteReaction.dto';
 
 @Injectable()
 class MessageService {
@@ -60,10 +59,20 @@ class MessageService {
     { messageId, reactionName }: AddMessageReactionDto,
   ): Promise<Message> {
     const message = await this.findById(messageId, {
-      relations: ['reactions'],
+      relations: ['reactions', 'chat'],
     });
     if (!message) {
       throw new NotFoundException('Message not found!');
+    }
+
+    const isValid = await this.chatService.validateMembership(
+      message.chat.id,
+      userId,
+    );
+    if (!isValid) {
+      throw new ForbiddenException(
+        'You can react only to messages in chats that you are member of!',
+      );
     }
 
     const foundReaction = await this.messageReactionService.findByUserAndMessageIds(
@@ -99,6 +108,19 @@ class MessageService {
     userId: number,
     messageId: number,
   ): Promise<DeleteReactionResponseDto> {
+    const message = await this.findById(messageId, { relations: ['chat'] });
+    if (!message) throw new NotFoundException('Message not found!');
+
+    const isValid = await this.chatService.validateMembership(
+      message.chat.id,
+      userId,
+    );
+    if (!isValid) {
+      throw new ForbiddenException(
+        'You can delete message reactions only in chats, that you are membere of!',
+      );
+    }
+
     return await this.messageReactionService.deleteByUserAndMessageIds(
       userId,
       messageId,

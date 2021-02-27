@@ -35,7 +35,12 @@ class ChatController {
     }
 
     return await this.chatService.findById(id, {
-      relations: ['members'],
+      relations: [
+        'members',
+        'messages',
+        'messages.reactions',
+        'messages.reactions.type',
+      ],
     });
   }
 
