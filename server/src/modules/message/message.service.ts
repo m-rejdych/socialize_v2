@@ -10,6 +10,7 @@ import Message from './message.entity';
 import ChatService from '../chat/chat.service';
 import UserService from '../user/user.service';
 import CreateMessageDto from './dto/createMessage.dto';
+import FindOptions from './interface/findOptions.interface';
 
 @Injectable()
 class MessageService {
@@ -18,6 +19,12 @@ class MessageService {
     private userService: UserService,
     private chatService: ChatService,
   ) {}
+
+  async findById(id: number, options?: FindOptions): Promise<Message | null> {
+    const message = await this.messageRepository.findOne(id, options);
+
+    return message || null;
+  }
 
   async createMessage(
     userId: number,
@@ -42,6 +49,8 @@ class MessageService {
 
     return message;
   }
+
+  async addMessageReaction() {}
 }
 
 export default MessageService;
