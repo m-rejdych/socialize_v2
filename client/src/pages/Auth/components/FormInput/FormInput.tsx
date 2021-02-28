@@ -5,6 +5,9 @@ const useStyles = makeStyles((theme) => ({
   input: {
     minHeight: 100,
   },
+  helperText: {
+    fontWeight: 600,
+  },
 }));
 
 interface Props {
@@ -27,6 +30,9 @@ const FormInput: React.FC<Props> = ({ label, ...props }) => {
       error={!!(meta.touched && meta.error)}
       helperText={meta.touched && meta.error}
       className={classes.input}
+      FormHelperTextProps={{
+        className: classes.helperText,
+      }}
       {...field}
     />
   );
