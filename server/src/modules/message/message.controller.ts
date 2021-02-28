@@ -17,6 +17,7 @@ import Message from './message.entity';
 import CreateMessageDto from './dto/createMessage.dto';
 import AddMessageReactionDto from './dto/addMessageReaction.dto';
 import DeleteReactionResponseDto from '../messageReaction/dto/deleteReaction.dto';
+import MarkAsSeenDto from './dto/markAsSeen.dto';
 
 @Controller('message')
 class MessageController {
@@ -31,6 +32,17 @@ class MessageController {
     const { id } = req.user;
 
     return await this.messageService.createMessage(id, data);
+  }
+
+  @UseGuards(JwtGuard)
+  @Put('mark-as-seen')
+  async markAsSeen(
+    @Body() { messageId }: MarkAsSeenDto,
+    @Req() req: JwtRequest,
+  ): Promise<Message> {
+    const { id } = req.user;
+
+    return await this.messageService.markAsSeen(id, messageId);
   }
 
   @UseGuards(JwtGuard)

@@ -6,6 +6,8 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 
 import Chat from '../chat/chat.entity';
@@ -44,6 +46,10 @@ class Message {
     { cascade: ['insert', 'update'], nullable: true },
   )
   reactions?: MessageReaction[];
+
+  @ManyToMany(() => User, { cascade: true, onDelete: 'CASCADE' })
+  @JoinTable()
+  seenBy: User[];
 }
 
 export default Message;

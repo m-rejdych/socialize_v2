@@ -34,12 +34,14 @@ class ChatController {
       throw new ForbiddenException('You are not a member of the chat!');
     }
 
+    // DELETE RELATIONS OTHER THAN MEMBERS LATER
     return await this.chatService.findById(id, {
       relations: [
         'members',
         'messages',
         'messages.reactions',
         'messages.reactions.type',
+        'messages.seenBy',
       ],
     });
   }

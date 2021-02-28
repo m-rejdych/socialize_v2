@@ -2,6 +2,7 @@ import {
   Injectable,
   ForbiddenException,
   NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -48,7 +49,33 @@ class MessageService {
       author,
       chat,
       content,
+      seenBy: [author],
     });
+    await this.messageRepository.save(message);
+
+    return message;
+  }
+
+  async markAsSeen(userId: number, messageId: number): Promise<Message> {
+    const message = await this.findById(messageId, {
+      relations: ['chat', 'chat.members', 'seenBy'],
+    });
+    if (!message) throw new NotFoundException('Message not found!');
+    if (!message.chat.members.some(({ id }) => id === userId)) {
+      throw new ForbiddenException(
+        'You can mark as seen messages only of chats that you are member of!',
+      );
+    }
+    if (message.seenBy.some(({ id }) => id === userId)) {
+      throw new BadRequestException(
+        'This message is already marked as seen by you!',
+      );
+    }
+
+    const user = await this.userService.findById(userId);
+    if (!user) throw new NotFoundException('User not found!');
+
+    message.seenBy = [...message.seenBy, user];
     await this.messageRepository.save(message);
 
     return message;
