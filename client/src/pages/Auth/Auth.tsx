@@ -1,11 +1,11 @@
-import { Box, makeStyles } from '@material-ui/core';
+import { Box, makeStyles, CardHeader } from '@material-ui/core';
 
 import Card from '../../shared/components/Card';
+import AuthForm from './components/AuthForm';
 
 const useStyles = makeStyles((theme) => ({
   card: {
-    width: 300,
-    height: 600,
+    width: 400,
   },
 }));
 
@@ -19,7 +19,10 @@ const Auth: React.FC = () => {
       alignItems="center"
       justifyContent="center"
     >
-      <Card className={classes.card}>Hi</Card>
+      <Card className={classes.card}>
+        <CardHeader title="LOG IN" />
+        <AuthForm />
+      </Card>
     </Box>
   );
 };
