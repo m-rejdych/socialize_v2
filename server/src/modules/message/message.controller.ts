@@ -18,6 +18,8 @@ import CreateMessageDto from './dto/createMessage.dto';
 import AddMessageReactionDto from './dto/addMessageReaction.dto';
 import DeleteReactionResponseDto from '../messageReaction/dto/deleteReaction.dto';
 import MarkAsSeenDto from './dto/markAsSeen.dto';
+import MarkAllAsSeenDto from './dto/markAllAsSeen.dto';
+import MarkAllAsSeenResponseDto from './dto/markAllAsSeenResponse.dto';
 
 @Controller('message')
 class MessageController {
@@ -43,6 +45,17 @@ class MessageController {
     const { id } = req.user;
 
     return await this.messageService.markAsSeen(id, messageId);
+  }
+
+  @UseGuards(JwtGuard)
+  @Put('mark-all-as-seen')
+  async markAllAsSeen(
+    @Body() { chatId }: MarkAllAsSeenDto,
+    @Req() req: JwtRequest,
+  ): Promise<MarkAllAsSeenResponseDto> {
+    const { id } = req.user;
+
+    return await this.messageService.markAllAsSeen(id, chatId);
   }
 
   @UseGuards(JwtGuard)

@@ -14,6 +14,7 @@ import MessageReactionService from '../messageReaction/messageReaction.service';
 import AddMessageReactionDto from './dto/addMessageReaction.dto';
 import CreateMessageDto from './dto/createMessage.dto';
 import DeleteReactionResponseDto from '../messageReaction/dto/deleteReaction.dto';
+import MarkAllAsSeenResponseDto from './dto/markAllAsSeenResponse.dto';
 import FindOptions from './interface/findOptions.interface';
 
 @Injectable()
@@ -61,11 +62,17 @@ class MessageService {
       relations: ['chat', 'chat.members', 'seenBy'],
     });
     if (!message) throw new NotFoundException('Message not found!');
-    if (!message.chat.members.some(({ id }) => id === userId)) {
+
+    const isValid = await this.chatService.validateMembership(
+      message.chat.id,
+      userId,
+    );
+    if (!isValid) {
       throw new ForbiddenException(
         'You can mark as seen messages only of chats that you are member of!',
       );
     }
+
     if (message.seenBy.some(({ id }) => id === userId)) {
       throw new BadRequestException(
         'This message is already marked as seen by you!',
@@ -79,6 +86,43 @@ class MessageService {
     await this.messageRepository.save(message);
 
     return message;
+  }
+
+  async markAllAsSeen(
+    userId: number,
+    chatId: number,
+  ): Promise<MarkAllAsSeenResponseDto> {
+    const isValid = await this.chatService.validateMembership(chatId, userId);
+    if (!isValid) {
+      throw new ForbiddenException(
+        'You can mark as seen messages only of chats that you are member of!',
+      );
+    }
+
+    const messages = await this.messageRepository
+      .createQueryBuilder('message')
+      .leftJoinAndSelect('message.chat', 'chat')
+      .leftJoinAndSelect('message.seenBy', 'seenBy')
+      .where('chat.id = :chatId', { chatId })
+      .andWhere(':userId NOT IN (seenBy.id)', { userId })
+      .getMany();
+    console.log(messages);
+    if (!messages) throw new NotFoundException('Messages not found!');
+
+    const user = await this.userService.findById(userId);
+    if (!user) throw new NotFoundException('User not found!');
+
+    const promises = [];
+    messages.forEach((message) => {
+      message.seenBy = [...message.seenBy, user];
+      promises.push(this.messageRepository.save(message));
+    });
+    await Promise.all(promises);
+
+    return {
+      chatId,
+      messages,
+    };
   }
 
   async addMessageReaction(
