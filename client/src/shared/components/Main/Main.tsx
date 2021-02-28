@@ -1,41 +1,101 @@
+import { useRef, useEffect } from 'react';
 import { Paper, makeStyles, Box } from '@material-ui/core';
 import classNames from 'classnames';
+import gsap from 'gsap';
 
-import { ReactComponent as MainWave1 } from '../../../assets/Main-wave-1.svg';
-import { ReactComponent as MainWave2 } from '../../../assets/Main-wave-2.svg';
+import { ReactComponent as StarSecondaryOutlined } from '../../../assets/star-secondary-outlined.svg';
 
 const useStyles = makeStyles((theme) => ({
   container: {
     height: '100%',
     background:
-      'linear-gradient(to right bottom, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.2))',
+      'linear-gradient(to right bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.05))',
     borderRadius: 30,
     overflow: 'hidden',
-    backdropFilter: 'blur(30px)',
+    backdropFilter: 'blur(10px)',
   },
-  wave: {
+  absolute: {
     position: 'absolute',
-    top: 0,
-    height: '100%',
-    width: '20%',
-    zIndex: -1,
   },
-  left0: {
-    left: 0,
+  topLeft: {
+    top: '10%',
+    left: '30%',
   },
-  right0: {
-    right: 0,
+  topRight: {
+    top: -100,
+    right: -100,
+    width: 500,
+    height: 500,
+  },
+  bottomRight: {
+    bottom: '5%',
+    right: '10%',
+    width: 100,
+  },
+  bottomLeft: {
+    width: 400,
+    height: 400,
+    bottom: -100,
+    left: -100,
   },
 }));
 
-const Main: React.FC = () => {
+const Main: React.FC = ({ children }) => {
   const classes = useStyles();
+  const firstStarRef = useRef(null);
+  const secondStarRef = useRef(null);
+  const thirdStarRef = useRef(null);
+  const fourthStarRef = useRef(null);
+
+  useEffect(() => {
+    if (
+      firstStarRef.current &&
+      secondStarRef.current &&
+      thirdStarRef.current &&
+      fourthStarRef.current
+    ) {
+      gsap.fromTo(
+        [firstStarRef.current, fourthStarRef.current],
+        { opacity: 0.7 },
+        {
+          rotation: 360,
+          duration: 360,
+          repeat: -1,
+          yoyo: true,
+        },
+      );
+
+      gsap.to([secondStarRef.current, thirdStarRef.current], {
+        rotation: -360,
+        duration: 300,
+        repeat: -1,
+        yoyo: true,
+        opacity: 0.7,
+      });
+    }
+  }, []);
 
   return (
     <Box position="relative" borderRadius={30} height="100%" overflow="hidden">
-      <MainWave1 className={classNames(classes.wave, classes.left0)} />
-      <MainWave2 className={classNames(classes.wave, classes.right0)} />
-      <Paper elevation={3} className={classes.container}></Paper>
+      <StarSecondaryOutlined
+        ref={firstStarRef}
+        className={classNames(classes.absolute, classes.topLeft)}
+      />
+      <StarSecondaryOutlined
+        ref={secondStarRef}
+        className={classNames(classes.absolute, classes.topRight)}
+      />
+      <StarSecondaryOutlined
+        ref={thirdStarRef}
+        className={classNames(classes.absolute, classes.bottomRight)}
+      />
+      <StarSecondaryOutlined
+        ref={fourthStarRef}
+        className={classNames(classes.absolute, classes.bottomLeft)}
+      />
+      <Paper elevation={3} className={classes.container}>
+        {children}
+      </Paper>
     </Box>
   );
 };
