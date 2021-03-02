@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
   link: {
     cursor: 'pointer',
+    fontWeight: 700,
     '&:hover': {
       textDecoration: 'underline',
     },

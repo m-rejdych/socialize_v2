@@ -3,10 +3,14 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 
 import Main from './shared/components/Main';
 import Auth from './pages/Auth';
+import Background from './assets/background-3.jpg';
 
 const useStyles = makeStyles((theme) => ({
   background: {
-    background: 'linear-gradient(to right bottom, #A31545, #303030 80%)',
+    backgroundImage: `url(${Background})`,
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+    backgroundColor: 'black',
   },
 }));
 

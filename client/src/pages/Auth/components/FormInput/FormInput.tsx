@@ -25,7 +25,6 @@ const FormInput: React.FC<Props> = ({ label, ...props }) => {
     <TextField
       fullWidth
       variant="outlined"
-      color="secondary"
       label={label}
       error={!!(meta.touched && meta.error)}
       helperText={meta.touched && meta.error}
