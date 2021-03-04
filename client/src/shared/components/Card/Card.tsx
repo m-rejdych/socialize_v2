@@ -6,7 +6,6 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 20,
     background:
       'linear-gradient(to right bottom, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.1))',
-    border: '2px solid rgba(255, 255, 255, 0.85)',
     backgroundClip: 'padding-box',
     backdropFilter: 'blur(10px)',
   },
