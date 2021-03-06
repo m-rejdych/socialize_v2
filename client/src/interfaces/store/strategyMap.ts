@@ -1,6 +1,10 @@
 import { ActionObject } from './action';
 
-export default interface StrategyMap<T> {
-  [key: string]: <U, V>(state: T, action: ActionObject<U, V>) => T;
-  __default__: (state: T) => T;
-}
+type ValueOf<T> = T[keyof T];
+
+type StrategyMap<T, U extends { [key: string]: string }> = Record<
+  ValueOf<U>,
+  (state: T, action: ActionObject<any, any>) => T
+>;
+
+export default StrategyMap;

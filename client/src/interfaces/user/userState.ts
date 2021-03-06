@@ -3,5 +3,6 @@ export default interface UserState {
   email: string;
   firstName: string;
   lastName: string;
+  loading: boolean;
   error: string | null;
 }

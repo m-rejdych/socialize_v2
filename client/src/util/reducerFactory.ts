@@ -1,12 +1,6 @@
-import { ActionObject } from '../interfaces/store/action';
-import StrategyMap from '../interfaces/store/strategyMap';
-
-const createReducer = <T>(strategyMap: StrategyMap<T>, initialState: T) => <
-  U,
-  V
->(
+const createReducer = (strategyMap, initialState) => (
   state = initialState,
-  action: ActionObject<U, V>,
+  action,
 ) => {
   if (strategyMap[action.type]) return strategyMap[action.type](state, action);
   return strategyMap.__default__(state);
