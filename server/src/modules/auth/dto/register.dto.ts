@@ -6,7 +6,7 @@ class RegisterDto {
 
   @Matches(/^(?=.*\d).{4,8}$/, {
     message:
-      'Passoword must be between 4 and 8 characters and contain letters and numbers!',
+      'Passoword must be between 4 and 8 characters long and contain letters and numbers!',
   })
   password: string;
 
