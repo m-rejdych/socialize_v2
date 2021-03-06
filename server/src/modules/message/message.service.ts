@@ -106,7 +106,6 @@ class MessageService {
       .where('chat.id = :chatId', { chatId })
       .andWhere(':userId NOT IN (seenBy.id)', { userId })
       .getMany();
-    console.log(messages);
     if (!messages) throw new NotFoundException('Messages not found!');
 
     const user = await this.userService.findById(userId);

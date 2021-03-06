@@ -1,4 +1,5 @@
 import { Formik, Form } from 'formik';
+import { useDispatch } from 'react-redux';
 import {
   CardContent,
   CardActions,
@@ -11,6 +12,7 @@ import { useLocation, useHistory } from 'react-router-dom';
 
 import FormInput from '../FormInput';
 import ROUTES from '../../../../shared/constants/routes';
+import { register, login } from '../../../../store/actions/authActions';
 
 const useStyles = makeStyles((theme) => ({
   paddingTopZero: {
@@ -32,10 +34,21 @@ interface Field {
   validate: (value: string) => string | undefined;
 }
 
+interface LoginValues {
+  email: string;
+  password: string;
+}
+
+interface RegisterValues extends LoginValues {
+  firstName: string;
+  lastName: string;
+}
+
 const AuthForm: React.FC = () => {
   const classes = useStyles();
   const { pathname } = useLocation();
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const isLogin = pathname === ROUTES.LOGIN;
 
@@ -123,9 +136,17 @@ const AuthForm: React.FC = () => {
     history.push(isLogin ? ROUTES.REGISTER : ROUTES.LOGIN);
   };
 
+  const handleSubmit = (values: LoginValues | RegisterValues): void => {
+    dispatch(
+      isLogin
+        ? login(values as LoginValues)
+        : register(values as RegisterValues),
+    );
+  };
+
   return (
     <Formik
-      onSubmit={() => {}}
+      onSubmit={handleSubmit}
       initialValues={initialValues}
       enableReinitialize
     >

@@ -30,13 +30,11 @@ class UserInfoService {
   }
 
   async findOneByUserId(userId: number): Promise<UserInfo> {
-    console.log(userId);
     const userInfo = await this.userInfoRepository
       .createQueryBuilder('userInfo')
       .leftJoinAndSelect('userInfo.user', 'user')
       .where('user.id = :userId', { userId })
       .getOne();
-    console.log(userInfo);
 
     if (!userInfo) throw new NotFoundException('User info not found!');
 

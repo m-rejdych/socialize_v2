@@ -37,10 +37,10 @@ class User {
   @Column()
   lastName: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ select: false })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ select: false })
   updatedAt: Date;
 
   @OneToOne(() => UserInfo, (userInfo) => userInfo.user, {

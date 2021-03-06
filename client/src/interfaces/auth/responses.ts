@@ -1,4 +1,6 @@
 export interface AuthResponse {
-  userId: number;
-  token: string;
+  data?: {
+    userId: number;
+    token: string;
+  };
 }
