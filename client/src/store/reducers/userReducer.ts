@@ -18,7 +18,10 @@ const strategyMap: StrategyMap<UserState, typeof AUTH> = {
   [AUTH.LOGIN]: loginTransformer,
 };
 
-const userReducer = createReducer(strategyMap, initialState);
+const userReducer = createReducer<UserState, typeof AUTH>(
+  strategyMap,
+  initialState,
+);
 
 function registerTransformer(state: UserState, _: ReturnType<RegisterAction>) {
   return { ...state, loading: true };
