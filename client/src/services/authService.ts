@@ -4,8 +4,8 @@ import { API_URI } from '../config';
 import {
   LoginReqInterface,
   RegisterReqInterface,
-} from '../interfaces/auth/requests';
-import { AuthResponse } from '../interfaces/auth/responses';
+} from '../interfaces/auth/authReq';
+import { AuthResponse } from '../interfaces/auth/authRes';
 
 export const register = (data: RegisterReqInterface): Promise<AuthResponse> =>
   axios.post(`${API_URI}/auth/register`, data);

@@ -5,7 +5,7 @@ import { setUserError, getUserSuccess } from '../actions/userActions';
 import { getUser, getMe } from '../../services/userService';
 import { register, login } from '../../services/authService';
 import { RegisterAction, LoginAction } from '../../interfaces/auth/authActions';
-import { AuthResponse } from '../../interfaces/auth/responses';
+import { AuthResponse } from '../../interfaces/auth/authRes';
 import { GetUserRes } from '../../interfaces/user/userRes';
 
 function* handleRegister({ payload }: ReturnType<RegisterAction>) {
