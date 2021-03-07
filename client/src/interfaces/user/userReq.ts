@@ -1,4 +1,3 @@
 export interface GetUserReq {
-  userId?: number;
-  token: string;
+  userId: number;
 }

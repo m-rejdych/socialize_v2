@@ -2,7 +2,7 @@ import { put, call, takeEvery } from 'redux-saga/effects';
 
 import { AUTH } from '../../shared/constants/actionTypes';
 import { setUserError, getUserSuccess } from '../actions/userActions';
-import { getUser } from '../../services/userService';
+import { getUser, getMe } from '../../services/userService';
 import { register, login } from '../../services/authService';
 import { RegisterAction, LoginAction } from '../../interfaces/auth/authActions';
 import { AuthResponse } from '../../interfaces/auth/responses';
@@ -18,10 +18,10 @@ function* handleRegister({ payload }: ReturnType<RegisterAction>) {
       localStorage.setItem('token', token);
       localStorage.setItem(
         'expiresIn',
-        new Date(Date.now()).setHours(new Date().getHours() + 1).toString(),
+        new Date().setHours(new Date().getHours() + 1).toString(),
       );
 
-      const userResponse: GetUserRes = yield call(getUser, { userId, token });
+      const userResponse: GetUserRes = yield call(getUser, { userId });
 
       if (userResponse.data) {
         yield put(getUserSuccess(userResponse.data));
@@ -42,13 +42,42 @@ function* handleLogin({ payload }: ReturnType<LoginAction>) {
       localStorage.setItem('token', token);
       localStorage.setItem(
         'expiresIn',
-        new Date(Date.now()).setHours(new Date().getHours() + 1).toString(),
+        new Date().setHours(new Date().getHours() + 1).toString(),
       );
 
-      const userResponse: GetUserRes = yield call(getUser, { userId, token });
+      const userResponse: GetUserRes = yield call(getUser, { userId });
 
       if (userResponse.data) {
         yield put(getUserSuccess(userResponse.data));
+      }
+    }
+  } catch (error) {
+    yield put(setUserError(error.response.data.message));
+  }
+}
+
+function* handleAutoLogin() {
+  try {
+    const token = localStorage.getItem('token');
+    const expiresIn = localStorage.getItem('expiresIn');
+
+    if (!token || !expiresIn) {
+      localStorage.clear();
+      yield put(
+        getUserSuccess({ email: '', lastName: '', firstName: '', id: 0 }),
+      );
+    } else {
+      if (Number(expiresIn) < Date.now()) {
+        localStorage.clear();
+        yield put(
+          getUserSuccess({ email: '', lastName: '', firstName: '', id: 0 }),
+        );
+      } else {
+        const response: GetUserRes = yield call(getMe);
+
+        if (response.data) {
+          yield put(getUserSuccess(response.data));
+        }
       }
     }
   } catch (error) {
@@ -62,4 +91,8 @@ export function* registerSaga() {
 
 export function* loginSaga() {
   yield takeEvery(AUTH.LOGIN, handleLogin);
+}
+
+export function* autoLoginSaga() {
+  yield takeEvery(AUTH.AUTO_LOGIN, handleAutoLogin);
 }

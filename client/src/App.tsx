@@ -1,9 +1,12 @@
+import { useEffect } from 'react';
 import { Box, makeStyles } from '@material-ui/core';
+import { useDispatch } from 'react-redux';
 import { Route, Switch, Redirect } from 'react-router-dom';
 
 import Main from './shared/components/Main';
 import Auth from './pages/Auth';
 import Background from './assets/background-3.jpg';
+import { autoLogin } from './store/actions/authActions';
 
 const useStyles = makeStyles((theme) => ({
   background: {
@@ -16,6 +19,11 @@ const useStyles = makeStyles((theme) => ({
 
 const App = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(autoLogin(null));
+  }, []);
 
   return (
     <Box height="100vh" px={10} py={7} className={classes.background}>

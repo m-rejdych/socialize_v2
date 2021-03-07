@@ -7,6 +7,7 @@ import {
   makeStyles,
   Typography,
   Box,
+  CircularProgress,
 } from '@material-ui/core';
 import { useLocation, useHistory } from 'react-router-dom';
 
@@ -26,6 +27,9 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       textDecoration: 'underline',
     },
+  },
+  buttonMinWidth: {
+    minWidth: 105,
   },
 }));
 
@@ -49,6 +53,7 @@ interface RegisterValues extends LoginValues {
 const AuthForm: React.FC = () => {
   const classes = useStyles();
   const userError = useSelector((state: RootState) => state.user.error);
+  const loading = useSelector((state: RootState) => state.user.loading);
   const { pathname } = useLocation();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -148,6 +153,16 @@ const AuthForm: React.FC = () => {
     );
   };
 
+  const renderButtonContent = () => {
+    if (loading) {
+      return <CircularProgress color="secondary" size={24} />;
+    }
+
+    return isLogin ? 'LOGIN' : 'REGISTER';
+  };
+
+  const buttonContent = renderButtonContent();
+
   return (
     <Formik
       onSubmit={handleSubmit}
@@ -167,9 +182,10 @@ const AuthForm: React.FC = () => {
                 color="primary"
                 variant="contained"
                 type="submit"
-                disabled={!dirty || !isValid}
+                disabled={!dirty || !isValid || loading}
+                className={classes.buttonMinWidth}
               >
-                {isLogin ? 'LOG IN' : 'REGISTER'}
+                {buttonContent}
               </Button>
             </Box>
             <Typography variant="caption">
