@@ -9,4 +9,4 @@ export type GetUserSuccessAction = Action<
   GetUserSuccessPayload
 >;
 
-export type SetUserErrorAction = Action<typeof USER.ERROR, string>;
+export type SetUserErrorAction = Action<typeof USER.ERROR, string | null>;

@@ -1,5 +1,5 @@
 import { Formik, Form } from 'formik';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   CardContent,
   CardActions,
@@ -12,7 +12,9 @@ import { useLocation, useHistory } from 'react-router-dom';
 
 import FormInput from '../FormInput';
 import ROUTES from '../../../../shared/constants/routes';
+import RootState from '../../../../interfaces/store';
 import { register, login } from '../../../../store/actions/authActions';
+import { setUserError } from '../../../../store/actions/userActions';
 
 const useStyles = makeStyles((theme) => ({
   paddingTopZero: {
@@ -46,6 +48,7 @@ interface RegisterValues extends LoginValues {
 
 const AuthForm: React.FC = () => {
   const classes = useStyles();
+  const userError = useSelector((state: RootState) => state.user.error);
   const { pathname } = useLocation();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -134,6 +137,7 @@ const AuthForm: React.FC = () => {
 
   const handleSwitchRoute = (): void => {
     history.push(isLogin ? ROUTES.REGISTER : ROUTES.LOGIN);
+    if (userError) dispatch(setUserError(null));
   };
 
   const handleSubmit = (values: LoginValues | RegisterValues): void => {

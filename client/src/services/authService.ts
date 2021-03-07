@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 
 import { API_URI } from '../config';
 import {
@@ -8,13 +8,7 @@ import {
 import { AuthResponse } from '../interfaces/auth/responses';
 
 export const register = (data: RegisterReqInterface): Promise<AuthResponse> =>
-  axios
-    .post(`${API_URI}/auth/register`, data)
-    .then((res: AxiosResponse<AuthResponse>) => res)
-    .catch((err) => err);
+  axios.post(`${API_URI}/auth/register`, data);
 
 export const login = (data: LoginReqInterface): Promise<AuthResponse> =>
-  axios
-    .post(`${API_URI}/auth/login`, data)
-    .then((res: AxiosResponse<AuthResponse>) => res)
-    .catch((err) => err);
+  axios.post(`${API_URI}/auth/login`, data);

@@ -1,5 +1,9 @@
 import { useField } from 'formik';
+import { useSelector, useDispatch } from 'react-redux';
 import { TextField, makeStyles } from '@material-ui/core';
+
+import RootState from '../../../../interfaces/store';
+import { setUserError } from '../../../../store/actions/userActions';
 
 const useStyles = makeStyles((theme) => ({
   input: {
@@ -19,10 +23,19 @@ interface Props {
 
 const FormInput: React.FC<Props> = ({ label, ...props }) => {
   const [field, meta] = useField(props);
+  const userError = useSelector((state: RootState) => state.user.error);
+  const dispatch = useDispatch();
   const classes = useStyles();
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    field.onChange(e);
+    if (userError) dispatch(setUserError(null));
+  };
 
   return (
     <TextField
+      {...field}
+      onChange={handleChange}
       fullWidth
       variant="outlined"
       label={label}
@@ -32,7 +45,6 @@ const FormInput: React.FC<Props> = ({ label, ...props }) => {
       FormHelperTextProps={{
         className: classes.helperText,
       }}
-      {...field}
     />
   );
 };

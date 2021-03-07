@@ -56,7 +56,7 @@ function getUserSuccessTransformer(
   state: UserState,
   { payload }: ReturnType<GetUserSuccessAction>,
 ): UserState {
-  return { ...state, ...payload, loading: false };
+  return { ...state, ...payload, loading: false, error: null };
 }
 
 function setUserErrorTransformer(

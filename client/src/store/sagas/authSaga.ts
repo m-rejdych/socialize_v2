@@ -28,7 +28,7 @@ function* handleRegister({ payload }: ReturnType<RegisterAction>) {
       }
     }
   } catch (error) {
-    yield put(setUserError(error.message));
+    yield put(setUserError(error.response.data.message));
   }
 }
 
@@ -52,7 +52,7 @@ function* handleLogin({ payload }: ReturnType<LoginAction>) {
       }
     }
   } catch (error) {
-    yield put(setUserError(error.message));
+    yield put(setUserError(error.response.data.message));
   }
 }
 
