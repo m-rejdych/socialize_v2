@@ -1,10 +1,9 @@
 import { useEffect } from 'react';
 import { Box, makeStyles } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
-import { Route, Switch, Redirect } from 'react-router-dom';
 
 import Main from './shared/components/Main';
-import Auth from './pages/Auth';
+import Routes from './shared/components/Routes';
 import Background from './assets/background-3.jpg';
 import { autoLogin } from './store/actions/authActions';
 
@@ -28,12 +27,7 @@ const App = () => {
   return (
     <Box height="100vh" px={10} py={7} className={classes.background}>
       <Main>
-        <Switch>
-          <Route path="/register" component={Auth} />
-          <Route path="/login" component={Auth} />
-          <Redirect to="/register" />
-        </Switch>
-        <Auth />
+        <Routes />
       </Main>
     </Box>
   );
