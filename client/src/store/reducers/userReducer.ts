@@ -19,6 +19,7 @@ const initialState: UserState = {
   firstName: '',
   lastName: '',
   loading: false,
+  initialLoad: false,
   error: null,
 };
 
@@ -68,7 +69,13 @@ function getUserSuccessTransformer(
   state: UserState,
   { payload }: ReturnType<GetUserSuccessAction>,
 ): UserState {
-  return { ...state, ...payload, loading: false, error: null };
+  return {
+    ...state,
+    ...payload,
+    loading: false,
+    initialLoad: true,
+    error: null,
+  };
 }
 
 function setUserErrorTransformer(

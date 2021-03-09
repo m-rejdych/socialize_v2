@@ -4,5 +4,6 @@ export default interface UserState {
   firstName: string;
   lastName: string;
   loading: boolean;
+  initialLoad: boolean;
   error: string | null;
 }

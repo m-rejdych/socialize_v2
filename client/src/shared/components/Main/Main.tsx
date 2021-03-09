@@ -1,4 +1,7 @@
-import { Paper, makeStyles, Box } from '@material-ui/core';
+import { Paper, makeStyles, Box, CircularProgress } from '@material-ui/core';
+import { useSelector } from 'react-redux';
+
+import RootState from '../../../interfaces/store';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -37,11 +40,23 @@ const useStyles = makeStyles((theme) => ({
 
 const Main: React.FC = ({ children }) => {
   const classes = useStyles();
+  const initialLoad = useSelector((state: RootState) => state.user.initialLoad);
 
   return (
     <Box position="relative" borderRadius={30} height="100%" overflow="hidden">
       <Paper elevation={3} className={classes.container}>
-        {children}
+        {initialLoad ? (
+          children
+        ) : (
+          <Box
+            height="100%"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <CircularProgress size={300} color="primary" />
+          </Box>
+        )}
       </Paper>
     </Box>
   );
