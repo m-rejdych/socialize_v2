@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
       'linear-gradient(to right bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.05))',
     borderRadius: 30,
     overflow: 'hidden',
-    backdropFilter: 'blur(20px)',
+    backdropFilter: 'blur(100px)',
   },
   absolute: {
     position: 'absolute',
