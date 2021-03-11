@@ -1,7 +1,7 @@
 import { Box } from '@material-ui/core';
 
-const Home = () => {
+const Profile = () => {
   return <Box />;
 };
 
-export default Home;
+export default Profile;

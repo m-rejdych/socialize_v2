@@ -64,7 +64,9 @@ const Main: React.FC = ({ children }) => {
               <Grid item xs={3}>
                 <Dashboard />
               </Grid>
-              {children}
+              <Grid item xs={9}>
+                {children}
+              </Grid>
             </Grid>
           ) : (
             children
