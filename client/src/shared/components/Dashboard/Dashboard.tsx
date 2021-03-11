@@ -1,8 +1,8 @@
 import { useSelector } from 'react-redux';
 import { makeStyles, Avatar, CardHeader, CardContent } from '@material-ui/core';
 
-import Card from '../../../../shared/components/Card';
-import RootState from '../../../../interfaces/store';
+import Card from '../Card';
+import RootState from '../../../interfaces/store';
 import Navigation from './Navigation';
 
 const useStyles = makeStyles((theme) => ({

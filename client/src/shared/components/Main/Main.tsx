@@ -1,7 +1,14 @@
-import { Paper, makeStyles, Box, CircularProgress } from '@material-ui/core';
+import {
+  Paper,
+  makeStyles,
+  Box,
+  CircularProgress,
+  Grid,
+} from '@material-ui/core';
 import { useSelector } from 'react-redux';
 
 import RootState from '../../../interfaces/store';
+import Dashboard from '../Dashboard';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -11,6 +18,11 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 30,
     overflow: 'hidden',
     backdropFilter: 'blur(100px)',
+  },
+  gridContainer: {
+    height: '100%',
+    width: '100%',
+    margin: 0,
   },
   absolute: {
     position: 'absolute',
@@ -41,12 +53,22 @@ const useStyles = makeStyles((theme) => ({
 const Main: React.FC = ({ children }) => {
   const classes = useStyles();
   const initialLoad = useSelector((state: RootState) => state.user.initialLoad);
+  const userId = useSelector((state: RootState) => state.user.id);
 
   return (
     <Box position="relative" borderRadius={30} height="100%" overflow="hidden">
       <Paper elevation={3} className={classes.container}>
         {initialLoad ? (
-          children
+          userId ? (
+            <Grid container spacing={3} className={classes.gridContainer}>
+              <Grid item xs={3}>
+                <Dashboard />
+              </Grid>
+              {children}
+            </Grid>
+          ) : (
+            children
+          )
         ) : (
           <Box
             height="100%"
