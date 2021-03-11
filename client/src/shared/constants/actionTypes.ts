@@ -9,3 +9,7 @@ export const USER = {
   GET_USER_SUCCESS: 'USER_GET_USER_SUCCESS' as const,
   ERROR: 'USER_ERROR' as const,
 };
+
+export const DASHBOARD = {
+  SET_NAVIGATION_ITEM: 'DASHBOARD_SET_NAVIGATION_ITEM' as const,
+};
