@@ -13,3 +13,9 @@ export const USER = {
 export const DASHBOARD = {
   SET_NAVIGATION_ITEM: 'DASHBOARD_SET_NAVIGATION_ITEM' as const,
 };
+
+export const PROFILE = {
+  GET_USER_INFO: 'PROFILE_GET_USER_INFO' as const,
+  GET_USER_INFO_SUCCESS: 'PROFILE_GET_USER_INFO_SUCCESS' as const,
+  ERROR: 'PROFILE_ERROR' as const,
+};

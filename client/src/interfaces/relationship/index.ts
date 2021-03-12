@@ -1,1 +1,1 @@
-export { default } from './relationship';
+export type { default } from './relationship';

@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const App = () => {
+const App: React.FC = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
 

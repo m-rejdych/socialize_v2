@@ -1,23 +1,23 @@
-import Country from '../country';
 import City from '../city';
+import Country from '../country';
 import Relationship from '../relationship';
 
-interface ProfileState {
+export interface GetUserInfoPayload {
+  userId: number;
+}
+
+export interface GetUserInfoSuccessPayload {
   id: number;
   age?: number | null;
   country?: Country;
   city?: City;
   relationship?: Relationship;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
   user: {
     id: number;
     email: string;
     firstName: string;
     lastName: string;
   };
-  loading: boolean;
-  error: string | null;
 }
-
-export default ProfileState;

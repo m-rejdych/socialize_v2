@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Dashboard = () => {
+const Dashboard: React.FC = () => {
   const firstName = useSelector((state: RootState) => state.user.firstName);
   const lastName = useSelector((state: RootState) => state.user.lastName);
   const email = useSelector((state: RootState) => state.user.email);

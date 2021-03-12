@@ -7,7 +7,7 @@ import Auth from '../../../pages/Auth';
 import Home from '../../../pages/Home';
 import Profile from '../../../pages/Profile';
 
-const Routes = () => {
+const Routes: React.FC = () => {
   const userId = useSelector((state: RootState) => state.user.id);
 
   const isAuth = !!userId;

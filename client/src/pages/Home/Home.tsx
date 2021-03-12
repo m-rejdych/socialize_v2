@@ -1,6 +1,6 @@
 import { Box } from '@material-ui/core';
 
-const Home = () => {
+const Home: React.FC = () => {
   return <Box />;
 };
 
