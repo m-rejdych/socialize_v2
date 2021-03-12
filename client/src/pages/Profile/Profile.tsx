@@ -6,12 +6,15 @@ import {
   makeStyles,
   CircularProgress,
   Typography,
+  Grid,
+  CardContent,
 } from '@material-ui/core';
 import { AccountBox } from '@material-ui/icons';
 
 import { getUserInfo } from '../../store/actions/profileActions';
 import Card from '../../shared/components/Card';
 import RootState from '../../interfaces/store';
+import UserInfo from './components/UserInfo';
 
 const useStyles = makeStyles((theme) => ({
   '@keyframes slide-in': {
@@ -29,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     height: '70%',
     width: '100%',
     overflow: 'visible',
-    mr: theme.spacing(2),
+    marginRight: theme.spacing(2),
     alignSelf: 'flex-end',
     animation: '$slide-in 0.5s ease-out',
   },
@@ -40,19 +43,21 @@ const useStyles = makeStyles((theme) => ({
   header: {
     fontWeight: 600,
   },
-  headerContainer: {
-    transform: 'translateX(-50%)',
-    '&::after': {
-      content: "''",
-      position: 'absolute',
-      bottom: theme.spacing(3),
-      top: 175 + theme.spacing(3),
-      right: 0,
-      left: 0,
-      width: '100%',
-      borderLeft: `1px solid ${theme.palette.divider}`,
-      borderRight: `1px solid ${theme.palette.divider}`,
-    },
+  fullHeight: {
+    height: '100%',
+  },
+  flexContainer: {
+    position: 'relative',
+    top: -125,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  borderRight: {
+    borderRight: `1px solid ${theme.palette.divider}`,
+  },
+  borderLeft: {
+    borderLeft: `1px solid ${theme.palette.divider}`,
   },
 }));
 
@@ -75,32 +80,33 @@ const Profile: React.FC = () => {
   return (
     <Box height="100%" display="flex">
       <Card className={classes.card}>
-        {loading ? (
-          <Box
-            height="100%"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <CircularProgress size={300} color="primary" />
-          </Box>
-        ) : (
-          <Box
-            position="absolute"
-            top={-175}
-            left="50%"
-            height="calc(100% + 175px)"
-            px={3}
-            className={classes.headerContainer}
-          >
-            <AccountBox color="primary" className={classes.profileImg} />
-            <Typography
-              align="center"
-              variant="h3"
-              className={classes.header}
-            >{`${firstName} ${lastName}`}</Typography>
-          </Box>
-        )}
+        <CardContent className={classes.fullHeight}>
+          {loading ? (
+            <Box
+              height="100%"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <CircularProgress size={300} color="primary" />
+            </Box>
+          ) : (
+            <Grid container spacing={3} className={classes.fullHeight}>
+              <Grid item xs={4} className={classes.borderRight}>
+                <UserInfo />
+              </Grid>
+              <Grid item xs={4} className={classes.flexContainer}>
+                <AccountBox color="primary" className={classes.profileImg} />
+                <Typography
+                  align="center"
+                  variant="h3"
+                  className={classes.header}
+                >{`${firstName} ${lastName}`}</Typography>
+              </Grid>
+              <Grid item xs={4} className={classes.borderLeft} />
+            </Grid>
+          )}
+        </CardContent>
       </Card>
     </Box>
   );
