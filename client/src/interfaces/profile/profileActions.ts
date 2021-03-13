@@ -15,4 +15,4 @@ export type GetUserInfoSuccessAction = Action<
   GetUserInfoSuccessPayload
 >;
 
-export type SetProfileErrorAction = Action<typeof PROFILE.ERROR, string>;
+export type SetProfileErrorAction = Action<typeof PROFILE.ERROR, string | null>;

@@ -19,9 +19,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const UserInfo: React.FC = () => {
-  const profileId = useSelector((state: RootState) => state.profile.user.id);
-  const userId = useSelector((state: RootState) => state.user.id);
+interface Props {
+  isMe: boolean;
+}
+
+const UserInfo: React.FC<Props> = ({ isMe }) => {
   const age = useSelector((state: RootState) => state.profile.age);
   const country = useSelector((state: RootState) => state.profile.country);
   const city = useSelector((state: RootState) => state.profile.city);
@@ -29,8 +31,6 @@ const UserInfo: React.FC = () => {
     (state: RootState) => state.profile.relationship,
   );
   const classes = useStyles();
-
-  const isMe = userId === profileId;
 
   const fields = [
     {

@@ -1,6 +1,7 @@
 import City from '../city';
 import Country from '../country';
 import Relationship from '../relationship';
+import User from '../user';
 
 export interface GetProfileRes {
   data?: {
@@ -11,11 +12,6 @@ export interface GetProfileRes {
     relationship?: Relationship;
     createdAt: Date;
     updatedAt: Date;
-    user: {
-      id: number;
-      email: string;
-      firstName: string;
-      lastName: string;
-    };
+    user: User;
   };
 }

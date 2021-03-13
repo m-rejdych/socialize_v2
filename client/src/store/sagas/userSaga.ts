@@ -13,7 +13,7 @@ function* handleGetUser({ payload }: ReturnType<GetUserAction>) {
     // console.log(response);
     // yield put(getUserSuccess(response));
   } catch (error) {
-    yield put(setUserError(error.message));
+    yield put(setUserError(error.response.data.message));
   }
 }
 

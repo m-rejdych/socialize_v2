@@ -16,6 +16,7 @@ import Card from '../../shared/components/Card';
 import RootState from '../../interfaces/store';
 import UserInfo from './components/UserInfo';
 import UserActions from './components/UserActions';
+import FriendsList from '../../shared/components/FriendsList';
 
 const useStyles = makeStyles((theme) => ({
   '@keyframes slide-in': {
@@ -64,6 +65,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Profile: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const userId = useSelector((state: RootState) => state.user.id);
   const loading = useSelector((state: RootState) => state.profile.loading);
   const firstName = useSelector(
     (state: RootState) => state.profile.user.firstName,
@@ -77,6 +79,8 @@ const Profile: React.FC = () => {
   useEffect(() => {
     dispatch(getUserInfo({ userId: Number(id) }));
   }, []);
+
+  const isMe = userId === Number(id);
 
   return (
     <Box height="100%" display="flex">
@@ -94,7 +98,7 @@ const Profile: React.FC = () => {
           ) : (
             <Grid container spacing={3} className={classes.fullHeight}>
               <Grid item xs={4} className={classes.borderRight}>
-                <UserInfo />
+                <UserInfo isMe={isMe} />
               </Grid>
               <Grid item xs={4} className={classes.flexContainer}>
                 <AccountBox color="primary" className={classes.profileImg} />
@@ -105,7 +109,7 @@ const Profile: React.FC = () => {
                 >{`${firstName} ${lastName}`}</Typography>
               </Grid>
               <Grid item xs={4} className={classes.borderLeft}>
-                <UserActions />
+                {isMe ? <FriendsList /> : <UserActions />}
               </Grid>
             </Grid>
           )}

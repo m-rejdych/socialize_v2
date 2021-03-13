@@ -35,7 +35,7 @@ class FriendshipController {
   }
 
   @UseGuards(JwtGuard)
-  @Get('get-all-by-user-id')
+  @Get('get-all')
   async getAllAccepted(@Req() req: JwtRequest): Promise<Friendship[]> {
     const { id } = req.user;
 

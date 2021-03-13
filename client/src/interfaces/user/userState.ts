@@ -1,8 +1,6 @@
-export default interface UserState {
-  id: number;
-  email: string;
-  firstName: string;
-  lastName: string;
+import User from './user';
+
+export default interface UserState extends User {
   loading: boolean;
   initialLoad: boolean;
   error: string | null;

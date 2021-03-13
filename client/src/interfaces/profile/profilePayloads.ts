@@ -1,6 +1,7 @@
 import City from '../city';
 import Country from '../country';
 import Relationship from '../relationship';
+import User from '../user';
 
 export interface GetUserInfoPayload {
   userId: number;
@@ -14,10 +15,5 @@ export interface GetUserInfoSuccessPayload {
   relationship?: Relationship;
   createdAt: Date;
   updatedAt: Date;
-  user: {
-    id: number;
-    email: string;
-    firstName: string;
-    lastName: string;
-  };
+  user: User;
 }

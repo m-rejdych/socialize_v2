@@ -1,6 +1,7 @@
 import Country from '../country';
 import City from '../city';
 import Relationship from '../relationship';
+import User from '../user';
 
 interface ProfileState {
   id: number;
@@ -10,12 +11,7 @@ interface ProfileState {
   relationship?: Relationship;
   createdAt?: Date;
   updatedAt?: Date;
-  user: {
-    id: number;
-    email: string;
-    firstName: string;
-    lastName: string;
-  };
+  user: User;
   loading: boolean;
   error: string | null;
 }
