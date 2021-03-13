@@ -11,6 +11,7 @@ import FriendshipState from '../../interfaces/friendship/friendshipState';
 const initialState: FriendshipState = {
   allFriendships: [],
   loading: false,
+  initialLoad: false,
   error: null,
 };
 
@@ -36,7 +37,13 @@ function getAllFriendshipsSuccessTransformer(
   state: FriendshipState,
   { payload }: ReturnType<GetAllFriendshipsSuccessAction>,
 ): FriendshipState {
-  return { ...state, loading: false, error: null, allFriendships: payload };
+  return {
+    ...state,
+    loading: false,
+    initialLoad: true,
+    error: null,
+    allFriendships: payload,
+  };
 }
 
 function setFriendshipErrorTransformer(

@@ -109,7 +109,12 @@ const Profile: React.FC = () => {
                 >{`${firstName} ${lastName}`}</Typography>
               </Grid>
               <Grid item xs={4} className={classes.borderLeft}>
-                {isMe ? <FriendsList /> : <UserActions />}
+                <Box height="100%" display="flex" flexDirection="column">
+                  <Typography variant="h4">
+                    {isMe ? 'Friends' : 'Actions'}
+                  </Typography>
+                  {isMe ? <FriendsList profileNavigation /> : <UserActions />}
+                </Box>
               </Grid>
             </Grid>
           )}

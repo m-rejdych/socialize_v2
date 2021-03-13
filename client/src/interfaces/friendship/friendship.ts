@@ -2,7 +2,7 @@ import User from '../user';
 
 export default interface Friendship {
   id: number;
-  isAccepter: boolean;
+  isAccepted: boolean;
   createdAt: Date;
   updatedAt: Date;
   requestedBy: User;

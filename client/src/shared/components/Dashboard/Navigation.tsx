@@ -16,8 +16,6 @@ import { setNavigationItem } from '../../../store/actions/dashboardActions';
 const useStyles = makeStyles((theme) => ({
   listItem: {
     borderRadius: 20,
-    cursor: 'pointer',
-    overflow: 'hidden',
   },
 }));
 
@@ -65,6 +63,7 @@ const Navigation = () => {
       {fields.map(({ value, label, Icon, handleClick }) => (
         <ListItem
           divider
+          button
           key={value}
           selected={selectedItem === value}
           onClick={handleClick}
