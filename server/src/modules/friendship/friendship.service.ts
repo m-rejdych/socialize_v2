@@ -70,6 +70,20 @@ class FriendshipService {
     return friendship || null;
   }
 
+  async findAllAcceptedByUserId(userId: number): Promise<Friendship[]> {
+    const friendships = await this.friendshipRepository
+      .createQueryBuilder('friendship')
+      .leftJoinAndSelect('friendship.requestedBy', 'requestedBy')
+      .leftJoinAndSelect('friendship.addressedTo', 'addressedTo')
+      .where('friendship.isAccepted = :isTrue', { isTrue: true })
+      .andWhere('requestedBy.id = :userId OR addressedTo.id = :userId', {
+        userId,
+      })
+      .getMany();
+
+    return friendships;
+  }
+
   async createFriendship(
     userId: number,
     friendId: number,
@@ -117,11 +131,11 @@ class FriendshipService {
       );
     }
     if (!friendship) throw new NotFoundException('Friendhsip not found!');
-    if (friendship.isAccpted) {
+    if (friendship.isAccepted) {
       throw new BadRequestException('Friendship already accepted!');
     }
 
-    friendship.isAccpted = true;
+    friendship.isAccepted = true;
     this.friendshipRepository.save(friendship);
 
     let chat = await this.chatService.findFriendChatByIds([userId, friendId]);

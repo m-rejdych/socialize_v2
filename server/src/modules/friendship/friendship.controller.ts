@@ -14,7 +14,7 @@ import {
 import JwtGuard from '../../guards/jwt.guard';
 import JwtRequest from '../auth/interfaces/jwtRequest.interface';
 import Friendship from './friendship.entity';
-import FriendshipService from './frienship.service';
+import FriendshipService from './friendship.service';
 import CreateFriendshipDto from './dto/createFriendship.dto';
 import DeleteFriendshipReponseDto from './dto/deleteFriendshipResponse.dto';
 import CreateFriendshipResponseDto from './dto/createFriendshipResponse.dto';
@@ -32,6 +32,14 @@ class FriendshipController {
     const { id } = req.user;
 
     return await this.friendshipService.findOne(id, friendId);
+  }
+
+  @UseGuards(JwtGuard)
+  @Get('get-all-accepted')
+  async getAllAccepted(@Req() req: JwtRequest): Promise<Friendship[]> {
+    const { id } = req.user;
+
+    return await this.friendshipService.findAllAcceptedByUserId(id);
   }
 
   @UseGuards(JwtGuard)

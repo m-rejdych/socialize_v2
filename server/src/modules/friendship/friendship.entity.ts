@@ -15,7 +15,7 @@ class Friendship {
   id: number;
 
   @Column({ default: false })
-  isAccpted: boolean;
+  isAccepted: boolean;
 
   @CreateDateColumn()
   createdAt: Date;
