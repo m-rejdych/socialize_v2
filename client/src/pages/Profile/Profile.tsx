@@ -15,6 +15,7 @@ import { getUserInfo } from '../../store/actions/profileActions';
 import Card from '../../shared/components/Card';
 import RootState from '../../interfaces/store';
 import UserInfo from './components/UserInfo';
+import UserActions from './components/UserActions';
 
 const useStyles = makeStyles((theme) => ({
   '@keyframes slide-in': {
@@ -103,7 +104,9 @@ const Profile: React.FC = () => {
                   className={classes.header}
                 >{`${firstName} ${lastName}`}</Typography>
               </Grid>
-              <Grid item xs={4} className={classes.borderLeft} />
+              <Grid item xs={4} className={classes.borderLeft}>
+                <UserActions />
+              </Grid>
             </Grid>
           )}
         </CardContent>
