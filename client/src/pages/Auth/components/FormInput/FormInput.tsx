@@ -39,6 +39,7 @@ const FormInput: React.FC<Props> = ({ label, ...props }) => {
       fullWidth
       variant="outlined"
       label={label}
+      type={props.type}
       error={!!(meta.touched && meta.error)}
       helperText={meta.touched && meta.error}
       className={classes.input}

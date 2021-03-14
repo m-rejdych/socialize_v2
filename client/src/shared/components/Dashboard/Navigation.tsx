@@ -1,5 +1,5 @@
-import { useSelector, useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useHistory, useLocation } from 'react-router-dom';
 import {
   List,
   ListItem,
@@ -11,7 +11,6 @@ import { Home, AccountBox, Chat } from '@material-ui/icons';
 
 import RootState from '../../../interfaces/store';
 import ROUTES from '../../constants/routes';
-import { setNavigationItem } from '../../../store/actions/dashboardActions';
 
 const useStyles = makeStyles((theme) => ({
   listItem: {
@@ -19,53 +18,50 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Navigation = () => {
+const Navigation: React.FC = () => {
   const userId = useSelector((state: RootState) => state.user.id);
-  const selectedItem = useSelector(
-    (state: RootState) => state.dashboard.selectedItem,
-  );
   const classes = useStyles();
-  const dispatch = useDispatch();
   const history = useHistory();
+  const { pathname } = useLocation();
 
   const fields = [
     {
       value: 'home',
       label: 'Home',
+      selected: pathname === ROUTES.HOME,
       Icon: Home,
       handleClick: () => {
         history.push(ROUTES.HOME);
-        dispatch(setNavigationItem('home'));
       },
     },
     {
       value: 'profile',
       label: 'Profile',
+      selected: pathname === `${ROUTES.PROFILE}/${userId}`,
       Icon: AccountBox,
       handleClick: () => {
         history.push(`${ROUTES.PROFILE}/${userId}`);
-        dispatch(setNavigationItem('profile'));
       },
     },
     {
       value: 'messages',
       label: 'Messages',
+      selected: false,
       Icon: Chat,
       handleClick: () => {
         history.push(ROUTES.HOME);
-        dispatch(setNavigationItem('home'));
       },
     },
   ] as const;
 
   return (
     <List>
-      {fields.map(({ value, label, Icon, handleClick }) => (
+      {fields.map(({ value, label, selected, Icon, handleClick }) => (
         <ListItem
           divider
           button
           key={value}
-          selected={selectedItem === value}
+          selected={selected}
           onClick={handleClick}
           className={classes.listItem}
         >
