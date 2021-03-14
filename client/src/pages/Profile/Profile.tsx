@@ -77,7 +77,7 @@ const Profile: React.FC = () => {
   const classes = useStyles();
 
   useEffect(() => {
-    dispatch(getUserInfo({ userId: Number(id) }));
+    dispatch(getUserInfo(Number(id)));
   }, []);
 
   const isMe = userId === Number(id);

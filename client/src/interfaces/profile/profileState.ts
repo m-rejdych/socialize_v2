@@ -1,17 +1,6 @@
-import Country from '../country';
-import City from '../city';
-import Relationship from '../relationship';
-import User from '../user';
+import Profile from './profile';
 
-interface ProfileState {
-  id: number;
-  age?: number | null;
-  country?: Country;
-  city?: City;
-  relationship?: Relationship;
-  createdAt?: Date;
-  updatedAt?: Date;
-  user: User;
+interface ProfileState extends Profile {
   loading: boolean;
   error: string | null;
 }
