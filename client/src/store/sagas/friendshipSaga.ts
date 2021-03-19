@@ -5,21 +5,25 @@ import {
   GetAllFriendshipsRes,
   GetFriendshipRes,
   CreateFriendshipRes,
+  AcceptFriendshipRes,
 } from '../../interfaces/friendship/friendshipRes';
 import {
   GetFriendshipAction,
   CreateFriendshipAction,
+  AcceptFriendshipAction,
 } from '../../interfaces/friendship/friendshipActions';
 import {
   getAllFriendshipsSuccess,
   getFriendshipSuccess,
   createFriendshipSuccess,
+  acceptFriendshipSuccess,
   setFriendshipError,
 } from '../actions/friendshipActions';
 import {
   getAllFriends,
   getFriendship,
   createFriendship,
+  acceptFriendship,
 } from '../../services/friendshipService';
 
 function* handleGetAllFriendships() {
@@ -58,6 +62,22 @@ function* handleCreateFriendship({
   }
 }
 
+export function* handleAcceptFriendship({
+  payload,
+}: ReturnType<AcceptFriendshipAction>) {
+  try {
+    const response: AcceptFriendshipRes = yield call(acceptFriendship, payload);
+
+    if (response.data) {
+      const { friendship } = response.data;
+
+      yield put(acceptFriendshipSuccess(friendship));
+    }
+  } catch (error) {
+    yield put(setFriendshipError(error.response.data.message));
+  }
+}
+
 export function* getAllFriendshipsSaga() {
   yield takeEvery(FRIENDSHIP.GET_ALL_FRIENDSHIPS, handleGetAllFriendships);
 }
@@ -68,4 +88,8 @@ export function* getFriendshipSaga() {
 
 export function* createFriendshipSaga() {
   yield takeEvery(FRIENDSHIP.CREATE_FRIENDSHIP, handleCreateFriendship);
+}
+
+export function* acceptFriendshipSaga() {
+  yield takeEvery(FRIENDSHIP.ACCEPT_FRIENDSHIP, handleAcceptFriendship);
 }

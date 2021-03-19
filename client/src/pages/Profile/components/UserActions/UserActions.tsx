@@ -14,6 +14,7 @@ import RootState from '../../../../interfaces/store';
 import {
   getFriendship,
   createFriendship,
+  acceptFriendship,
 } from '../../../../store/actions/friendshipActions';
 
 const useStyles = makeStyles((theme) => ({
@@ -89,6 +90,9 @@ const UserActions: React.FC = () => {
         text: 'Accept friendhsip',
         color: 'primary',
         icon: <Check />,
+        action: (): void => {
+          dispatch(acceptFriendship({ friendId: Number(id) }));
+        },
         declineButton: true,
       };
     }

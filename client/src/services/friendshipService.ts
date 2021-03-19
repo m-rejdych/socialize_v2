@@ -3,6 +3,8 @@ import { API_URI } from '../config';
 import {
   GetAllFriendshipsRes,
   GetFriendshipRes,
+  CreateFriendshipRes,
+  AcceptFriendshipRes,
 } from '../interfaces/friendship/friendshipRes';
 import { FriendshipReq } from '../interfaces/friendship/friendshipReq';
 
@@ -20,9 +22,18 @@ export const getFriendship = (friendId: number): Promise<GetFriendshipRes> =>
 
 export const createFriendship = (
   data: FriendshipReq,
-): Promise<GetFriendshipRes> =>
-  createJwtRequest<GetFriendshipRes>({
+): Promise<CreateFriendshipRes> =>
+  createJwtRequest<CreateFriendshipRes>({
     url: `${API_URI}/friendship/create-friendship`,
     method: 'POST',
+    body: data,
+  });
+
+export const acceptFriendship = (
+  data: FriendshipReq,
+): Promise<AcceptFriendshipRes> =>
+  createJwtRequest<AcceptFriendshipRes>({
+    url: `${API_URI}/friendship/accept-friendship`,
+    method: 'PUT',
     body: data,
   });

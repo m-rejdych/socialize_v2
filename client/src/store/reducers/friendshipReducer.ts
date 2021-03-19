@@ -6,6 +6,8 @@ import {
   GetFriendshipSuccessAction,
   CreateFriendshipAction,
   CreateFriendshipSuccessAction,
+  AcceptFriendshipAction,
+  AcceptFriendshipSuccessAction,
   SetFriendshipError,
 } from '../../interfaces/friendship/friendshipActions';
 import { FRIENDSHIP } from '../../shared/constants/actionTypes';
@@ -27,6 +29,8 @@ const strategyMap: StrategyMap<FriendshipState, typeof FRIENDSHIP> = {
   [FRIENDSHIP.GET_FRIENDSHIP_SUCCESS]: getFriendshipSuccessTransformer,
   [FRIENDSHIP.CREATE_FRIENDSHIP]: createFriendshipTransformer,
   [FRIENDSHIP.CREATE_FRIENDSHIP_SUCCESS]: createFriendshipSuccessTransformer,
+  [FRIENDSHIP.ACCEPT_FRIENDSHIP]: acceptFriendshipTransformer,
+  [FRIENDSHIP.ACCEPT_FRIENDSHIP_SUCCESS]: accpetFriendshipSuccessTransformer,
   [FRIENDSHIP.ERROR]: setFriendshipErrorTransformer,
 };
 
@@ -92,6 +96,28 @@ function createFriendshipSuccessTransformer(
     error: null,
     allFriendships: [...state.allFriendships, payload],
     selectedFriendship: payload,
+  };
+}
+
+function acceptFriendshipTransformer(
+  state: FriendshipState,
+  _: ReturnType<AcceptFriendshipAction>,
+): FriendshipState {
+  return { ...state, loading: true };
+}
+
+function accpetFriendshipSuccessTransformer(
+  state: FriendshipState,
+  { payload }: ReturnType<AcceptFriendshipSuccessAction>,
+): FriendshipState {
+  return {
+    ...state,
+    loading: false,
+    error: null,
+    selectedFriendship: payload,
+    allFriendships: state.allFriendships.map((friendship) =>
+      friendship.id === payload.id ? payload : friendship,
+    ),
   };
 }
 
