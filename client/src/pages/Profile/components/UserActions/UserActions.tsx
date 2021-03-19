@@ -11,7 +11,10 @@ import {
 } from '@material-ui/icons';
 
 import RootState from '../../../../interfaces/store';
-import { getFriendship } from '../../../../store/actions/friendshipActions';
+import {
+  getFriendship,
+  createFriendship,
+} from '../../../../store/actions/friendshipActions';
 
 const useStyles = makeStyles((theme) => ({
   marginBottom: {
@@ -28,6 +31,7 @@ interface ButtonData {
   text: string;
   icon: JSX.Element;
   color: 'primary' | 'secondary';
+  action?: () => void;
   declineButton?: boolean;
 }
 
@@ -35,8 +39,15 @@ const ButtonWrapper: React.FC<Omit<ButtonData, 'declineButton'>> = ({
   color,
   icon,
   text,
+  action = (): void => {},
 }) => (
-  <Button variant="contained" size="large" color={color} startIcon={icon}>
+  <Button
+    variant="contained"
+    size="large"
+    color={color}
+    startIcon={icon}
+    onClick={action}
+  >
     {text}
   </Button>
 );
@@ -86,6 +97,9 @@ const UserActions: React.FC = () => {
       text: 'Add as friend',
       color: 'primary',
       icon: <PersonAdd />,
+      action: (): void => {
+        dispatch(createFriendship({ friendId: Number(id) }));
+      },
     };
   };
 

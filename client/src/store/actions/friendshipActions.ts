@@ -3,8 +3,10 @@ import {
   GetAllFriendshipsAction,
   GetAllFriendshipsSuccessAction,
   GetFriendshipAction,
-  getFriendshipSuccessAction,
+  GetFriendshipSuccessAction,
   SetFriendshipError,
+  CreateFriendshipAction,
+  CreateFriendshipSuccessAction,
 } from '../../interfaces/friendship/friendshipActions';
 import { FRIENDSHIP } from '../../shared/constants/actionTypes';
 
@@ -20,8 +22,16 @@ export const getFriendship: GetFriendshipAction = createAction(
   FRIENDSHIP.GET_FRIENDSHIP,
 );
 
-export const getFriendshipSuccess: getFriendshipSuccessAction = createAction(
+export const getFriendshipSuccess: GetFriendshipSuccessAction = createAction(
   FRIENDSHIP.GET_FRIENDSHIP_SUCCESS,
+);
+
+export const createFriendship: CreateFriendshipAction = createAction(
+  FRIENDSHIP.CREATE_FRIENDSHIP,
+);
+
+export const createFriendshipSuccess: CreateFriendshipSuccessAction = createAction(
+  FRIENDSHIP.CREATE_FRIENDSHIP_SUCCESS,
 );
 
 export const setFriendshipError: SetFriendshipError = createAction(
