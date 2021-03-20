@@ -5,6 +5,7 @@ import {
   GetFriendshipRes,
   CreateFriendshipRes,
   AcceptFriendshipRes,
+  DeleteFriendshipRes,
 } from '../interfaces/friendship/friendshipRes';
 import { FriendshipReq } from '../interfaces/friendship/friendshipReq';
 
@@ -36,4 +37,12 @@ export const acceptFriendship = (
     url: `${API_URI}/friendship/accept-friendship`,
     method: 'PUT',
     body: data,
+  });
+
+export const deleteFriendship = (
+  data: FriendshipReq,
+): Promise<DeleteFriendshipRes> =>
+  createJwtRequest({
+    url: `${API_URI}/friendship/delete-friendship?friendId=${data.friendId}`,
+    method: 'DELETE',
   });

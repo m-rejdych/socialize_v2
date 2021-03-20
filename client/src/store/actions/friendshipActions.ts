@@ -9,6 +9,8 @@ import {
   CreateFriendshipSuccessAction,
   AcceptFriendshipAction,
   AcceptFriendshipSuccessAction,
+  DeleteFriendshipAction,
+  DeleteFriendshipSuccessAction,
 } from '../../interfaces/friendship/friendshipActions';
 import { FRIENDSHIP } from '../../shared/constants/actionTypes';
 
@@ -42,6 +44,14 @@ export const acceptFriendship: AcceptFriendshipAction = createAction(
 
 export const acceptFriendshipSuccess: AcceptFriendshipSuccessAction = createAction(
   FRIENDSHIP.ACCEPT_FRIENDSHIP_SUCCESS,
+);
+
+export const deleteFriendship: DeleteFriendshipAction = createAction(
+  FRIENDSHIP.DELETE_FRIENDSHIP,
+);
+
+export const deleteFriendshipSuccess: DeleteFriendshipSuccessAction = createAction(
+  FRIENDSHIP.DELETE_FRIENDSHIP_SUCCESS,
 );
 
 export const setFriendshipError: SetFriendshipError = createAction(

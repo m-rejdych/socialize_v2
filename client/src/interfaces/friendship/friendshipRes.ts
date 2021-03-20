@@ -19,3 +19,11 @@ export interface AcceptFriendshipRes {
     chat: Chat;
   };
 }
+
+export interface DeleteFriendshipRes {
+  data?: {
+    userId: number;
+    friendId: number;
+    deleted: boolean;
+  };
+}

@@ -8,6 +8,7 @@ import {
   getFriendshipSaga,
   createFriendshipSaga,
   acceptFriendshipSaga,
+  deleteFriendshipSaga,
 } from './friendshipSaga';
 
 export default function* rootSaga() {
@@ -21,5 +22,6 @@ export default function* rootSaga() {
     getFriendshipSaga(),
     createFriendshipSaga(),
     acceptFriendshipSaga(),
+    deleteFriendshipSaga(),
   ]);
 }

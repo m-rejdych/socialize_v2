@@ -43,4 +43,14 @@ export type AcceptFriendshipSuccessAction = Action<
   Friendship
 >;
 
+export type DeleteFriendshipAction = Action<
+  typeof FRIENDSHIP.DELETE_FRIENDSHIP,
+  FriendshipPayload
+>;
+
+export type DeleteFriendshipSuccessAction = Action<
+  typeof FRIENDSHIP.DELETE_FRIENDSHIP_SUCCESS,
+  number
+>;
+
 export type SetFriendshipError = Action<typeof FRIENDSHIP.ERROR, string | null>;

@@ -6,17 +6,20 @@ import {
   GetFriendshipRes,
   CreateFriendshipRes,
   AcceptFriendshipRes,
+  DeleteFriendshipRes,
 } from '../../interfaces/friendship/friendshipRes';
 import {
   GetFriendshipAction,
   CreateFriendshipAction,
   AcceptFriendshipAction,
+  DeleteFriendshipAction,
 } from '../../interfaces/friendship/friendshipActions';
 import {
   getAllFriendshipsSuccess,
   getFriendshipSuccess,
   createFriendshipSuccess,
   acceptFriendshipSuccess,
+  deleteFriendshipSuccess,
   setFriendshipError,
 } from '../actions/friendshipActions';
 import {
@@ -24,6 +27,7 @@ import {
   getFriendship,
   createFriendship,
   acceptFriendship,
+  deleteFriendship,
 } from '../../services/friendshipService';
 
 function* handleGetAllFriendships() {
@@ -78,6 +82,26 @@ export function* handleAcceptFriendship({
   }
 }
 
+export function* handleDeleteFriendship({
+  payload,
+}: ReturnType<DeleteFriendshipAction>) {
+  try {
+    const response: DeleteFriendshipRes = yield call(deleteFriendship, payload);
+
+    if (response.data) {
+      const { deleted, friendId } = response.data;
+
+      yield put(
+        deleted
+          ? deleteFriendshipSuccess(friendId)
+          : setFriendshipError('Friendship could not be deleted'),
+      );
+    }
+  } catch (error) {
+    yield put(setFriendshipError(error.response.data.message));
+  }
+}
+
 export function* getAllFriendshipsSaga() {
   yield takeEvery(FRIENDSHIP.GET_ALL_FRIENDSHIPS, handleGetAllFriendships);
 }
@@ -92,4 +116,8 @@ export function* createFriendshipSaga() {
 
 export function* acceptFriendshipSaga() {
   yield takeEvery(FRIENDSHIP.ACCEPT_FRIENDSHIP, handleAcceptFriendship);
+}
+
+export function* deleteFriendshipSaga() {
+  yield takeEvery(FRIENDSHIP.DELETE_FRIENDSHIP, handleDeleteFriendship);
 }

@@ -15,6 +15,7 @@ import {
   getFriendship,
   createFriendship,
   acceptFriendship,
+  deleteFriendship,
 } from '../../../../store/actions/friendshipActions';
 
 const useStyles = makeStyles((theme) => ({
@@ -77,6 +78,9 @@ const UserActions: React.FC = () => {
           text: 'Remove friend',
           color: 'secondary',
           icon: <Remove />,
+          action: (): void => {
+            dispatch(deleteFriendship({ friendId: Number(id) }));
+          },
         };
 
       if (friendship.requestedBy.id === userId)
@@ -84,6 +88,9 @@ const UserActions: React.FC = () => {
           text: 'Cancel request',
           color: 'secondary',
           icon: <PersonAddDisabled />,
+          action: (): void => {
+            dispatch(deleteFriendship({ friendId: Number(id) }));
+          },
         };
 
       return {
@@ -118,6 +125,9 @@ const UserActions: React.FC = () => {
             color="secondary"
             icon={<Close />}
             text="Decline friendship"
+            action={(): void => {
+              dispatch(deleteFriendship({ friendId: Number(id) }));
+            }}
           />
         )}
       </>
