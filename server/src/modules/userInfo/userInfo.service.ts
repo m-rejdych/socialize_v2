@@ -33,6 +33,9 @@ class UserInfoService {
     const userInfo = await this.userInfoRepository
       .createQueryBuilder('userInfo')
       .leftJoinAndSelect('userInfo.user', 'user')
+      .leftJoinAndSelect('userInfo.country', 'country')
+      .leftJoinAndSelect('userInfo.city', 'city')
+      .leftJoinAndSelect('userInfo.relationship', 'relationship')
       .where('user.id = :userId', { userId })
       .getOne();
 
@@ -69,7 +72,7 @@ class UserInfoService {
       if (!relationshipInstance) {
         throw new BadRequestException('Ivalid relationship type!');
       }
-      userInfo.relaitonship = relationshipInstance;
+      userInfo.relationship = relationshipInstance;
     }
     if (age) userInfo.age = age;
 

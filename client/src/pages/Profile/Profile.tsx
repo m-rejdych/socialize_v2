@@ -66,7 +66,9 @@ const useStyles = makeStyles((theme) => ({
 const Profile: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const userId = useSelector((state: RootState) => state.user.id);
-  const loading = useSelector((state: RootState) => state.profile.loading);
+  const initialLoad = useSelector(
+    (state: RootState) => state.profile.initialLoad,
+  );
   const firstName = useSelector(
     (state: RootState) => state.profile.user.firstName,
   );
@@ -86,16 +88,7 @@ const Profile: React.FC = () => {
     <Box height="100%" display="flex">
       <Card className={classes.card}>
         <CardContent className={classes.fullHeight}>
-          {loading ? (
-            <Box
-              height="100%"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-            >
-              <CircularProgress size={300} color="primary" />
-            </Box>
-          ) : (
+          {initialLoad ? (
             <Grid container spacing={3} className={classes.fullHeight}>
               <Grid item xs={4} className={classes.borderRight}>
                 <UserInfo isMe={isMe} />
@@ -117,6 +110,15 @@ const Profile: React.FC = () => {
                 </Box>
               </Grid>
             </Grid>
+          ) : (
+            <Box
+              height="100%"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <CircularProgress size={300} color="primary" />
+            </Box>
           )}
         </CardContent>
       </Card>

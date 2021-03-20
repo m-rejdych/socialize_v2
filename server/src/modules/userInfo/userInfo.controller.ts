@@ -38,7 +38,10 @@ class UserInfoController {
   @UseGuards(JwtGuard)
   @UsePipes(CapitalizationPipe)
   @Put('update-me')
-  async updateMe(@Body() data: UpdateUserInfoDto, @Req() req: JwtRequest) {
+  async updateMe(
+    @Body() data: UpdateUserInfoDto,
+    @Req() req: JwtRequest,
+  ): Promise<UserInfo> {
     const { id } = req.user;
 
     return await this.userInfoService.updateByUserId(id, data);

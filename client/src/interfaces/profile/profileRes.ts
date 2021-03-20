@@ -1,5 +1,5 @@
 import Profile from './profile';
 
-export interface GetProfileRes {
+export interface ProfileRes {
   data?: Profile;
 }

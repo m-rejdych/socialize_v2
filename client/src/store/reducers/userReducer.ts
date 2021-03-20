@@ -82,7 +82,7 @@ function setUserErrorTransformer(
   state: UserState,
   { payload }: ReturnType<SetUserErrorAction>,
 ): UserState {
-  return { ...state, error: payload, loading: false };
+  return { ...state, error: payload, loading: false, initialLoad: true };
 }
 
 export default userReducer;

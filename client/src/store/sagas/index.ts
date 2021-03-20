@@ -2,7 +2,7 @@ import { all } from 'redux-saga/effects';
 
 import { registerSaga, loginSaga, autoLoginSaga } from './authSaga';
 import { getUserSaga } from './userSaga';
-import { getUserInfoSaga } from './profileSaga';
+import { getUserInfoSaga, updateUserInfoSaga } from './profileSaga';
 import {
   getAllFriendshipsSaga,
   getFriendshipSaga,
@@ -18,6 +18,7 @@ export default function* rootSaga() {
     autoLoginSaga(),
     getUserSaga(),
     getUserInfoSaga(),
+    updateUserInfoSaga(),
     getAllFriendshipsSaga(),
     getFriendshipSaga(),
     createFriendshipSaga(),

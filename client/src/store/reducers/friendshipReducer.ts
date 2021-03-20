@@ -149,7 +149,7 @@ function setFriendshipErrorTransformer(
   state: FriendshipState,
   { payload }: ReturnType<SetFriendshipError>,
 ): FriendshipState {
-  return { ...state, loading: false, error: payload };
+  return { ...state, loading: false, error: payload, initialLoad: true };
 }
 
 export default friendshipReducer;

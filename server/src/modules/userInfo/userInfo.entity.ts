@@ -29,7 +29,7 @@ class UserInfo {
   city?: City;
 
   @ManyToOne(() => Relationship, { nullable: true })
-  relaitonship?: Relationship;
+  relationship?: Relationship;
 
   @CreateDateColumn()
   createdAt: Date;

@@ -151,7 +151,7 @@ const UserActions: React.FC = () => {
         alignItems={loading || !initialLoad ? 'center' : 'stretch'}
         className={classes.buttonsContainer}
       >
-        {loading || !initialLoad ? (
+        {!initialLoad ? (
           <CircularProgress size={200} color="primary" />
         ) : (
           buttons

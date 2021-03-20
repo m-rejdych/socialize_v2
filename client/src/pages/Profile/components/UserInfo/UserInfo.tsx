@@ -1,23 +1,8 @@
 import { useSelector } from 'react-redux';
-import {
-  Box,
-  Typography,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemSecondaryAction,
-  makeStyles,
-  IconButton,
-} from '@material-ui/core';
-import { Edit } from '@material-ui/icons';
+import { Box, Typography, List } from '@material-ui/core';
 
 import RootState from '../../../../interfaces/store';
-
-const useStyles = makeStyles((theme) => ({
-  bold: {
-    fontWeight: 700,
-  },
-}));
+import InfoField from '../InfoField';
 
 interface Props {
   isMe: boolean;
@@ -30,57 +15,37 @@ const UserInfo: React.FC<Props> = ({ isMe }) => {
   const relationship = useSelector(
     (state: RootState) => state.profile.relationship,
   );
-  const classes = useStyles();
 
   const fields = [
     {
       value: age,
       label: 'Age',
+      type: 'age',
     },
     {
       value: country,
       label: 'Country',
+      type: 'country',
     },
     {
       value: city,
       label: 'City',
+      type: 'city',
     },
     {
       value: relationship,
       label: 'Relationship',
+      type: 'relationship',
     },
-  ];
+  ] as const;
 
   return (
     <Box display="flex" flexDirection="column">
       <Typography variant="h4">User info</Typography>
       <List>
-        {fields.map(({ value, label }) => {
-          const text =
-            typeof value === 'number' ? value : value?.name || 'Unknown';
-
-          return (
-            <ListItem key={label} divider>
-              <ListItemText disableTypography>
-                <Typography className={classes.bold} variant="h6">
-                  {label}
-                </Typography>
-                <Typography
-                  color={text === 'Unknown' ? 'textSecondary' : 'textPrimary'}
-                >
-                  {text}
-                </Typography>
-              </ListItemText>
-              {isMe && (
-                <ListItemSecondaryAction>
-                  <IconButton>
-                    <Edit />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              )}
-            </ListItem>
-          );
-        })}
+        {fields.map((field) => (
+          <InfoField key={field.type} isMe={isMe} {...field} />
+        ))}
       </List>
     </Box>
   );
