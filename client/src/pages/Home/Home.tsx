@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Box, Button, makeStyles } from '@material-ui/core';
 import { PostAdd } from '@material-ui/icons';
 
 import NewPostDialog from './components/NewPostDialog';
+import { getFeed } from '../../store/actions/postActions';
 
 const useStyles = makeStyles((theme) => ({
   newPostContainer: {
@@ -13,7 +15,12 @@ const useStyles = makeStyles((theme) => ({
 
 const Home: React.FC = () => {
   const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
   const classes = useStyles();
+
+  useEffect(() => {
+    dispatch(getFeed(null));
+  }, []);
 
   const handleOpen = (): void => {
     setOpen(true);

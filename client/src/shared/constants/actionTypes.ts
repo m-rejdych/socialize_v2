@@ -39,5 +39,7 @@ export const FRIENDSHIP = {
 export const POST = {
   CREATE_POST: 'POST_CREATE_POST' as const,
   CREATE_POST_SUCCESS: 'POST_CREATE_POST_SUCCESS' as const,
+  GET_FEED: 'POST_GET_FEED' as const,
+  GET_FEED_SUCCESS: 'POST_GET_FEED_SUCCESS' as const,
   ERROR: 'POST_ERROR' as const,
 };

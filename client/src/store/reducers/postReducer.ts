@@ -3,6 +3,8 @@ import StrategyMap from '../../interfaces/store/strategyMap';
 import {
   CreatePostAction,
   CreatePostSuccessAction,
+  GetFeedAction,
+  GetFeedSuccessAction,
   SetPostErrorAction,
 } from '../../interfaces/post/postActions';
 import PostState from '../../interfaces/post/postState';
@@ -19,6 +21,8 @@ const initialState: PostState = {
 const strategyMap: StrategyMap<PostState, typeof POST> = {
   [POST.CREATE_POST]: createPostTransformer,
   [POST.CREATE_POST_SUCCESS]: createPostSuccessTransformer,
+  [POST.GET_FEED]: getFeedTransformer,
+  [POST.GET_FEED_SUCCESS]: getFeedSuccessTransformer,
   [POST.ERROR]: setPostErrorTransformer,
 };
 
@@ -43,6 +47,26 @@ function createPostSuccessTransformer(
     loading: false,
     error: null,
     feed: [payload, ...state.feed],
+  };
+}
+
+function getFeedTransformer(
+  state: PostState,
+  _: ReturnType<GetFeedAction>,
+): PostState {
+  return { ...state, loading: true };
+}
+
+function getFeedSuccessTransformer(
+  state: PostState,
+  { payload }: ReturnType<GetFeedSuccessAction>,
+): PostState {
+  return {
+    ...state,
+    loading: false,
+    initialLoad: true,
+    error: null,
+    feed: payload,
   };
 }
 
