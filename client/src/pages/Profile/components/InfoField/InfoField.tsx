@@ -12,9 +12,11 @@ import {
 } from '@material-ui/core';
 import { Edit, Check, Close } from '@material-ui/icons';
 
+import RelationshipSelect from '../RelationshipSelect';
 import Country from '../../../../interfaces/country';
 import City from '../../../../interfaces/city';
 import Relationship from '../../../../interfaces/relationship';
+import validateNumbers from '../../../../util/validateNumbers';
 import { updateUserInfo } from '../../../../store/actions/profileActions';
 
 const useStyles = makeStyles((theme) => ({
@@ -24,15 +26,6 @@ const useStyles = makeStyles((theme) => ({
   paddingVerticalSmall: {
     paddingTop: theme.spacing(0.5),
     paddingBottom: theme.spacing(0.5),
-  },
-  noInputArrows: {
-    '&::-webkit-outer-spin-button, &::-webkit-inner-spin-button': {
-      '-webkit-appearance': 'none',
-      margin: 0,
-    },
-    '&[type=number]': {
-      '-moz-appearance': 'textfield',
-    },
   },
 }));
 
@@ -68,10 +61,12 @@ const InfoField: React.FC<Props> = ({ value, label, type, isMe }) => {
     setIsEditing(false);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setEditValue(
-      isAge ? e.target.value.replace(/[^0-9]/g, '') : e.target.value,
-    );
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | { name?: string | undefined; value: string }
+    >,
+  ): void => {
+    setEditValue(isAge ? validateNumbers(e.target.value) : e.target.value);
   };
 
   const handleUpdate = (): void => {
@@ -79,7 +74,25 @@ const InfoField: React.FC<Props> = ({ value, label, type, isMe }) => {
     setIsEditing(false);
   };
 
+  const renderEditElement = (): JSX.Element => {
+    if (type === 'relationship') {
+      return (
+        <RelationshipSelect value={editValue} handleChange={handleChange} />
+      );
+    }
+
+    return (
+      <TextField
+        autoFocus
+        value={editValue}
+        type="text"
+        onChange={handleChange}
+      />
+    );
+  };
+
   const text = typeof value === 'number' ? value : value?.name || 'Unknown';
+  const editElement = renderEditElement();
 
   return (
     <ListItem key={label} divider>
@@ -88,13 +101,7 @@ const InfoField: React.FC<Props> = ({ value, label, type, isMe }) => {
           {label}
         </Typography>
         {isEditing ? (
-          <TextField
-            autoFocus
-            value={editValue}
-            type={isAge ? 'number' : 'text'}
-            onChange={handleChange}
-            inputProps={{ className: classes.noInputArrows }}
-          />
+          editElement
         ) : (
           <Typography
             color={text === 'Unknown' ? 'textSecondary' : 'textPrimary'}

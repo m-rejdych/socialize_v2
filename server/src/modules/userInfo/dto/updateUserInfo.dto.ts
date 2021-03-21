@@ -3,7 +3,7 @@ import { IsString, IsInt, IsIn, IsOptional } from 'class-validator';
 class UpdateUserInfoDto {
   @IsOptional()
   @IsInt()
-  age?: number;
+  age?: number | '';
 
   @IsOptional()
   @IsString()
@@ -14,8 +14,8 @@ class UpdateUserInfoDto {
   city?: string;
 
   @IsOptional()
-  @IsIn(['Single', 'In relationship', 'Married', 'Divorced'])
-  relationship?: 'Single' | 'In relationship' | 'Married' | 'Divorced';
+  @IsIn(['Single', 'In relationship', 'Married', 'Divorced', ''])
+  relationship?: 'Single' | 'In relationship' | 'Married' | 'Divorced' | '';
 }
 
 export default UpdateUserInfoDto;

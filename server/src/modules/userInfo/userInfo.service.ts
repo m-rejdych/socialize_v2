@@ -58,13 +58,19 @@ class UserInfoService {
     if (city) {
       const cityInstance = await this.cityService.findOrCreateCity(city);
       userInfo.city = cityInstance;
+    } else if (city === '') {
+      userInfo.city = null;
     }
+
     if (country) {
       const countryInstance = await this.countryService.findOrCreateCountry(
         country,
       );
       userInfo.country = countryInstance;
+    } else if (country === '') {
+      userInfo.country = null;
     }
+
     if (relationship) {
       const relationshipInstance = await this.relationshipService.findOneByName(
         relationship,
@@ -73,8 +79,12 @@ class UserInfoService {
         throw new BadRequestException('Ivalid relationship type!');
       }
       userInfo.relationship = relationshipInstance;
+    } else if (relationship === '') {
+      userInfo.relationship = null;
     }
+
     if (age) userInfo.age = age;
+    else if (age === '') userInfo.age = null;
 
     await this.userInfoRepository.save(userInfo);
 
