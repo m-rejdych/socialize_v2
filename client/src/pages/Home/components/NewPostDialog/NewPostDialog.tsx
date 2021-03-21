@@ -1,3 +1,4 @@
+import { useDispatch } from 'react-redux';
 import {
   Dialog,
   DialogTitle,
@@ -8,6 +9,8 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { Formik, Form, Field, FieldProps } from 'formik';
+
+import { createPost } from '../../../../store/actions/postActions';
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -24,6 +27,7 @@ interface Props {
 }
 
 const NewPostDialog: React.FC<Props> = ({ open, onClose }) => {
+  const dispatch = useDispatch();
   const classes = useStyles();
 
   const initialValues = {
@@ -69,47 +73,53 @@ const NewPostDialog: React.FC<Props> = ({ open, onClose }) => {
     }, 300);
   };
 
+  const handleSubmit = (values: typeof initialValues): void => {
+    dispatch(createPost(values));
+    onClose();
+  };
+
   return (
-    <Formik initialValues={initialValues} onSubmit={() => {}}>
-      {({ resetForm }) => (
-        <Form>
-          <Dialog open={open} onClose={onClose} disableBackdropClick>
+    <Dialog open={open} onClose={onClose} disableBackdropClick>
+      <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+        {({ resetForm, isValid, dirty }) => (
+          <Form>
             <DialogTitle>New post</DialogTitle>
             <DialogContent>
-              <Form>
-                {fields.map(({ label, ...rest }) => (
-                  <Field key={rest.name} {...rest}>
-                    {({ field, meta }: FieldProps) => (
-                      <TextField
-                        {...field}
-                        fullWidth
-                        label={label}
-                        variant="outlined"
-                        error={meta.touched && !!meta.error}
-                        helperText={meta.touched && meta.error}
-                        multiline={rest.name === 'content'}
-                        rows={rest.name === 'title' ? 1 : 8}
-                        className={
-                          rest.name === 'title'
-                            ? classes.title
-                            : classes.content
-                        }
-                      />
-                    )}
-                  </Field>
-                ))}
-              </Form>
+              {fields.map(({ label, ...rest }) => (
+                <Field key={rest.name} {...rest}>
+                  {({ field, meta }: FieldProps) => (
+                    <TextField
+                      {...field}
+                      fullWidth
+                      label={label}
+                      variant="outlined"
+                      error={meta.touched && !!meta.error}
+                      helperText={meta.touched && meta.error}
+                      multiline={rest.name === 'content'}
+                      rows={rest.name === 'title' ? 1 : 8}
+                      className={
+                        rest.name === 'title' ? classes.title : classes.content
+                      }
+                    />
+                  )}
+                </Field>
+              ))}
             </DialogContent>
             <DialogActions>
               <Button onClick={() => handleClose(resetForm)}>Close</Button>
-              <Button variant="contained" color="primary" type="submit">
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                disabled={!isValid || !dirty}
+              >
                 Add
               </Button>
             </DialogActions>
-          </Dialog>
-        </Form>
-      )}
-    </Formik>
+          </Form>
+        )}
+      </Formik>
+    </Dialog>
   );
 };
 
