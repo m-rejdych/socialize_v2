@@ -70,12 +70,26 @@ class FriendshipService {
     return friendship || null;
   }
 
+  async findAccpetedByUserId(userId: number): Promise<Friendship[]> {
+    const friendships = await this.friendshipRepository
+      .createQueryBuilder('friendship')
+      .leftJoinAndSelect('friendship.requestedBy', 'requestedBy')
+      .leftJoinAndSelect('friendship.addressedTo', 'addressedTo')
+      .where('friendship.isAccepted = :isTrue', { isTrue: true })
+      .andWhere('requestedBy.id = :userId OR addressedTo.id = :userId', {
+        userId,
+      })
+      .getMany();
+
+    return friendships;
+  }
+
   async findAllByUserId(userId: number): Promise<Friendship[]> {
     const friendships = await this.friendshipRepository
       .createQueryBuilder('friendship')
       .leftJoinAndSelect('friendship.requestedBy', 'requestedBy')
       .leftJoinAndSelect('friendship.addressedTo', 'addressedTo')
-      .andWhere('requestedBy.id = :userId OR addressedTo.id = :userId', {
+      .where('requestedBy.id = :userId OR addressedTo.id = :userId', {
         userId,
       })
       .getMany();

@@ -39,6 +39,14 @@ class PostController {
   }
 
   @UseGuards(JwtGuard)
+  @Get('get-feed')
+  async getFeed(@Req() req: JwtRequest): Promise<PostEntity[]> {
+    const { id } = req.user;
+
+    return await this.postService.findByFriendsIds(id);
+  }
+
+  @UseGuards(JwtGuard)
   @Post('create-post')
   async createPost(
     @Body() data: CreatePostDto,

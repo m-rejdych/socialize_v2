@@ -80,7 +80,7 @@ const Profile: React.FC = () => {
 
   useEffect(() => {
     dispatch(getUserInfo(Number(id)));
-  }, []);
+  }, [id]);
 
   const isMe = userId === Number(id);
 

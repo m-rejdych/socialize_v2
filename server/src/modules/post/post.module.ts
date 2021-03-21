@@ -7,6 +7,7 @@ import PostReaction from '../postReaction/postReaction.entity';
 import Comment from '../comment/comment.entity';
 import UserModule from '../user/user.module';
 import PostService from './post.service';
+import FriendshipModule from '../friendship/friendship.module';
 import PostController from './post.controller';
 import PostReactionModule from '../postReaction/postReaction.module';
 
@@ -15,6 +16,7 @@ import PostReactionModule from '../postReaction/postReaction.module';
     TypeOrmModule.forFeature([Post, User, PostReaction, Comment]),
     UserModule,
     PostReactionModule,
+    FriendshipModule,
   ],
   providers: [PostService],
   controllers: [PostController],

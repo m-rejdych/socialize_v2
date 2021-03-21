@@ -16,6 +16,7 @@ import ChatModule from '../chat/chat.module';
   ],
   controllers: [FriendhsipController],
   providers: [FriendshipService],
+  exports: [FriendshipService],
 })
 class FriendshipModule {}
 

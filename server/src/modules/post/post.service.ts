@@ -13,6 +13,7 @@ import DeletePostResponseDto from './dto/deletePostResponse.dto';
 import AddPostReactionDto from './dto/addPostReaction.dto';
 import DeleteByPostAndUserIdsResponseDto from '../postReaction/dto/deletePostReactionResponse.dto';
 import UserService from '../user/user.service';
+import FriendshipService from '../friendship/friendship.service';
 import PostReactionService from '../postReaction/postReaction.service';
 
 @Injectable()
@@ -21,6 +22,7 @@ class PostService {
     @InjectRepository(Post) private postRepository: Repository<Post>,
     private userService: UserService,
     private postReactionService: PostReactionService,
+    private friendshipService: FriendshipService,
   ) {}
 
   async findById(id: number): Promise<Post | null> {
@@ -39,6 +41,25 @@ class PostService {
       .getOne();
 
     return post || null;
+  }
+
+  async findByFriendsIds(userId: number): Promise<Post[]> {
+    const friendships = await this.friendshipService.findAccpetedByUserId(
+      userId,
+    );
+    const friendsIds = friendships.map(({ requestedBy, addressedTo }) =>
+      requestedBy.id === userId ? addressedTo.id : requestedBy.id,
+    );
+
+    const posts = await this.postRepository
+      .createQueryBuilder('post')
+      .leftJoinAndSelect('post.author', 'author')
+      .where('author.id IN (:...friendsIds)', {
+        friendsIds: [...friendsIds, userId],
+      })
+      .getMany();
+
+    return posts;
   }
 
   async createPost(userId: number, data: CreatePostDto): Promise<Post> {
