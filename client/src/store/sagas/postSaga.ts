@@ -4,14 +4,25 @@ import {
   createPostSuccess,
   getFeedSuccess,
   updatePostSuccess,
+  deletePostSuccess,
   setPostError,
 } from '../actions/postActions';
 import {
   CreatePostAction,
   UpdatePostAction,
+  DeletePostAction,
 } from '../../interfaces/post/postActions';
-import { CreatePostRes, GetFeedRes } from '../../interfaces/post/postRes';
-import { createPost, getFeed, updatePost } from '../../services/postService';
+import {
+  CreatePostRes,
+  GetFeedRes,
+  DeletePostRes,
+} from '../../interfaces/post/postRes';
+import {
+  createPost,
+  getFeed,
+  updatePost,
+  deletePost,
+} from '../../services/postService';
 import { POST } from '../../shared/constants/actionTypes';
 
 function* handleCreatePost({ payload }: ReturnType<CreatePostAction>) {
@@ -50,6 +61,18 @@ function* handleUpdatePost({ payload }: ReturnType<UpdatePostAction>) {
   }
 }
 
+export function* handleDeletePost({ payload }: ReturnType<DeletePostAction>) {
+  try {
+    const response: DeletePostRes = yield call(deletePost, payload);
+
+    if (response.data) {
+      yield put(deletePostSuccess(response.data.postId));
+    }
+  } catch (error) {
+    yield put(setPostError(error.response.data.message));
+  }
+}
+
 export function* createPostSaga() {
   yield takeEvery(POST.CREATE_POST, handleCreatePost);
 }
@@ -60,4 +83,8 @@ export function* getFeedSaga() {
 
 export function* updatePostSaga() {
   yield takeEvery(POST.UPDATE_POST, handleUpdatePost);
+}
+
+export function* deletePostSaga() {
+  yield takeEvery(POST.DELETE_POST, handleDeletePost);
 }

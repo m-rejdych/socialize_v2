@@ -21,4 +21,11 @@ export type UpdatePostSuccessAction = Action<
   Post
 >;
 
+export type DeletePostAction = Action<typeof POST.DELETE_POST, number>;
+
+export type DeletePostSuccessAction = Action<
+  typeof POST.DELETE_POST_SUCCESS,
+  number
+>;
+
 export type SetPostErrorAction = Action<typeof POST.ERROR, string | null>;

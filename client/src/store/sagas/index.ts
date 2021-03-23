@@ -10,7 +10,12 @@ import {
   acceptFriendshipSaga,
   deleteFriendshipSaga,
 } from './friendshipSaga';
-import { createPostSaga, getFeedSaga, updatePostSaga } from './postSaga';
+import {
+  createPostSaga,
+  getFeedSaga,
+  updatePostSaga,
+  deletePostSaga,
+} from './postSaga';
 
 export default function* rootSaga() {
   yield all([
@@ -28,5 +33,6 @@ export default function* rootSaga() {
     createPostSaga(),
     getFeedSaga(),
     updatePostSaga(),
+    deletePostSaga(),
   ]);
 }

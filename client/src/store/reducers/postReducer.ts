@@ -7,6 +7,8 @@ import {
   GetFeedSuccessAction,
   UpdatePostAction,
   UpdatePostSuccessAction,
+  DeletePostAction,
+  DeletePostSuccessAction,
   SetPostErrorAction,
 } from '../../interfaces/post/postActions';
 import PostState from '../../interfaces/post/postState';
@@ -27,6 +29,8 @@ const strategyMap: StrategyMap<PostState, typeof POST> = {
   [POST.GET_FEED_SUCCESS]: getFeedSuccessTransformer,
   [POST.UPDATE_POST]: updatePostTransformer,
   [POST.UPDATE_POST_SUCCESS]: updatePostSuccessTransformer,
+  [POST.DELETE_POST]: deletePostTransformer,
+  [POST.DELETE_POST_SUCCESS]: deletePostSuccessTransformer,
   [POST.ERROR]: setPostErrorTransformer,
 };
 
@@ -90,6 +94,25 @@ function updatePostSuccessTransformer(
     loading: false,
     error: null,
     feed: state.feed.map((post) => (post.id === payload.id ? payload : post)),
+  };
+}
+
+function deletePostTransformer(
+  state: PostState,
+  _: ReturnType<DeletePostAction>,
+): PostState {
+  return { ...state, loading: true };
+}
+
+function deletePostSuccessTransformer(
+  state: PostState,
+  { payload }: ReturnType<DeletePostSuccessAction>,
+): PostState {
+  return {
+    ...state,
+    loading: false,
+    error: null,
+    feed: state.feed.filter(({ id }) => id !== payload),
   };
 }
 
