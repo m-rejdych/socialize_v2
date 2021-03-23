@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
 
 interface Props {
   className?: string;
+  onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
 const Card: React.FC<Props> = ({ children, ...props }) => {

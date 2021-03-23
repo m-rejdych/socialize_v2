@@ -3,11 +3,15 @@ import { put, call, takeEvery } from 'redux-saga/effects';
 import {
   createPostSuccess,
   getFeedSuccess,
+  updatePostSuccess,
   setPostError,
 } from '../actions/postActions';
-import { CreatePostAction } from '../../interfaces/post/postActions';
+import {
+  CreatePostAction,
+  UpdatePostAction,
+} from '../../interfaces/post/postActions';
 import { CreatePostRes, GetFeedRes } from '../../interfaces/post/postRes';
-import { createPost, getFeed } from '../../services/postService';
+import { createPost, getFeed, updatePost } from '../../services/postService';
 import { POST } from '../../shared/constants/actionTypes';
 
 function* handleCreatePost({ payload }: ReturnType<CreatePostAction>) {
@@ -34,10 +38,26 @@ function* handleGetFeed() {
   }
 }
 
+function* handleUpdatePost({ payload }: ReturnType<UpdatePostAction>) {
+  try {
+    const response: CreatePostRes = yield call(updatePost, payload);
+
+    if (response.data) {
+      yield put(updatePostSuccess(response.data));
+    }
+  } catch (error) {
+    yield put(setPostError(error.response.data.message));
+  }
+}
+
 export function* createPostSaga() {
   yield takeEvery(POST.CREATE_POST, handleCreatePost);
 }
 
 export function* getFeedSaga() {
   yield takeEvery(POST.GET_FEED, handleGetFeed);
+}
+
+export function* updatePostSaga() {
+  yield takeEvery(POST.UPDATE_POST, handleUpdatePost);
 }

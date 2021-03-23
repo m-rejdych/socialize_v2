@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core';
 import { Formik, Form, Field, FieldProps } from 'formik';
 
-import { createPost } from '../../../../store/actions/postActions';
+import { createPost, updatePost } from '../../../store/actions/postActions';
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -21,18 +21,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+interface EditData {
+  id: number;
+  title?: string;
+  content?: string;
+}
+
 interface Props {
   open: boolean;
   onClose: () => void;
+  editData?: EditData;
 }
 
-const NewPostDialog: React.FC<Props> = ({ open, onClose }) => {
+const NewPostDialog: React.FC<Props> = ({ open, onClose, editData }) => {
   const dispatch = useDispatch();
   const classes = useStyles();
 
   const initialValues = {
-    title: '',
-    content: '',
+    title: editData?.title || '',
+    content: editData?.content || '',
   };
 
   const fields = [
@@ -74,7 +81,11 @@ const NewPostDialog: React.FC<Props> = ({ open, onClose }) => {
   };
 
   const handleSubmit = (values: typeof initialValues): void => {
-    dispatch(createPost(values));
+    dispatch(
+      editData?.id
+        ? updatePost({ id: editData.id, ...values })
+        : createPost(values),
+    );
     onClose();
   };
 
@@ -113,7 +124,7 @@ const NewPostDialog: React.FC<Props> = ({ open, onClose }) => {
                 type="submit"
                 disabled={!isValid || !dirty}
               >
-                Add
+                {editData?.id ? 'Edit' : 'Add'}
               </Button>
             </DialogActions>
           </Form>

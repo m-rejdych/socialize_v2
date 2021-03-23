@@ -54,9 +54,12 @@ class PostService {
     const posts = await this.postRepository
       .createQueryBuilder('post')
       .leftJoinAndSelect('post.author', 'author')
+      .leftJoinAndSelect('post.reactions', 'reactions')
+      .leftJoinAndSelect('post.comments', 'comments')
       .where('author.id IN (:...friendsIds)', {
         friendsIds: [...friendsIds, userId],
       })
+      .orderBy('post.createdAt', 'DESC')
       .getMany();
 
     return posts;

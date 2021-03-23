@@ -1,5 +1,5 @@
 import createJwtRequest from '../util/jwtRequestFactory';
-import { CreatePostReq } from '../interfaces/post/postReq';
+import { CreatePostReq, UpdatePostReq } from '../interfaces/post/postReq';
 import { CreatePostRes, GetFeedRes } from '../interfaces/post/postRes';
 import { API_URI } from '../config';
 
@@ -14,4 +14,11 @@ export const getFeed = (): Promise<GetFeedRes> =>
   createJwtRequest<GetFeedRes>({
     method: 'GET',
     url: `${API_URI}/post/get-feed`,
+  });
+
+export const updatePost = (data: UpdatePostReq): Promise<CreatePostRes> =>
+  createJwtRequest<CreatePostRes>({
+    method: 'PUT',
+    url: `${API_URI}/post/update-post`,
+    body: data,
   });

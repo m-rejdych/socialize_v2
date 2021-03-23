@@ -1,26 +1,21 @@
-import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useState } from 'react';
 import { Box, Button, makeStyles } from '@material-ui/core';
 import { PostAdd } from '@material-ui/icons';
 
-import NewPostDialog from './components/NewPostDialog';
-import { getFeed } from '../../store/actions/postActions';
+import NewPostDialog from '../../shared/components/NewPostDialog';
+import Feed from './components/Feed';
 
 const useStyles = makeStyles((theme) => ({
   newPostContainer: {
     paddingBottom: theme.spacing(1),
     borderBottom: `1px solid ${theme.palette.divider}`,
+    marginBottom: theme.spacing(3),
   },
 }));
 
 const Home: React.FC = () => {
   const [open, setOpen] = useState(false);
-  const dispatch = useDispatch();
   const classes = useStyles();
-
-  useEffect(() => {
-    dispatch(getFeed(null));
-  }, []);
 
   const handleOpen = (): void => {
     setOpen(true);
@@ -31,7 +26,7 @@ const Home: React.FC = () => {
   };
 
   return (
-    <Box>
+    <Box height="100%">
       <Box
         display="flex"
         alignItems="center"
@@ -42,6 +37,7 @@ const Home: React.FC = () => {
         </Button>
         <NewPostDialog open={open} onClose={handleClose} />
       </Box>
+      <Feed />
     </Box>
   );
 };

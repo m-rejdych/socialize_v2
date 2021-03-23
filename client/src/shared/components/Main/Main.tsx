@@ -24,6 +24,9 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     margin: 0,
   },
+  gridItem: {
+    height: '100%',
+  },
   absolute: {
     position: 'absolute',
   },
@@ -64,7 +67,7 @@ const Main: React.FC = ({ children }) => {
               <Grid item xs={3}>
                 <Dashboard />
               </Grid>
-              <Grid item xs={9}>
+              <Grid item xs={9} className={classes.gridItem}>
                 {children}
               </Grid>
             </Grid>
