@@ -10,6 +10,7 @@ import {
   makeStyles,
   IconButton,
   Box,
+  Tooltip,
 } from '@material-ui/core';
 import { Edit, Delete } from '@material-ui/icons';
 import { formatDistance } from 'date-fns';
@@ -82,12 +83,16 @@ const Post: React.FC<Props> = ({
         action={
           isMe && (
             <Box display="flex">
-              <IconButton onClick={handleOpen}>
-                <Edit color="primary" />
-              </IconButton>
-              <IconButton onClick={handleOpenConfirmation}>
-                <Delete htmlColor="#f44336" />
-              </IconButton>
+              <Tooltip title="Edit">
+                <IconButton onClick={handleOpen}>
+                  <Edit color="primary" />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Delete">
+                <IconButton onClick={handleOpenConfirmation}>
+                  <Delete htmlColor="#f44336" />
+                </IconButton>
+              </Tooltip>
             </Box>
           )
         }

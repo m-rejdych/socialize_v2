@@ -1,5 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { CardActions, IconButton, makeStyles } from '@material-ui/core';
+import {
+  CardActions,
+  IconButton,
+  makeStyles,
+  Tooltip,
+} from '@material-ui/core';
 import {
   ThumbUpAltOutlined,
   ThumbUpAlt,
@@ -46,52 +51,67 @@ const PostReactions: React.FC<Props> = ({ postId, reactions }) => {
     {
       id: `${postId}-reaction-button-like`,
       type: 'like',
-      icon:
-        reactionName === 'like' ? (
-          <ThumbUpAlt fontSize="small" color="primary" />
-        ) : (
-          <ThumbUpAltOutlined fontSize="small" />
-        ),
+      icon: (
+        <Tooltip title="Like">
+          {reactionName === 'like' ? (
+            <ThumbUpAlt fontSize="small" color="primary" />
+          ) : (
+            <ThumbUpAltOutlined fontSize="small" />
+          )}
+        </Tooltip>
+      ),
     },
     {
       id: `${postId}-reaction-button-dislike`,
       type: 'dislike',
-      icon:
-        reactionName === 'dislike' ? (
-          <ThumbDownAlt fontSize="small" color="secondary" />
-        ) : (
-          <ThumbDownAltOutlined fontSize="small" />
-        ),
+      icon: (
+        <Tooltip title="Dislike">
+          {reactionName === 'dislike' ? (
+            <ThumbDownAlt fontSize="small" color="secondary" />
+          ) : (
+            <ThumbDownAltOutlined fontSize="small" />
+          )}
+        </Tooltip>
+      ),
     },
     {
       id: `${postId}-reaction-button-love`,
       type: 'love',
-      icon:
-        reactionName === 'love' ? (
-          <FavoriteOutlined fontSize="small" htmlColor={deepPurple[500]} />
-        ) : (
-          <FavoriteBorder fontSize="small" />
-        ),
+      icon: (
+        <Tooltip title="Love">
+          {reactionName === 'love' ? (
+            <FavoriteOutlined fontSize="small" htmlColor={deepPurple[500]} />
+          ) : (
+            <FavoriteBorder fontSize="small" />
+          )}
+        </Tooltip>
+      ),
     },
     {
       id: `${postId}-reaction-button-laugh`,
       type: 'laugh',
-      icon:
-        reactionName === 'laugh' ? (
-          <EmojiEmotions fontSize="small" htmlColor={amber[500]} />
-        ) : (
-          <EmojiEmotionsOutlined fontSize="small" />
-        ),
+      icon: (
+        <Tooltip title="Laugh">
+          {reactionName === 'laugh' ? (
+            <EmojiEmotions fontSize="small" htmlColor={amber[500]} />
+          ) : (
+            <EmojiEmotionsOutlined fontSize="small" />
+          )}
+        </Tooltip>
+      ),
     },
     {
       id: `${postId}-reaction-button-idea`,
       type: 'idea',
-      icon:
-        reactionName === 'idea' ? (
-          <EmojiObjects fontSize="small" htmlColor={green[500]} />
-        ) : (
-          <EmojiObjectsOutlined fontSize="small" />
-        ),
+      icon: (
+        <Tooltip title="Idea">
+          {reactionName === 'idea' ? (
+            <EmojiObjects fontSize="small" htmlColor={green[500]} />
+          ) : (
+            <EmojiObjectsOutlined fontSize="small" />
+          )}
+        </Tooltip>
+      ),
     },
   ] as const;
 

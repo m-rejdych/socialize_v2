@@ -9,6 +9,7 @@ import {
   makeStyles,
   TextField,
   Box,
+  Tooltip,
 } from '@material-ui/core';
 import { Edit, Check, Close } from '@material-ui/icons';
 
@@ -115,17 +116,23 @@ const InfoField: React.FC<Props> = ({ value, label, type, isMe }) => {
         <ListItemSecondaryAction>
           {isEditing ? (
             <Box display="flex" alignItems="center">
-              <IconButton onClick={handleUpdate}>
-                <Check color="primary" />
-              </IconButton>
-              <IconButton onClick={cancelEditing}>
-                <Close color="secondary" />
-              </IconButton>
+              <Tooltip title="Save">
+                <IconButton onClick={handleUpdate}>
+                  <Check color="primary" />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Cancel">
+                <IconButton onClick={cancelEditing}>
+                  <Close color="secondary" />
+                </IconButton>
+              </Tooltip>
             </Box>
           ) : (
-            <IconButton onClick={startEditing}>
-              <Edit color="primary" />
-            </IconButton>
+            <Tooltip title="Edit">
+              <IconButton onClick={startEditing}>
+                <Edit color="primary" />
+              </IconButton>
+            </Tooltip>
           )}
         </ListItemSecondaryAction>
       )}
