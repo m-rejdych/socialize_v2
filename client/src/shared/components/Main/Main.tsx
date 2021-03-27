@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import {
   makeStyles,
   Box,
@@ -12,33 +13,33 @@ import Dashboard from '../Dashboard';
 
 const useStyles = makeStyles((theme) => ({
   gridContainer: {
-    height: '100%',
     width: '100%',
     margin: 0,
-  },
-  gridItem: {
-    height: '100%',
-  },
-  absolute: {
-    position: 'absolute',
   },
 }));
 
 const Main: React.FC = ({ children }) => {
-  const classes = useStyles();
   const initialLoad = useSelector((state: RootState) => state.user.initialLoad);
   const userId = useSelector((state: RootState) => state.user.id);
+  const gridRef = useRef<HTMLDivElement | null>(null);
+  const classes = useStyles();
 
   return (
     <Container>
-      <div>
+      <div ref={gridRef}>
         {initialLoad ? (
           userId ? (
             <Grid container spacing={3} className={classes.gridContainer}>
               <Grid item xs={3}>
-                <Dashboard />
+                <Dashboard
+                  width={
+                    gridRef.current
+                      ? gridRef.current.offsetWidth * 0.25 - 3 * 8
+                      : 'auto'
+                  }
+                />
               </Grid>
-              <Grid item xs={9} className={classes.gridItem}>
+              <Grid item xs={9}>
                 {children}
               </Grid>
             </Grid>

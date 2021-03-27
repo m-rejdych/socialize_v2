@@ -11,6 +11,9 @@ import RootState from '../../../interfaces/store';
 import Navigation from './components/Navigation';
 
 const useStyles = makeStyles((theme) => ({
+  card: {
+    position: 'fixed',
+  },
   bold: {
     fontWeight: 700,
   },
@@ -19,14 +22,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Dashboard: React.FC = () => {
+interface Props {
+  width: number | string;
+}
+
+const Dashboard: React.FC<Props> = ({ width }) => {
   const firstName = useSelector((state: RootState) => state.user.firstName);
   const lastName = useSelector((state: RootState) => state.user.lastName);
   const email = useSelector((state: RootState) => state.user.email);
   const classes = useStyles();
 
   return (
-    <Card>
+    <Card className={classes.card} style={{ width }}>
       <CardHeader
         title={`${firstName} ${lastName}`}
         subheader={email}
