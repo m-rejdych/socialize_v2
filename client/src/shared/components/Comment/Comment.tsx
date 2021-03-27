@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import {
   Avatar,
   Card,
+  Box,
   CardHeader,
   CardContent,
   Typography,
@@ -14,12 +15,22 @@ import ROUTES from '../../constants/routes';
 import CommentType from '../../../interfaces/comment';
 
 const useStyles = makeStyles((theme) => ({
-  card: {
-    backgroundColor: theme.palette.grey[700],
-    borderRadius: 15,
+  container: {
     '&:not(:last-child)': {
       marginBottom: theme.spacing(2),
     },
+  },
+  card: {
+    dispay: 'inline-block',
+    backgroundColor: theme.palette.grey[700],
+    borderRadius: 30,
+    marginLeft: theme.spacing(1),
+  },
+  paddingSmall: {
+    padding: `${theme.spacing(1.5)}px !important`,
+  },
+  paddingBottomZero: {
+    paddingBottom: '0 !important',
   },
   bold: {
     fontWeight: 700,
@@ -45,25 +56,33 @@ const Comment: React.FC<Props> = ({ author, content, createdAt }) => {
   };
 
   return (
-    <Card className={classes.card}>
-      <CardHeader
-        title={`${author?.firstName || ''} ${author?.lastName || ''}`}
-        subheader={formatDistance(new Date(createdAt), new Date(), {
-          addSuffix: true,
-        })}
-        avatar={
-          <Avatar onClick={navigateToProfile} className={classes.pointer} />
-        }
-        titleTypographyProps={{ onClick: navigateToProfile }}
-        classes={{
-          title: classNames(classes.bold, classes.pointer),
-          subheader: classes.semiBold,
-        }}
-      />
-      <CardContent>
-        <Typography>{content}</Typography>
-      </CardContent>
-    </Card>
+    <Box display="flex" className={classes.container}>
+      <Avatar onClick={navigateToProfile} className={classes.pointer} />
+      <Card className={classes.card}>
+        <CardHeader
+          title={`${author?.firstName || ''} ${author?.lastName || ''}`}
+          subheader={formatDistance(new Date(createdAt), new Date(), {
+            addSuffix: true,
+          })}
+          className={classNames(
+            classes.paddingSmall,
+            classes.paddingBottomZero,
+          )}
+          titleTypographyProps={{
+            variant: 'subtitle2',
+            onClick: navigateToProfile,
+          }}
+          subheaderTypographyProps={{ variant: 'caption' }}
+          classes={{
+            title: classNames(classes.bold, classes.pointer),
+            subheader: classes.semiBold,
+          }}
+        />
+        <CardContent className={classes.paddingSmall}>
+          <Typography variant="body2">{content}</Typography>
+        </CardContent>
+      </Card>
+    </Box>
   );
 };
 

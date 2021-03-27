@@ -60,9 +60,13 @@ const Comments: React.FC<Props> = ({ postId, open, comments }) => {
     if (sortedComments.length === 0) return null;
 
     if (open) {
-      return sortedComments.map((comment) => (
-        <Comment key={comment.id} {...comment} />
-      ));
+      return (
+        <Box display="flex" flexDirection="column" alignItems="flex-start">
+          {sortedComments.map((comment) => (
+            <Comment key={comment.id} {...comment} />
+          ))}
+        </Box>
+      );
     }
 
     return <Comment {...sortedComments[0]} />;
