@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import {
+  Card,
   CardHeader,
   CardContent,
   Typography,
@@ -13,7 +14,6 @@ import {
 import { Edit, Delete } from '@material-ui/icons';
 import { formatDistance } from 'date-fns';
 
-import Card from '../Card';
 import PostType from '../../../interfaces/post';
 import EditPostDialog from '../NewPostDialog';
 import RootState from '../../../interfaces/store';
@@ -74,7 +74,7 @@ const Post: React.FC<Props> = ({ id, title, author, content, createdAt }) => {
           isMe && (
             <Box display="flex">
               <IconButton onClick={handleOpen}>
-                <Edit />
+                <Edit color="primary" />
               </IconButton>
               <IconButton onClick={handleOpenConfirmation}>
                 <Delete htmlColor="#f44336" />

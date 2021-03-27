@@ -1,14 +1,16 @@
 import { useSelector } from 'react-redux';
-import { makeStyles, Avatar, CardHeader, CardContent } from '@material-ui/core';
+import {
+  makeStyles,
+  Avatar,
+  CardHeader,
+  CardContent,
+  Card,
+} from '@material-ui/core';
 
-import Card from '../Card';
 import RootState from '../../../interfaces/store';
 import Navigation from './Navigation';
 
 const useStyles = makeStyles((theme) => ({
-  card: {
-    height: '100%',
-  },
   bold: {
     fontWeight: 700,
   },
@@ -24,7 +26,7 @@ const Dashboard: React.FC = () => {
   const classes = useStyles();
 
   return (
-    <Card className={classes.card}>
+    <Card>
       <CardHeader
         title={`${firstName} ${lastName}`}
         subheader={email}

@@ -7,36 +7,24 @@ import {
   CircularProgress,
   Typography,
   Grid,
+  Card,
   CardContent,
 } from '@material-ui/core';
 import { AccountBox } from '@material-ui/icons';
 
 import { getUserInfo } from '../../store/actions/profileActions';
-import Card from '../../shared/components/Card';
 import RootState from '../../interfaces/store';
 import UserInfo from './components/UserInfo';
 import UserActions from './components/UserActions';
 import FriendsList from '../../shared/components/FriendsList';
 
 const useStyles = makeStyles((theme) => ({
-  '@keyframes slide-in': {
-    from: {
-      opacity: 0.8,
-      transform: 'translateY(20px)',
-    },
-    to: {
-      opacity: 1,
-      transform: 'translateY(0)',
-    },
-  },
   card: {
-    position: 'relative',
-    height: '70%',
     width: '100%',
+    height: '60vh',
+    position: 'relative',
     overflow: 'visible',
     marginRight: theme.spacing(2),
-    alignSelf: 'flex-end',
-    animation: '$slide-in 0.5s ease-out',
   },
   profileImg: {
     width: 300,
@@ -66,9 +54,7 @@ const useStyles = makeStyles((theme) => ({
 const Profile: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const userId = useSelector((state: RootState) => state.user.id);
-  const initialLoad = useSelector(
-    (state: RootState) => state.profile.initialLoad,
-  );
+  const loading = useSelector((state: RootState) => state.profile.loading);
   const firstName = useSelector(
     (state: RootState) => state.profile.user.firstName,
   );
@@ -85,10 +71,10 @@ const Profile: React.FC = () => {
   const isMe = userId === Number(id);
 
   return (
-    <Box height="100%" display="flex">
+    <Box minHeight="100vh" display="flex" alignItems="center">
       <Card className={classes.card}>
         <CardContent className={classes.fullHeight}>
-          {initialLoad ? (
+          {!loading ? (
             <Grid container spacing={3} className={classes.fullHeight}>
               <Grid item xs={4} className={classes.borderRight}>
                 <UserInfo isMe={isMe} />

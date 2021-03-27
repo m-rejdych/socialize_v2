@@ -22,7 +22,7 @@ const ConfirmationDialog: React.FC<Props> = ({
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>{title}</DialogTitle>
       <DialogActions>
-        <Button>Cancel</Button>
+        <Button onClick={onClose}>Cancel</Button>
         <Button variant="contained" color="secondary" onClick={handleAction}>
           Confirm
         </Button>

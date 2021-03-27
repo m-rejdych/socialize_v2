@@ -15,6 +15,9 @@ import ROUTES from '../../constants/routes';
 const useStyles = makeStyles((theme) => ({
   listItem: {
     borderRadius: 20,
+    '&:not(:last-child)': {
+      marginBottom: theme.spacing(1.5),
+    },
   },
 }));
 
@@ -66,7 +69,7 @@ const Navigation: React.FC = () => {
           className={classes.listItem}
         >
           <ListItemIcon>
-            <Icon />
+            <Icon color="secondary" />
           </ListItemIcon>
           <ListItemText>{label}</ListItemText>
         </ListItem>

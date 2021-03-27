@@ -26,13 +26,18 @@ const Home: React.FC = () => {
   };
 
   return (
-    <Box height="100%">
+    <Box minHeight="100vh">
       <Box
         display="flex"
         alignItems="center"
         className={classes.newPostContainer}
       >
-        <Button size="large" startIcon={<PostAdd />} onClick={handleOpen}>
+        <Button
+          color="primary"
+          size="large"
+          startIcon={<PostAdd color="primary" />}
+          onClick={handleOpen}
+        >
           New post
         </Button>
         <NewPostDialog open={open} onClose={handleClose} />

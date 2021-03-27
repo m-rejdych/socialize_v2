@@ -1,9 +1,8 @@
-import { Box, makeStyles, CardHeader } from '@material-ui/core';
+import { Box, makeStyles, CardHeader, Card } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import RootState from '../../interfaces/store/index';
 
-import Card from '../../shared/components/Card';
 import AuthForm from './components/AuthForm';
 import ROUTES from '../../shared/constants/routes';
 
@@ -25,7 +24,7 @@ const Auth: React.FC = () => {
 
   return (
     <Box
-      height="100%"
+      height="100vh"
       display="flex"
       alignItems="center"
       justifyContent="center"
