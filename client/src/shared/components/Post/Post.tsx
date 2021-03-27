@@ -37,7 +37,14 @@ const useStyles = makeStyles((theme) => ({
 
 interface Props extends PostType {}
 
-const Post: React.FC<Props> = ({ id, title, author, content, createdAt }) => {
+const Post: React.FC<Props> = ({
+  id,
+  title,
+  author,
+  content,
+  createdAt,
+  reactions,
+}) => {
   const [confirmationOpen, setConfirmationOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const userId = useSelector((state: RootState) => state.user.id);
@@ -94,7 +101,7 @@ const Post: React.FC<Props> = ({ id, title, author, content, createdAt }) => {
       <CardContent>
         <Typography>{content}</Typography>
       </CardContent>
-      <PostReacitons />
+      <PostReacitons postId={id} reactions={reactions} />
       {open && (
         <EditPostDialog open={open} onClose={handleClose} editData={editData} />
       )}

@@ -1,9 +1,14 @@
 import createJwtRequest from '../util/jwtRequestFactory';
-import { CreatePostReq, UpdatePostReq } from '../interfaces/post/postReq';
+import {
+  CreatePostReq,
+  UpdatePostReq,
+  AddPostReactionReq,
+} from '../interfaces/post/postReq';
 import {
   CreatePostRes,
   GetFeedRes,
   DeletePostRes,
+  DeletePostReactionRes,
 } from '../interfaces/post/postRes';
 import { API_URI } from '../config';
 
@@ -31,4 +36,21 @@ export const deletePost = (id: number): Promise<DeletePostRes> =>
   createJwtRequest<DeletePostRes>({
     method: 'DELETE',
     url: `${API_URI}/post/delete-post?postId=${id}`,
+  });
+
+export const addPostReaction = (
+  data: AddPostReactionReq,
+): Promise<CreatePostRes> =>
+  createJwtRequest({
+    method: 'PUT',
+    url: `${API_URI}/post/add-reaction`,
+    body: data,
+  });
+
+export const deletePostReaction = (
+  postId: number,
+): Promise<DeletePostReactionRes> =>
+  createJwtRequest({
+    method: 'DELETE',
+    url: `${API_URI}/post/delete-reaction?postId=${postId}`,
   });

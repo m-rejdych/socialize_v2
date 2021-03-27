@@ -15,6 +15,8 @@ import {
   getFeedSaga,
   updatePostSaga,
   deletePostSaga,
+  addPostReactionSaga,
+  deletePostReactionSaga,
 } from './postSaga';
 
 export default function* rootSaga() {
@@ -34,5 +36,7 @@ export default function* rootSaga() {
     getFeedSaga(),
     updatePostSaga(),
     deletePostSaga(),
+    addPostReactionSaga(),
+    deletePostReactionSaga(),
   ]);
 }

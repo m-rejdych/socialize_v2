@@ -9,6 +9,9 @@ import {
   UpdatePostSuccessAction,
   DeletePostAction,
   DeletePostSuccessAction,
+  AddPostReactionAction,
+  DeletePostReactionAction,
+  DeletePostReactionSuccessAction,
   SetPostErrorAction,
 } from '../../interfaces/post/postActions';
 import PostState from '../../interfaces/post/postState';
@@ -31,6 +34,9 @@ const strategyMap: StrategyMap<PostState, typeof POST> = {
   [POST.UPDATE_POST_SUCCESS]: updatePostSuccessTransformer,
   [POST.DELETE_POST]: deletePostTransformer,
   [POST.DELETE_POST_SUCCESS]: deletePostSuccessTransformer,
+  [POST.ADD_POST_REACTION]: addPostReactionTransformer,
+  [POST.DELETE_POST_REACTION]: deletePostReactionTransformer,
+  [POST.DELETE_POST_REACTION_SUCCESS]: deletePostReactionSuccessTransformer,
   [POST.ERROR]: setPostErrorTransformer,
 };
 
@@ -113,6 +119,42 @@ function deletePostSuccessTransformer(
     loading: false,
     error: null,
     feed: state.feed.filter(({ id }) => id !== payload),
+  };
+}
+
+function addPostReactionTransformer(
+  state: PostState,
+  _: ReturnType<AddPostReactionAction>,
+): PostState {
+  return { ...state, loading: true };
+}
+
+function deletePostReactionTransformer(
+  state: PostState,
+  _: ReturnType<DeletePostReactionAction>,
+): PostState {
+  return { ...state, loading: true };
+}
+
+function deletePostReactionSuccessTransformer(
+  state: PostState,
+  { payload }: ReturnType<DeletePostReactionSuccessAction>,
+): PostState {
+  return {
+    ...state,
+    loading: false,
+    error: null,
+    feed: state.feed.map((post) =>
+      post.id === payload.postId
+        ? {
+            ...post,
+            reactions:
+              post.reactions?.filter(
+                (reaction) => reaction.id !== payload.reactionId,
+              ) || [],
+          }
+        : post,
+    ),
   };
 }
 

@@ -8,6 +8,9 @@ import {
   UpdatePostSuccessAction,
   DeletePostAction,
   DeletePostSuccessAction,
+  AddPostReactionAction,
+  DeletePostReactionAction,
+  DeletePostReactionSuccessAction,
   SetPostErrorAction,
 } from '../../interfaces/post/postActions';
 import { POST } from '../../shared/constants/actionTypes';
@@ -34,6 +37,18 @@ export const deletePost: DeletePostAction = createAction(POST.DELETE_POST);
 
 export const deletePostSuccess: DeletePostSuccessAction = createAction(
   POST.DELETE_POST_SUCCESS,
+);
+
+export const addPostReaction: AddPostReactionAction = createAction(
+  POST.ADD_POST_REACTION,
+);
+
+export const deletePostReaction: DeletePostReactionAction = createAction(
+  POST.DELETE_POST_REACTION,
+);
+
+export const deletePostReactionSuccess: DeletePostReactionSuccessAction = createAction(
+  POST.DELETE_POST_REACTION_SUCCESS,
 );
 
 export const setPostError: SetPostErrorAction = createAction(POST.ERROR);

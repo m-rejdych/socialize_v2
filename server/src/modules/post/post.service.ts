@@ -55,6 +55,8 @@ class PostService {
       .createQueryBuilder('post')
       .leftJoinAndSelect('post.author', 'author')
       .leftJoinAndSelect('post.reactions', 'reactions')
+      .leftJoinAndSelect('reactions.type', 'reactionsType')
+      .leftJoinAndSelect('reactions.user', 'reactionsUser')
       .leftJoinAndSelect('post.comments', 'comments')
       .where('author.id IN (:...friendsIds)', {
         friendsIds: [...friendsIds, userId],

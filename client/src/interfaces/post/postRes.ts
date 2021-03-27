@@ -15,3 +15,12 @@ export interface DeletePostRes {
     deleted: boolean;
   };
 }
+
+export interface DeletePostReactionRes {
+  data?: {
+    postId: number;
+    userId: number;
+    reactionId: number;
+    deleted: boolean;
+  };
+}

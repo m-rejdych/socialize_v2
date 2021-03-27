@@ -124,7 +124,7 @@ const InfoField: React.FC<Props> = ({ value, label, type, isMe }) => {
             </Box>
           ) : (
             <IconButton onClick={startEditing}>
-              <Edit />
+              <Edit color="primary" />
             </IconButton>
           )}
         </ListItemSecondaryAction>
