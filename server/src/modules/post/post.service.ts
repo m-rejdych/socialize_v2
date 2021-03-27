@@ -58,6 +58,7 @@ class PostService {
       .leftJoinAndSelect('reactions.type', 'reactionsType')
       .leftJoinAndSelect('reactions.user', 'reactionsUser')
       .leftJoinAndSelect('post.comments', 'comments')
+      .leftJoinAndSelect('comments.author', 'commentsAuthor')
       .where('author.id IN (:...friendsIds)', {
         friendsIds: [...friendsIds, userId],
       })

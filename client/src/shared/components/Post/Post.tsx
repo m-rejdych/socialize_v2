@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import classNames from 'classnames';
 import {
   Card,
@@ -15,12 +16,14 @@ import {
 import { Edit, Delete } from '@material-ui/icons';
 import { formatDistance } from 'date-fns';
 
+import ROUTES from '../../../shared/constants/routes';
 import PostType from '../../../interfaces/post';
 import EditPostDialog from '../NewPostDialog';
 import RootState from '../../../interfaces/store';
 import ConfirmationDialog from '../ConfirmationDialog';
 import PostReacitons from './components/PostReactions';
 import ReactionsCounter from '../../../shared/components/ReactionsCounter';
+import Comments from './components/Comments';
 import { deletePost } from '../../../store/actions/postActions';
 
 const useStyles = makeStyles((theme) => ({
@@ -35,6 +38,16 @@ const useStyles = makeStyles((theme) => ({
   semiBold: {
     fontWeight: 600,
   },
+  commentsCounter: {
+    cursor: 'pointer',
+    margin: theme.spacing(2),
+    '&:hover': {
+      textDecoration: 'underline',
+    },
+  },
+  pointer: {
+    cursor: 'pointer',
+  },
 }));
 
 interface Props extends PostType {}
@@ -46,11 +59,14 @@ const Post: React.FC<Props> = ({
   content,
   createdAt,
   reactions,
+  comments,
 }) => {
   const [confirmationOpen, setConfirmationOpen] = useState(false);
   const [open, setOpen] = useState(false);
+  const [commentsOpen, setCommentsOpen] = useState(false);
   const userId = useSelector((state: RootState) => state.user.id);
   const dispatch = useDispatch();
+  const history = useHistory();
   const classes = useStyles();
 
   const editData = { id, title, content };
@@ -76,10 +92,22 @@ const Post: React.FC<Props> = ({
     dispatch(deletePost(id));
   };
 
+  const toggleComments = (): void => {
+    setCommentsOpen((prev) => !prev);
+  };
+
+  const navigateToProfile = (): void => {
+    if (author) {
+      history.push(`${ROUTES.PROFILE}/${author.id}`);
+    }
+  };
+
   return (
     <Card className={classNames(classes.card)}>
       <CardHeader
-        avatar={<Avatar />}
+        avatar={
+          <Avatar onClick={navigateToProfile} className={classes.pointer} />
+        }
         action={
           isMe && (
             <Box display="flex">
@@ -102,15 +130,32 @@ const Post: React.FC<Props> = ({
         }, ${formatDistance(new Date(createdAt), new Date(), {
           addSuffix: true,
         })}`}
-        classes={{ title: classes.bold, subheader: classes.semiBold }}
+        subheaderTypographyProps={{ onClick: navigateToProfile }}
+        classes={{
+          title: classes.bold,
+          subheader: classNames(classes.semiBold, classes.pointer),
+        }}
       />
       <CardContent>
         <Typography>{content}</Typography>
       </CardContent>
-      {reactions && reactions.length > 0 && (
-        <ReactionsCounter reactions={reactions} id={id} />
-      )}
+      <Box display="flex" alignItems="center" justifyContent="space-between">
+        {reactions && reactions.length > 0 && (
+          <ReactionsCounter reactions={reactions} id={id} />
+        )}
+        {comments && comments.length > 0 && (
+          <Typography
+            variant="body2"
+            color="textSecondary"
+            className={classes.commentsCounter}
+            onClick={toggleComments}
+          >
+            Comments: {comments.length}
+          </Typography>
+        )}
+      </Box>
       <PostReacitons postId={id} reactions={reactions} />
+      <Comments postId={id} comments={comments} open={commentsOpen} />
       {open && (
         <EditPostDialog open={open} onClose={handleClose} editData={editData} />
       )}

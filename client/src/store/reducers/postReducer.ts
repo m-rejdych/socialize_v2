@@ -14,8 +14,12 @@ import {
   DeletePostReactionSuccessAction,
   SetPostErrorAction,
 } from '../../interfaces/post/postActions';
+import {
+  CreateCommentAction,
+  CreateCommentSuccessAction,
+} from '../../interfaces/comment/commentActions';
 import PostState from '../../interfaces/post/postState';
-import { POST } from '../../shared/constants/actionTypes';
+import { POST, COMMENT } from '../../shared/constants/actionTypes';
 
 const initialState: PostState = {
   feed: [],
@@ -25,7 +29,7 @@ const initialState: PostState = {
   error: null,
 };
 
-const strategyMap: StrategyMap<PostState, typeof POST> = {
+const strategyMap: StrategyMap<PostState, typeof POST & typeof COMMENT> = {
   [POST.CREATE_POST]: createPostTransformer,
   [POST.CREATE_POST_SUCCESS]: createPostSuccessTransformer,
   [POST.GET_FEED]: getFeedTransformer,
@@ -37,10 +41,12 @@ const strategyMap: StrategyMap<PostState, typeof POST> = {
   [POST.ADD_POST_REACTION]: addPostReactionTransformer,
   [POST.DELETE_POST_REACTION]: deletePostReactionTransformer,
   [POST.DELETE_POST_REACTION_SUCCESS]: deletePostReactionSuccessTransformer,
+  [COMMENT.CREATE_COMMENT]: createCommentTransformer,
+  [COMMENT.CREATE_COMMENT_SUCCESS]: createCommentSuccessTransformer,
   [POST.ERROR]: setPostErrorTransformer,
 };
 
-const postReducer = createReducer<PostState, typeof POST>(
+const postReducer = createReducer<PostState, typeof POST & typeof COMMENT>(
   strategyMap,
   initialState,
 );
@@ -152,6 +158,30 @@ function deletePostReactionSuccessTransformer(
               post.reactions?.filter(
                 (reaction) => reaction.id !== payload.reactionId,
               ) || [],
+          }
+        : post,
+    ),
+  };
+}
+
+function createCommentTransformer(
+  state: PostState,
+  _: ReturnType<CreateCommentAction>,
+): PostState {
+  return { ...state, loading: true };
+}
+
+function createCommentSuccessTransformer(
+  state: PostState,
+  { payload }: ReturnType<CreateCommentSuccessAction>,
+): PostState {
+  return {
+    ...state,
+    feed: state.feed.map((post) =>
+      post.id === payload.post?.id
+        ? {
+            ...post,
+            comments: post.comments ? [...post.comments, payload] : [payload],
           }
         : post,
     ),
