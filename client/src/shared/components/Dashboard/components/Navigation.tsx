@@ -9,8 +9,8 @@ import {
 } from '@material-ui/core';
 import { Home, AccountBox, Chat } from '@material-ui/icons';
 
-import RootState from '../../../interfaces/store';
-import ROUTES from '../../constants/routes';
+import RootState from '../../../../interfaces/store';
+import ROUTES from '../../../constants/routes';
 
 const useStyles = makeStyles((theme) => ({
   listItem: {

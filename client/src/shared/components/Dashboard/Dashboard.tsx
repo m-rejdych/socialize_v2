@@ -8,7 +8,7 @@ import {
 } from '@material-ui/core';
 
 import RootState from '../../../interfaces/store';
-import Navigation from './Navigation';
+import Navigation from './components/Navigation';
 
 const useStyles = makeStyles((theme) => ({
   bold: {

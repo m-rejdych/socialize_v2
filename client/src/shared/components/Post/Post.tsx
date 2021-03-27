@@ -18,6 +18,7 @@ import PostType from '../../../interfaces/post';
 import EditPostDialog from '../NewPostDialog';
 import RootState from '../../../interfaces/store';
 import ConfirmationDialog from '../ConfirmationDialog';
+import PostReacitons from './components/PostReactions';
 import { deletePost } from '../../../store/actions/postActions';
 
 const useStyles = makeStyles((theme) => ({
@@ -93,6 +94,7 @@ const Post: React.FC<Props> = ({ id, title, author, content, createdAt }) => {
       <CardContent>
         <Typography>{content}</Typography>
       </CardContent>
+      <PostReacitons />
       {open && (
         <EditPostDialog open={open} onClose={handleClose} editData={editData} />
       )}
