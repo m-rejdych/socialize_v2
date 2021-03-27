@@ -19,6 +19,7 @@ import EditPostDialog from '../NewPostDialog';
 import RootState from '../../../interfaces/store';
 import ConfirmationDialog from '../ConfirmationDialog';
 import PostReacitons from './components/PostReactions';
+import ReactionsCounter from '../../../shared/components/ReactionsCounter';
 import { deletePost } from '../../../store/actions/postActions';
 
 const useStyles = makeStyles((theme) => ({
@@ -101,6 +102,9 @@ const Post: React.FC<Props> = ({
       <CardContent>
         <Typography>{content}</Typography>
       </CardContent>
+      {reactions && reactions.length > 0 && (
+        <ReactionsCounter reactions={reactions} id={id} />
+      )}
       <PostReacitons postId={id} reactions={reactions} />
       {open && (
         <EditPostDialog open={open} onClose={handleClose} editData={editData} />

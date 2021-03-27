@@ -1,5 +1,5 @@
-import { CardActions, IconButton } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
+import { CardActions, IconButton, makeStyles } from '@material-ui/core';
 import {
   ThumbUpAltOutlined,
   ThumbUpAlt,
@@ -12,6 +12,7 @@ import {
   EmojiObjectsOutlined,
   EmojiObjects,
 } from '@material-ui/icons';
+import { deepPurple, green, amber } from '@material-ui/core/colors';
 
 import {
   addPostReaction,
@@ -21,6 +22,13 @@ import { ReactionName } from '../../../../interfaces/reactionType/reactionType';
 import PostReaction from '../../../../interfaces/post/postReaction';
 import RootState from '../../../../interfaces/store';
 
+const useStyles = makeStyles((theme) => ({
+  cardActions: {
+    borderBottom: `1px solid ${theme.palette.divider}`,
+    borderTop: `1px solid ${theme.palette.divider}`,
+  },
+}));
+
 interface Props {
   postId: number;
   reactions?: PostReaction[];
@@ -29,21 +37,24 @@ interface Props {
 const PostReactions: React.FC<Props> = ({ postId, reactions }) => {
   const userId = useSelector((state: RootState) => state.user.id);
   const dispatch = useDispatch();
+  const classes = useStyles();
 
   const reactionName =
     reactions?.find(({ user }) => user?.id === userId)?.type?.name || null;
 
   const fields = [
     {
+      id: `${postId}-reaction-button-like`,
       type: 'like',
       icon:
         reactionName === 'like' ? (
-          <ThumbUpAlt fontSize="small" color="secondary" />
+          <ThumbUpAlt fontSize="small" color="primary" />
         ) : (
           <ThumbUpAltOutlined fontSize="small" />
         ),
     },
     {
+      id: `${postId}-reaction-button-dislike`,
       type: 'dislike',
       icon:
         reactionName === 'dislike' ? (
@@ -53,28 +64,31 @@ const PostReactions: React.FC<Props> = ({ postId, reactions }) => {
         ),
     },
     {
+      id: `${postId}-reaction-button-love`,
       type: 'love',
       icon:
         reactionName === 'love' ? (
-          <FavoriteOutlined fontSize="small" color="secondary" />
+          <FavoriteOutlined fontSize="small" htmlColor={deepPurple[500]} />
         ) : (
           <FavoriteBorder fontSize="small" />
         ),
     },
     {
+      id: `${postId}-reaction-button-laugh`,
       type: 'laugh',
       icon:
         reactionName === 'laugh' ? (
-          <EmojiEmotions fontSize="small" color="secondary" />
+          <EmojiEmotions fontSize="small" htmlColor={amber[500]} />
         ) : (
           <EmojiEmotionsOutlined fontSize="small" />
         ),
     },
     {
+      id: `${postId}-reaction-button-idea`,
       type: 'idea',
       icon:
         reactionName === 'idea' ? (
-          <EmojiObjects fontSize="small" color="secondary" />
+          <EmojiObjects fontSize="small" htmlColor={green[500]} />
         ) : (
           <EmojiObjectsOutlined fontSize="small" />
         ),
@@ -90,9 +104,9 @@ const PostReactions: React.FC<Props> = ({ postId, reactions }) => {
   };
 
   return (
-    <CardActions>
-      {fields.map(({ type, icon }) => (
-        <IconButton key={type} onClick={() => handleAddReaction(type)}>
+    <CardActions className={classes.cardActions}>
+      {fields.map(({ id, type, icon }) => (
+        <IconButton key={id} onClick={() => handleAddReaction(type)}>
           {icon}
         </IconButton>
       ))}

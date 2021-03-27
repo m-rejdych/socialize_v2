@@ -69,7 +69,7 @@ const Navigation: React.FC = () => {
           className={classes.listItem}
         >
           <ListItemIcon>
-            <Icon color="secondary" />
+            <Icon />
           </ListItemIcon>
           <ListItemText>{label}</ListItemText>
         </ListItem>
