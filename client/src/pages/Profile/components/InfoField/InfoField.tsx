@@ -71,8 +71,12 @@ const InfoField: React.FC<Props> = ({ value, label, type, isMe }) => {
   };
 
   const handleUpdate = (): void => {
-    dispatch(updateUserInfo({ [type]: isAge ? Number(editValue) : editValue }));
-    setIsEditing(false);
+    if (isMe) {
+      dispatch(
+        updateUserInfo({ [type]: isAge ? Number(editValue) : editValue }),
+      );
+      setIsEditing(false);
+    }
   };
 
   const renderEditElement = (): JSX.Element => {

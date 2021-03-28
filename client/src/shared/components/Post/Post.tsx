@@ -89,7 +89,9 @@ const Post: React.FC<Props> = ({
   };
 
   const handleDelete = (): void => {
-    dispatch(deletePost(id));
+    if (isMe) {
+      dispatch(deletePost(id));
+    }
   };
 
   const toggleComments = (): void => {

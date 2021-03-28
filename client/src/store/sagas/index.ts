@@ -18,7 +18,7 @@ import {
   addPostReactionSaga,
   deletePostReactionSaga,
 } from './postSaga';
-import { createCommentSaga } from './commentSaga';
+import { createCommentSaga, deleteCommentSaga } from './commentSaga';
 
 export default function* rootSaga() {
   yield all([
@@ -40,5 +40,6 @@ export default function* rootSaga() {
     addPostReactionSaga(),
     deletePostReactionSaga(),
     createCommentSaga(),
+    deleteCommentSaga(),
   ]);
 }

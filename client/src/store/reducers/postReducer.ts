@@ -17,6 +17,8 @@ import {
 import {
   CreateCommentAction,
   CreateCommentSuccessAction,
+  DeleteCommentAciton,
+  DeleteCommentSuccessAction,
 } from '../../interfaces/comment/commentActions';
 import PostState from '../../interfaces/post/postState';
 import { POST, COMMENT } from '../../shared/constants/actionTypes';
@@ -43,6 +45,8 @@ const strategyMap: StrategyMap<PostState, typeof POST & typeof COMMENT> = {
   [POST.DELETE_POST_REACTION_SUCCESS]: deletePostReactionSuccessTransformer,
   [COMMENT.CREATE_COMMENT]: createCommentTransformer,
   [COMMENT.CREATE_COMMENT_SUCCESS]: createCommentSuccessTransformer,
+  [COMMENT.DELETE_COMMENT]: deleteCommentTransformer,
+  [COMMENT.DELETE_COMMENT_SUCCESS]: deleteCommentSuccessTransformer,
   [POST.ERROR]: setPostErrorTransformer,
 };
 
@@ -177,11 +181,41 @@ function createCommentSuccessTransformer(
 ): PostState {
   return {
     ...state,
+    loading: false,
+    error: null,
     feed: state.feed.map((post) =>
       post.id === payload.post?.id
         ? {
             ...post,
             comments: post.comments ? [...post.comments, payload] : [payload],
+          }
+        : post,
+    ),
+  };
+}
+
+function deleteCommentTransformer(
+  state: PostState,
+  _: ReturnType<DeleteCommentAciton>,
+): PostState {
+  return { ...state, loading: true };
+}
+
+function deleteCommentSuccessTransformer(
+  state: PostState,
+  { payload }: ReturnType<DeleteCommentSuccessAction>,
+): PostState {
+  return {
+    ...state,
+    loading: false,
+    error: null,
+    feed: state.feed.map((post) =>
+      post.id === payload.postId
+        ? {
+            ...post,
+            comments: post.comments
+              ? post.comments.filter(({ id }) => id !== payload.commentId)
+              : [],
           }
         : post,
     ),
