@@ -16,21 +16,19 @@ import { formatDistance } from 'date-fns';
 
 import ROUTES from '../../constants/routes';
 import CommentType from '../../../interfaces/comment';
+import ReactionPopper from '../ReactionPopper';
 import RootState from '../../../interfaces/store';
 import { deleteComment } from '../../../store/actions/commentActions';
 
 const useStyles = makeStyles((theme) => ({
-  container: {
-    '&:not(:last-child)': {
-      marginBottom: theme.spacing(2),
-    },
-  },
   card: {
     dispay: 'inline-block',
+    position: 'relative',
     backgroundColor: theme.palette.grey[700],
     borderRadius: 30,
     marginLeft: theme.spacing(1),
     padding: theme.spacing(0.5),
+    overflow: 'visible',
   },
   paddingSmall: {
     padding: `${theme.spacing(1.5)}px !important`,
@@ -49,6 +47,15 @@ const useStyles = makeStyles((theme) => ({
   },
   errorColor: {
     color: theme.palette.error.main,
+  },
+  deleteButton: {
+    marginLeft: theme.spacing(2),
+    paddingTop: theme.spacing(0.75),
+  },
+  reactionPopper: {
+    position: 'absolute',
+    left: theme.spacing(2.5),
+    top: `calc(100% + ${theme.spacing(0.3)}px)`,
   },
 }));
 
@@ -75,7 +82,7 @@ const Comment: React.FC<Props> = ({ id, author, content, createdAt }) => {
   };
 
   return (
-    <Box display="flex" className={classes.container}>
+    <Box display="flex" mb={3.5}>
       <Avatar onClick={navigateToProfile} className={classes.pointer} />
       <Card className={classes.card}>
         <CardHeader
@@ -85,7 +92,11 @@ const Comment: React.FC<Props> = ({ id, author, content, createdAt }) => {
           })}
           action={
             isMe ? (
-              <IconButton size="small" onClick={handleDelete}>
+              <IconButton
+                size="small"
+                onClick={handleDelete}
+                className={classes.deleteButton}
+              >
                 <Delete fontSize="small" className={classes.errorColor} />
               </IconButton>
             ) : null
@@ -107,6 +118,7 @@ const Comment: React.FC<Props> = ({ id, author, content, createdAt }) => {
         <CardContent className={classes.paddingSmall}>
           <Typography variant="body2">{content}</Typography>
         </CardContent>
+        <ReactionPopper className={classes.reactionPopper} />
       </Card>
     </Box>
   );

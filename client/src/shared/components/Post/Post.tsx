@@ -6,6 +6,7 @@ import {
   Card,
   CardHeader,
   CardContent,
+  CardActions,
   Typography,
   Avatar,
   makeStyles,
@@ -21,7 +22,7 @@ import PostType from '../../../interfaces/post';
 import EditPostDialog from '../NewPostDialog';
 import RootState from '../../../interfaces/store';
 import ConfirmationDialog from '../ConfirmationDialog';
-import PostReacitons from './components/PostReactions';
+import ReactionButtons from '../../../shared/components/ReactionButtons';
 import ReactionsCounter from '../../../shared/components/ReactionsCounter';
 import Comments from './components/Comments';
 import { deletePost } from '../../../store/actions/postActions';
@@ -47,6 +48,10 @@ const useStyles = makeStyles((theme) => ({
   },
   pointer: {
     cursor: 'pointer',
+  },
+  horizontalDividers: {
+    borderTop: `1px solid ${theme.palette.divider}`,
+    borderBottom: `1px solid ${theme.palette.divider}`,
   },
 }));
 
@@ -156,7 +161,9 @@ const Post: React.FC<Props> = ({
           </Typography>
         )}
       </Box>
-      <PostReacitons postId={id} reactions={reactions} />
+      <CardActions className={classes.horizontalDividers}>
+        <ReactionButtons postId={id} reactions={reactions} />
+      </CardActions>
       <Comments postId={id} comments={comments} open={commentsOpen} />
       {open && (
         <EditPostDialog open={open} onClose={handleClose} editData={editData} />

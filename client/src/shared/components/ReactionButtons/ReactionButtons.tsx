@@ -1,10 +1,5 @@
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  CardActions,
-  IconButton,
-  makeStyles,
-  Tooltip,
-} from '@material-ui/core';
+import { useSelector, useDispatch } from 'react-redux';
+import { IconButton, Tooltip, Box } from '@material-ui/core';
 import {
   ThumbUpAltOutlined,
   ThumbUpAlt,
@@ -19,37 +14,33 @@ import {
 } from '@material-ui/icons';
 import { deepPurple, green, amber } from '@material-ui/core/colors';
 
+import { ReactionName } from '../../../interfaces/reactionType/reactionType';
 import {
   addPostReaction,
   deletePostReaction,
-} from '../../../../store/actions/postActions';
-import { ReactionName } from '../../../../interfaces/reactionType/reactionType';
-import PostReaction from '../../../../interfaces/post/postReaction';
-import RootState from '../../../../interfaces/store';
+} from '../../../store/actions/postActions';
+import PostReaction from '../../../interfaces/post/postReaction';
+import CommentReaction from '../../../interfaces/comment/commentReaction';
+import MessageReaction from '../../../interfaces/message/messageReaction';
+import RootState from '../../../interfaces/store';
 
-const useStyles = makeStyles((theme) => ({
-  cardActions: {
-    borderBottom: `1px solid ${theme.palette.divider}`,
-    borderTop: `1px solid ${theme.palette.divider}`,
-  },
-}));
+type Reaction = PostReaction | CommentReaction | MessageReaction;
 
 interface Props {
-  postId: number;
-  reactions?: PostReaction[];
+  reactions?: Reaction[];
+  postId?: number;
 }
 
-const PostReactions: React.FC<Props> = ({ postId, reactions }) => {
+const ReactionButtons: React.FC<Props> = ({ reactions, postId }) => {
   const userId = useSelector((state: RootState) => state.user.id);
   const dispatch = useDispatch();
-  const classes = useStyles();
 
   const reactionName =
     reactions?.find(({ user }) => user?.id === userId)?.type?.name || null;
 
   const fields = [
     {
-      id: `${postId}-reaction-button-like`,
+      id: 'reaction-button-like',
       type: 'like',
       icon: (
         <Tooltip title="Like">
@@ -62,7 +53,7 @@ const PostReactions: React.FC<Props> = ({ postId, reactions }) => {
       ),
     },
     {
-      id: `${postId}-reaction-button-dislike`,
+      id: 'reaction-button-dislike',
       type: 'dislike',
       icon: (
         <Tooltip title="Dislike">
@@ -75,7 +66,7 @@ const PostReactions: React.FC<Props> = ({ postId, reactions }) => {
       ),
     },
     {
-      id: `${postId}-reaction-button-love`,
+      id: 'reaction-button-love',
       type: 'love',
       icon: (
         <Tooltip title="Love">
@@ -88,7 +79,7 @@ const PostReactions: React.FC<Props> = ({ postId, reactions }) => {
       ),
     },
     {
-      id: `${postId}-reaction-button-laugh`,
+      id: 'reaction-button-laugh',
       type: 'laugh',
       icon: (
         <Tooltip title="Laugh">
@@ -101,7 +92,7 @@ const PostReactions: React.FC<Props> = ({ postId, reactions }) => {
       ),
     },
     {
-      id: `${postId}-reaction-button-idea`,
+      id: 'reaction-button-idea',
       type: 'idea',
       icon: (
         <Tooltip title="Idea">
@@ -116,22 +107,24 @@ const PostReactions: React.FC<Props> = ({ postId, reactions }) => {
   ] as const;
 
   const handleAddReaction = (type: ReactionName): void => {
-    dispatch(
-      reactionName === type
-        ? deletePostReaction(postId)
-        : addPostReaction({ postId, reactionName: type }),
-    );
+    if (postId) {
+      dispatch(
+        reactionName === type
+          ? deletePostReaction(postId)
+          : addPostReaction({ postId, reactionName: type }),
+      );
+    }
   };
 
   return (
-    <CardActions className={classes.cardActions}>
+    <Box display="flex" alignItems="center">
       {fields.map(({ id, type, icon }) => (
         <IconButton key={id} onClick={() => handleAddReaction(type)}>
           {icon}
         </IconButton>
       ))}
-    </CardActions>
+    </Box>
   );
 };
 
-export default PostReactions;
+export default ReactionButtons;
