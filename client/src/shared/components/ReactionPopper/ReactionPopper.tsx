@@ -9,11 +9,15 @@ import {
 } from '@material-ui/core';
 
 import ReactionButtons from '../ReactionButtons';
+import CommentReaction from '../../../interfaces/comment/commentReaction';
 
 const useStyles = makeStyles((theme) => ({
   textButton: {
     cursor: 'pointer',
     fontWeight: 600,
+    '&:hover': {
+      textDecoration: 'underline',
+    },
   },
   paper: {
     borderRadius: 30,
@@ -33,9 +37,17 @@ interface Props {
   className?: string;
   variant?: TypographyVariant;
   color?: TypographyColor;
+  reactions?: CommentReaction[];
+  commentId?: number;
 }
 
-const ReactionPopper: React.FC<Props> = ({ className, variant, color }) => {
+const ReactionPopper: React.FC<Props> = ({
+  className,
+  variant,
+  color,
+  reactions,
+  commentId,
+}) => {
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLParagraphElement | null>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -46,7 +58,6 @@ const ReactionPopper: React.FC<Props> = ({ className, variant, color }) => {
       | React.MouseEvent<HTMLParagraphElement>
       | React.TouchEvent<HTMLParagraphElement>,
   ): void => {
-    console.log('open');
     const { currentTarget } = e;
     if (!timeoutRef.current) {
       const timeout = setTimeout(() => {
@@ -60,7 +71,6 @@ const ReactionPopper: React.FC<Props> = ({ className, variant, color }) => {
   };
 
   const handleClose = (): void => {
-    console.log('close');
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
       timeoutRef.current = null;
@@ -104,7 +114,7 @@ const ReactionPopper: React.FC<Props> = ({ className, variant, color }) => {
           onTouchEnd={handleClose}
           className={classes.paper}
         >
-          <ReactionButtons />
+          <ReactionButtons reactions={reactions} commentId={commentId} />
         </Paper>
       </Popper>
     </>

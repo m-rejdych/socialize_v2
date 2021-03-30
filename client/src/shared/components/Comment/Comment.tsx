@@ -61,7 +61,13 @@ const useStyles = makeStyles((theme) => ({
 
 interface Props extends CommentType {}
 
-const Comment: React.FC<Props> = ({ id, author, content, createdAt }) => {
+const Comment: React.FC<Props> = ({
+  id,
+  author,
+  content,
+  createdAt,
+  reactions,
+}) => {
   const userId = useSelector((state: RootState) => state.user.id);
   const history = useHistory();
   const dispatch = useDispatch();
@@ -118,7 +124,11 @@ const Comment: React.FC<Props> = ({ id, author, content, createdAt }) => {
         <CardContent className={classes.paddingSmall}>
           <Typography variant="body2">{content}</Typography>
         </CardContent>
-        <ReactionPopper className={classes.reactionPopper} />
+        <ReactionPopper
+          className={classes.reactionPopper}
+          reactions={reactions}
+          commentId={id}
+        />
       </Card>
     </Box>
   );

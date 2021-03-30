@@ -19,6 +19,7 @@ import {
   addPostReaction,
   deletePostReaction,
 } from '../../../store/actions/postActions';
+import { addCommentReaction } from '../../../store/actions/commentActions';
 import PostReaction from '../../../interfaces/post/postReaction';
 import CommentReaction from '../../../interfaces/comment/commentReaction';
 import MessageReaction from '../../../interfaces/message/messageReaction';
@@ -29,9 +30,10 @@ type Reaction = PostReaction | CommentReaction | MessageReaction;
 interface Props {
   reactions?: Reaction[];
   postId?: number;
+  commentId?: number;
 }
 
-const ReactionButtons: React.FC<Props> = ({ reactions, postId }) => {
+const ReactionButtons: React.FC<Props> = ({ reactions, postId, commentId }) => {
   const userId = useSelector((state: RootState) => state.user.id);
   const dispatch = useDispatch();
 
@@ -113,6 +115,8 @@ const ReactionButtons: React.FC<Props> = ({ reactions, postId }) => {
           ? deletePostReaction(postId)
           : addPostReaction({ postId, reactionName: type }),
       );
+    } else if (commentId) {
+      dispatch(addCommentReaction({ commentId, reactionName: type }));
     }
   };
 

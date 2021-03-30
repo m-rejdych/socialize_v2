@@ -1,5 +1,8 @@
 import createJwtRequest from '../util/jwtRequestFactory';
-import { CreateCommentReq } from '../interfaces/comment/commentReq';
+import {
+  CreateCommentReq,
+  AddCommentReactionReq,
+} from '../interfaces/comment/commentReq';
 import {
   CreateCommentRes,
   DeleteCommentRes,
@@ -19,4 +22,13 @@ export const deleteComment = (id: number): Promise<DeleteCommentRes> =>
   createJwtRequest({
     method: 'DELETE',
     url: `${API_URI}/comment/delete-comment?commentId=${id}`,
+  });
+
+export const addCommentReaction = (
+  data: AddCommentReactionReq,
+): Promise<CreateCommentRes> =>
+  createJwtRequest<CreateCommentRes>({
+    method: 'PUT',
+    url: `${API_URI}/comment/add-reaction`,
+    body: data,
   });
