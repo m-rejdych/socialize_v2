@@ -19,10 +19,10 @@ const clearStorage = (): null => {
 
 const getToken = (): string | null => {
   const token = localStorage.getItem('token');
-  if (!token) clearStorage();
+  if (!token) return clearStorage();
 
   const expiresIn = localStorage.getItem('expiresIn');
-  if (!expiresIn || Number(expiresIn) < Date.now()) clearStorage();
+  if (!expiresIn || Number(expiresIn) < Date.now()) return clearStorage();
 
   return token;
 };

@@ -12,3 +12,13 @@ export interface DeleteCommentRes {
     deleted: boolean;
   };
 }
+
+export interface DeleteCommentReactionRes {
+  data?: {
+    reactionId: number;
+    userId: number;
+    commentId: number;
+    postId: number;
+    deleted: boolean;
+  };
+}

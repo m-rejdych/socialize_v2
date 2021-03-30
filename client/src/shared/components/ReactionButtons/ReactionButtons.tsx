@@ -19,7 +19,10 @@ import {
   addPostReaction,
   deletePostReaction,
 } from '../../../store/actions/postActions';
-import { addCommentReaction } from '../../../store/actions/commentActions';
+import {
+  addCommentReaction,
+  deleteCommentReaction,
+} from '../../../store/actions/commentActions';
 import PostReaction from '../../../interfaces/post/postReaction';
 import CommentReaction from '../../../interfaces/comment/commentReaction';
 import MessageReaction from '../../../interfaces/message/messageReaction';
@@ -109,14 +112,20 @@ const ReactionButtons: React.FC<Props> = ({ reactions, postId, commentId }) => {
   ] as const;
 
   const handleAddReaction = (type: ReactionName): void => {
+    const isReacted = reactionName === type;
+
     if (postId) {
       dispatch(
-        reactionName === type
+        isReacted
           ? deletePostReaction(postId)
           : addPostReaction({ postId, reactionName: type }),
       );
     } else if (commentId) {
-      dispatch(addCommentReaction({ commentId, reactionName: type }));
+      dispatch(
+        isReacted
+          ? deleteCommentReaction(commentId)
+          : addCommentReaction({ commentId, reactionName: type }),
+      );
     }
   };
 

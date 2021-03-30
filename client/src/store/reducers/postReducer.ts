@@ -17,10 +17,12 @@ import {
 import {
   CreateCommentAction,
   CreateCommentSuccessAction,
-  DeleteCommentAciton,
+  DeleteCommentAction,
   DeleteCommentSuccessAction,
   AddCommentReactionAction,
   AddCommentReactionSuccessAction,
+  DeleteCommentReactionAction,
+  DeleteCommentReactionSuccessAction,
 } from '../../interfaces/comment/commentActions';
 import PostState from '../../interfaces/post/postState';
 import { POST, COMMENT } from '../../shared/constants/actionTypes';
@@ -51,6 +53,8 @@ const strategyMap: StrategyMap<PostState, typeof POST & typeof COMMENT> = {
   [COMMENT.DELETE_COMMENT_SUCCESS]: deleteCommentSuccessTransformer,
   [COMMENT.ADD_COMMENT_REACTION]: addCommentReactionTransformer,
   [COMMENT.ADD_COMMENT_REACTION_SUCCESS]: addCommentREactionSuccessTransfomer,
+  [COMMENT.DELETE_COMMENT_REACTION]: deleteCommentReactionTransformer,
+  [COMMENT.DELETE_COMMENT_REACTION_SUCCESS]: deleteCommentReactionSuccessTransformer,
   [POST.ERROR]: setPostErrorTransformer,
 };
 
@@ -200,7 +204,7 @@ function createCommentSuccessTransformer(
 
 function deleteCommentTransformer(
   state: PostState,
-  _: ReturnType<DeleteCommentAciton>,
+  _: ReturnType<DeleteCommentAction>,
 ): PostState {
   return { ...state, loading: true };
 }
@@ -250,6 +254,45 @@ function addCommentREactionSuccessTransfomer(
                   comment.id === payload.id ? payload : comment,
                 )
               : [payload],
+          }
+        : post,
+    ),
+  };
+}
+
+function deleteCommentReactionTransformer(
+  state: PostState,
+  _: ReturnType<DeleteCommentReactionAction>,
+): PostState {
+  return { ...state, loading: true };
+}
+
+function deleteCommentReactionSuccessTransformer(
+  state: PostState,
+  { payload }: ReturnType<DeleteCommentReactionSuccessAction>,
+): PostState {
+  return {
+    ...state,
+    loading: false,
+    error: null,
+    feed: state.feed.map((post) =>
+      post.id === payload.postId
+        ? {
+            ...post,
+            comments: post.comments
+              ? post.comments.map((comment) =>
+                  comment.id === payload.commentId
+                    ? {
+                        ...comment,
+                        reactions: comment.reactions
+                          ? comment.reactions.filter(
+                              ({ id }) => id !== payload.reactionId,
+                            )
+                          : [],
+                      }
+                    : comment,
+                )
+              : [],
           }
         : post,
     ),

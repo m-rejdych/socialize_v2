@@ -24,7 +24,7 @@ class CommentReacitonService {
   async findById(reactionId: number): Promise<CommentReaction | null> {
     const commentReaction = await this.commentReacitonRepository.findOne(
       reactionId,
-      { relations: ['user', 'comment'] },
+      { relations: ['user', 'comment', 'comment.post'] },
     );
 
     return commentReaction || null;
@@ -38,6 +38,7 @@ class CommentReacitonService {
       .createQueryBuilder('commentReaction')
       .leftJoinAndSelect('commentReaction.user', 'user')
       .leftJoinAndSelect('commentReaction.comment', 'comment')
+      .leftJoinAndSelect('comment.post', 'commentPost')
       .where('user.id = :userId', { userId })
       .andWhere('comment.id = :commentId', { commentId })
       .getOne();
@@ -99,6 +100,7 @@ class CommentReacitonService {
       );
     }
     const commentId = commentReaction.comment.id;
+    const postId = commentReaction.comment.post.id;
 
     await this.commentReacitonRepository.remove(commentReaction);
 
@@ -106,6 +108,7 @@ class CommentReacitonService {
       commentId,
       userId,
       reactionId,
+      postId,
       deleted: true,
     };
   }
@@ -122,6 +125,7 @@ class CommentReacitonService {
       throw new NotFoundException('Comment reaciton not found!');
     }
     const reactionId = commentReaction.id;
+    const postId = commentReaction.comment.post.id;
 
     await this.commentReacitonRepository.remove(commentReaction);
 
@@ -129,6 +133,7 @@ class CommentReacitonService {
       userId,
       commentId,
       reactionId,
+      postId,
       deleted: true,
     };
   }

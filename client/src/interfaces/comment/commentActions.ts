@@ -2,7 +2,10 @@ import Action from '../store/action';
 import Comment from './comment';
 import { COMMENT } from '../../shared/constants/actionTypes';
 import { CreateCommentReq, AddCommentReactionReq } from './commentReq';
-import { DeleteCommentSuccessPayload } from './commentPayloads';
+import {
+  DeleteCommentSuccessPayload,
+  DeleteCommentReactionSuccessPayload,
+} from './commentPayloads';
 
 export type CreateCommentAction = Action<
   typeof COMMENT.CREATE_COMMENT,
@@ -14,7 +17,7 @@ export type CreateCommentSuccessAction = Action<
   Comment
 >;
 
-export type DeleteCommentAciton = Action<typeof COMMENT.DELETE_COMMENT, number>;
+export type DeleteCommentAction = Action<typeof COMMENT.DELETE_COMMENT, number>;
 
 export type DeleteCommentSuccessAction = Action<
   typeof COMMENT.DELETE_COMMENT_SUCCESS,
@@ -29,4 +32,14 @@ export type AddCommentReactionAction = Action<
 export type AddCommentReactionSuccessAction = Action<
   typeof COMMENT.ADD_COMMENT_REACTION_SUCCESS,
   Comment
+>;
+
+export type DeleteCommentReactionAction = Action<
+  typeof COMMENT.DELETE_COMMENT_REACTION,
+  number
+>;
+
+export type DeleteCommentReactionSuccessAction = Action<
+  typeof COMMENT.DELETE_COMMENT_REACTION_SUCCESS,
+  DeleteCommentReactionSuccessPayload
 >;

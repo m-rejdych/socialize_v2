@@ -6,6 +6,7 @@ import {
 import {
   CreateCommentRes,
   DeleteCommentRes,
+  DeleteCommentReactionRes,
 } from '../interfaces/comment/commentRes';
 import { API_URI } from '../config';
 
@@ -31,4 +32,12 @@ export const addCommentReaction = (
     method: 'PUT',
     url: `${API_URI}/comment/add-reaction`,
     body: data,
+  });
+
+export const deleteCommentReaction = (
+  commentId: number,
+): Promise<DeleteCommentReactionRes> =>
+  createJwtRequest<DeleteCommentReactionRes>({
+    method: 'DELETE',
+    url: `${API_URI}/comment/delete-reaction?commentId=${commentId}`,
   });

@@ -2,13 +2,15 @@ import { put, call, takeEvery } from 'redux-saga/effects';
 
 import {
   CreateCommentAction,
-  DeleteCommentAciton,
+  DeleteCommentAction,
   AddCommentReactionAction,
+  DeleteCommentReactionAction,
 } from '../../interfaces/comment/commentActions';
 import {
   createCommentSuccess,
   deleteCommentSuccess,
   addCommentReactionSuccess,
+  deleteCommentReactionSuccess,
 } from '../actions/commentActions';
 import { setPostError } from '../actions/postActions';
 import { COMMENT } from '../../shared/constants/actionTypes';
@@ -16,10 +18,12 @@ import {
   createComment,
   deleteComment,
   addCommentReaction,
+  deleteCommentReaction,
 } from '../../services/commentService';
 import {
   CreateCommentRes,
   DeleteCommentRes,
+  DeleteCommentReactionRes,
 } from '../../interfaces/comment/commentRes';
 
 function* handleCreateComment({ payload }: ReturnType<CreateCommentAction>) {
@@ -34,7 +38,7 @@ function* handleCreateComment({ payload }: ReturnType<CreateCommentAction>) {
   }
 }
 
-function* handleDeleteComment({ payload }: ReturnType<DeleteCommentAciton>) {
+function* handleDeleteComment({ payload }: ReturnType<DeleteCommentAction>) {
   try {
     const response: DeleteCommentRes = yield call(deleteComment, payload);
 
@@ -44,6 +48,28 @@ function* handleDeleteComment({ payload }: ReturnType<DeleteCommentAciton>) {
         deleted
           ? deleteCommentSuccess({ postId, commentId })
           : setPostError('Comment could not be deleted!'),
+      );
+    }
+  } catch (error) {
+    yield put(setPostError(error.response.data.message));
+  }
+}
+
+function* handleDeleteCommentReaction({
+  payload,
+}: ReturnType<DeleteCommentReactionAction>) {
+  try {
+    const response: DeleteCommentReactionRes = yield call(
+      deleteCommentReaction,
+      payload,
+    );
+
+    if (response.data) {
+      const { postId, commentId, reactionId, deleted } = response.data;
+      yield put(
+        deleted
+          ? deleteCommentReactionSuccess({ postId, commentId, reactionId })
+          : setPostError('Comment reaciton could not be deleted!'),
       );
     }
   } catch (error) {
@@ -75,4 +101,8 @@ export function* deleteCommentSaga() {
 
 export function* addCommentReactionSaga() {
   yield takeEvery(COMMENT.ADD_COMMENT_REACTION, handleAddCommentReaction);
+}
+
+export function* deleteCommentReactionSaga() {
+  yield takeEvery(COMMENT.DELETE_COMMENT_REACTION, handleDeleteCommentReaction);
 }

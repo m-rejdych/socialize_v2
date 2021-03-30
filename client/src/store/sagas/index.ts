@@ -22,6 +22,7 @@ import {
   createCommentSaga,
   deleteCommentSaga,
   addCommentReactionSaga,
+  deleteCommentReactionSaga,
 } from './commentSaga';
 
 export default function* rootSaga() {
@@ -46,5 +47,6 @@ export default function* rootSaga() {
     createCommentSaga(),
     deleteCommentSaga(),
     addCommentReactionSaga(),
+    deleteCommentReactionSaga(),
   ]);
 }

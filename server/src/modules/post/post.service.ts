@@ -35,8 +35,8 @@ class PostService {
       .leftJoinAndSelect('post.comments', 'comments')
       .leftJoinAndSelect('comments.author', 'commentsAuthor')
       .leftJoinAndSelect('comments.reactions', 'commentsReactions')
-      .leftJoinAndSelect('commentsReactions.user', 'commentsReactionsUser')
       .leftJoinAndSelect('commentsReactions.type', 'commentsReactionsType')
+      .leftJoinAndSelect('commentsReactions.user', 'commentsReactionsUser')
       .where('post.id = :id', { id })
       .getOne();
 
@@ -59,6 +59,9 @@ class PostService {
       .leftJoinAndSelect('reactions.user', 'reactionsUser')
       .leftJoinAndSelect('post.comments', 'comments')
       .leftJoinAndSelect('comments.author', 'commentsAuthor')
+      .leftJoinAndSelect('comments.reactions', 'commentsReactions')
+      .leftJoinAndSelect('commentsReactions.type', 'commentsReactionsType')
+      .leftJoinAndSelect('commentsReactions.user', 'commentsReactionsUser')
       .where('author.id IN (:...friendsIds)', {
         friendsIds: [...friendsIds, userId],
       })
