@@ -51,9 +51,16 @@ type Reaction = PostReaction | CommentReaction | MessageReaction;
 interface Props {
   id: number;
   reactions?: Reaction[];
+  showCount?: boolean;
+  className?: string;
 }
 
-const ReactionsCounter: React.FC<Props> = ({ reactions, id }) => {
+const ReactionsCounter: React.FC<Props> = ({
+  reactions,
+  id,
+  showCount,
+  className,
+}) => {
   const classes = useStyles();
 
   const icons = [
@@ -90,7 +97,7 @@ const ReactionsCounter: React.FC<Props> = ({ reactions, id }) => {
   ] as const;
 
   return (
-    <Box display="flex" alignItems="center" m={2}>
+    <Box display="flex" alignItems="center" className={className}>
       <Box>
         {icons
           .filter(({ hidden }) => !hidden)
@@ -112,7 +119,7 @@ const ReactionsCounter: React.FC<Props> = ({ reactions, id }) => {
             </Paper>
           ))}
       </Box>
-      {reactions && (
+      {reactions && showCount && (
         <Typography
           variant="body2"
           className={classes.counter}

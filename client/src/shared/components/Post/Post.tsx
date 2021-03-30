@@ -53,6 +53,9 @@ const useStyles = makeStyles((theme) => ({
     borderTop: `1px solid ${theme.palette.divider}`,
     borderBottom: `1px solid ${theme.palette.divider}`,
   },
+  reactionsCounter: {
+    margin: theme.spacing(2),
+  },
 }));
 
 interface Props extends PostType {}
@@ -148,7 +151,12 @@ const Post: React.FC<Props> = ({
       </CardContent>
       <Box display="flex" alignItems="center" justifyContent="space-between">
         {reactions && reactions.length > 0 && (
-          <ReactionsCounter reactions={reactions} id={id} />
+          <ReactionsCounter
+            showCount
+            reactions={reactions}
+            id={id}
+            className={classes.reactionsCounter}
+          />
         )}
         {comments && comments.length > 0 && (
           <Typography

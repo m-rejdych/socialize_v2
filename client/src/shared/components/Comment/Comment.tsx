@@ -17,6 +17,7 @@ import { formatDistance } from 'date-fns';
 import ROUTES from '../../constants/routes';
 import CommentType from '../../../interfaces/comment';
 import ReactionPopper from '../ReactionPopper';
+import ReactionsCounter from '../ReactionsCounter';
 import RootState from '../../../interfaces/store';
 import { deleteComment } from '../../../store/actions/commentActions';
 
@@ -55,7 +56,12 @@ const useStyles = makeStyles((theme) => ({
   reactionPopper: {
     position: 'absolute',
     left: theme.spacing(2.5),
-    top: `calc(100% + ${theme.spacing(0.3)}px)`,
+    top: `calc(100% + ${theme.spacing(1.3)}px)`,
+  },
+  reactionsCounter: {
+    position: 'absolute',
+    bottom: '-11px',
+    left: theme.spacing(2.5),
   },
 }));
 
@@ -128,6 +134,11 @@ const Comment: React.FC<Props> = ({
           className={classes.reactionPopper}
           reactions={reactions}
           commentId={id}
+        />
+        <ReactionsCounter
+          reactions={reactions}
+          id={id}
+          className={classes.reactionsCounter}
         />
       </Card>
     </Box>
