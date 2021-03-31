@@ -6,6 +6,7 @@ import RootState from '../../../interfaces/store';
 import Auth from '../../../pages/Auth';
 import Home from '../../../pages/Home';
 import Profile from '../../../pages/Profile';
+import Chat from '../../../pages/Chat';
 
 const Routes: React.FC = () => {
   const userId = useSelector((state: RootState) => state.user.id);
@@ -16,6 +17,7 @@ const Routes: React.FC = () => {
     <Switch>
       <Route path={ROUTES.HOME} component={Home} />
       <Route path={`${ROUTES.PROFILE}/:id`} component={Profile} />
+      <Route path={ROUTES.CHAT} component={Chat} />
       <Redirect to={ROUTES.HOME} />
     </Switch>
   ) : (

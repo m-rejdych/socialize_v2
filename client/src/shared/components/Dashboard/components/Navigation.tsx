@@ -47,12 +47,12 @@ const Navigation: React.FC = () => {
       },
     },
     {
-      value: 'messages',
-      label: 'Messages',
-      selected: false,
+      value: 'chat',
+      label: 'Chat',
+      selected: pathname === ROUTES.CHAT,
       Icon: Chat,
       handleClick: () => {
-        history.push(ROUTES.HOME);
+        history.push(ROUTES.CHAT);
       },
     },
   ] as const;

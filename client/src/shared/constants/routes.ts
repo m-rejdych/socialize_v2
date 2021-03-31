@@ -3,6 +3,7 @@ const ROUTES = {
   REGISTER: '/register',
   HOME: '/home',
   PROFILE: '/profile',
+  CHAT: '/chat',
 } as const;
 
 export default ROUTES;
