@@ -7,6 +7,7 @@ import {
   JoinTable,
   ManyToOne,
   OneToMany,
+  Column,
 } from 'typeorm';
 
 import User from '../user/user.entity';
@@ -17,6 +18,9 @@ import Message from '../message/message.entity';
 class Chat {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @Column({ nullable: true })
+  name?: string;
 
   @CreateDateColumn()
   createdAt: Date;

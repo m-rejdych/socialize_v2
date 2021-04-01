@@ -9,6 +9,7 @@ import {
   Req,
   BadRequestException,
   ForbiddenException,
+  Put,
 } from '@nestjs/common';
 
 import Chat from './chat.entity';
@@ -16,6 +17,7 @@ import ChatService from './chat.service';
 import JwtGuard from '../../guards/jwt.guard';
 import JwtRequest from '../auth/interfaces/jwtRequest.interface';
 import CreateChatDto from './dto/createChat.dto';
+import UpdateChatNameDto from './dto/updateChatName.dto';
 
 @Controller('chat')
 class ChatController {
@@ -64,6 +66,17 @@ class ChatController {
     }
 
     return await this.chatService.createChat(data);
+  }
+
+  @UseGuards(JwtGuard)
+  @Put('update-chat-name')
+  async updateChatName(
+    @Req() req: JwtRequest,
+    @Body() data: UpdateChatNameDto,
+  ): Promise<Chat> {
+    const { id } = req.user;
+
+    return await this.chatService.updateChatNameById(id, data);
   }
 }
 

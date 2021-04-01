@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -8,6 +9,7 @@ import { Repository } from 'typeorm';
 
 import Chat from './chat.entity';
 import CreateChatDto from './dto/createChat.dto';
+import UpdateChatNameDto from './dto/updateChatName.dto';
 import UserService from '../user/user.service';
 import ChatTypeService from '../chatType/chatType.service';
 import FindOptions from './interfaces/findOptions.interface';
@@ -82,6 +84,25 @@ class ChatService {
       members,
       type: chatType,
     });
+    await this.chatRepository.save(chat);
+
+    return chat;
+  }
+
+  async updateChatNameById(
+    userId: number,
+    { chatId, name }: UpdateChatNameDto,
+  ): Promise<Chat> {
+    const isValid = await this.validateMembership(chatId, userId);
+    if (!isValid) {
+      throw new ForbiddenException(
+        'You can update names only of chats that you are a member of!',
+      );
+    }
+
+    const chat = await this.findById(chatId);
+
+    chat.name = name;
     await this.chatRepository.save(chat);
 
     return chat;
