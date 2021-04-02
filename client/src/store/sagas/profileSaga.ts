@@ -16,7 +16,6 @@ import { getUserInfo, updateUserInfo } from '../../services/userInfoService';
 function* handleGetUserInfo({ payload }: ReturnType<GetUserInfoAction>) {
   try {
     const response: ProfileRes = yield call(getUserInfo, payload);
-    console.log(response);
 
     if (response.data) {
       yield put(getUserInfoSuccess(response.data));

@@ -17,6 +17,7 @@ const Routes: React.FC = () => {
     <Switch>
       <Route path={ROUTES.HOME} component={Home} />
       <Route path={`${ROUTES.PROFILE}/:id`} component={Profile} />
+      <Route path={`${ROUTES.CHAT}/:id`} component={Chat} />
       <Route path={ROUTES.CHAT} component={Chat} />
       <Redirect to={ROUTES.HOME} />
     </Switch>

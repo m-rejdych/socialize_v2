@@ -49,7 +49,7 @@ const Navigation: React.FC = () => {
     {
       value: 'chat',
       label: 'Chat',
-      selected: pathname === ROUTES.CHAT,
+      selected: pathname.includes('chat'),
       Icon: Chat,
       handleClick: () => {
         history.push(ROUTES.CHAT);

@@ -36,11 +36,16 @@ class ChatService {
   }
 
   async findByUserId(userId: number): Promise<Chat[] | null> {
-    const chats = await this.chatRepository
+    const selectedChats = await this.chatRepository
       .createQueryBuilder('chat')
       .leftJoin('chat.members', 'members')
-      .where(':userId IN (members.id)', { userId })
+      .where('members.id = :userId', { userId })
       .getMany();
+    const chatsIds = selectedChats.map(({ id }) => id);
+
+    const chats = await this.chatRepository.findByIds(chatsIds, {
+      relations: ['members', 'type'],
+    });
 
     return chats?.length ? chats : null;
   }
