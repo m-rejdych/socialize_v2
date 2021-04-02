@@ -31,17 +31,17 @@ class ChatController {
   ): Promise<Chat> {
     const { id: userId } = req.user;
 
-    const isValid = await this.chatService.validateMembership(id, userId);
-    if (!isValid) {
-      throw new ForbiddenException('You are not a member of the chat!');
-    }
-
     // DELETE RELATIONS OTHER THAN MEMBERS LATER
     return await this.chatService.findById(id, {
+      validateMembership: true,
+      validationId: userId,
       relations: [
         'members',
+        'type',
         'messages',
+        'messages.author',
         'messages.reactions',
+        'messages.reactions.user',
         'messages.reactions.type',
         'messages.seenBy',
       ],
