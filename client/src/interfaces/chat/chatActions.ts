@@ -9,4 +9,8 @@ export type GetChatsSuccessAction = Action<
   Chat[]
 >;
 
+export type GetChatAction = Action<typeof CHAT.GET_CHAT, number>;
+
+export type GetChatSuccessAction = Action<typeof CHAT.GET_CHAT_SUCCESS, Chat>;
+
 export type SetChatError = Action<typeof CHAT.ERROR, string | null>;

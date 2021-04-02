@@ -24,7 +24,7 @@ import {
   addCommentReactionSaga,
   deleteCommentReactionSaga,
 } from './commentSaga';
-import { getChatsSaga } from './chatSaga';
+import { getChatsSaga, getChatSaga } from './chatSaga';
 
 export default function* rootSaga() {
   yield all([
@@ -50,5 +50,6 @@ export default function* rootSaga() {
     addCommentReactionSaga(),
     deleteCommentReactionSaga(),
     getChatsSaga(),
+    getChatSaga(),
   ]);
 }

@@ -5,11 +5,14 @@ import { CHAT } from '../../shared/constants/actionTypes';
 import {
   GetChatsAction,
   GetChatsSuccessAction,
+  GetChatAction,
+  GetChatSuccessAction,
   SetChatError,
 } from '../../interfaces/chat/chatActions';
 
 const initialState: ChatState = {
   chats: [],
+  selectedChat: null,
   loading: false,
   error: null,
 };
@@ -17,6 +20,8 @@ const initialState: ChatState = {
 const strategyMap: StrategyMap<ChatState, typeof CHAT> = {
   [CHAT.GET_CHATS]: getChatsTransformer,
   [CHAT.GET_CHATS_SUCCESS]: getChatsSuccessTransfomer,
+  [CHAT.GET_CHAT]: getChatTransformer,
+  [CHAT.GET_CHAT_SUCCESS]: getChatSuccessTransformer,
   [CHAT.ERROR]: setChatErrorTransformer,
 };
 
@@ -34,6 +39,20 @@ function getChatsSuccessTransfomer(
   { payload }: ReturnType<GetChatsSuccessAction>,
 ): ChatState {
   return { ...state, loading: false, error: null, chats: payload };
+}
+
+function getChatTransformer(
+  state: ChatState,
+  _: ReturnType<GetChatAction>,
+): ChatState {
+  return { ...state, loading: true };
+}
+
+function getChatSuccessTransformer(
+  state: ChatState,
+  { payload }: ReturnType<GetChatSuccessAction>,
+): ChatState {
+  return { ...state, loading: false, error: null, selectedChat: payload };
 }
 
 function setChatErrorTransformer(
