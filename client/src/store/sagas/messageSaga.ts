@@ -1,6 +1,5 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 
-import { createMessageSuccess } from '../actions/messageActions';
 import { setChatError } from '../actions/chatActions';
 import { createMessage } from '../../services/messageService';
 import { CreateMessageAction } from '../../interfaces/message/messageActions';
@@ -9,10 +8,11 @@ import { MESSAGE } from '../../shared/constants/actionTypes';
 
 function* handleCreateMessage({ payload }: ReturnType<CreateMessageAction>) {
   try {
-    const response: CreateMessageRes = yield call(createMessage, payload);
+    const { socket, ...rest } = payload;
+    const response: CreateMessageRes = yield call(createMessage, rest);
 
-    if (response.data) {
-      yield put(createMessageSuccess(response.data));
+    if (response.data && socket) {
+      socket.emit('message', response.data);
     }
   } catch (error) {
     yield put(setChatError(error.response.data.message));

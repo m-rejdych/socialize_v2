@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import {
@@ -26,6 +26,7 @@ interface Props {
 }
 
 const Conversation: React.FC<Props> = ({ left }) => {
+  const [socket, setSocket] = useState<SocketIOClient.Socket | null>(null);
   const { id } = useParams<{ id?: string }>();
   const selectedChat = useSelector(
     (state: RootState) => state.chat.selectedChat,
@@ -49,8 +50,8 @@ const Conversation: React.FC<Props> = ({ left }) => {
         <Box height="100%" display="flex" flexDirection="column">
           {selectedChat.messages?.length ? (
             <>
-              <MessagesList />
-              <CreateMessageInput />
+              <MessagesList setSocket={setSocket} />
+              <CreateMessageInput socket={socket} />
             </>
           ) : (
             <Box

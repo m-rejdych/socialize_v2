@@ -12,7 +12,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CreateMessageInput: React.FC = () => {
+interface Props {
+  socket: SocketIOClient.Socket | null;
+}
+
+const CreateMessageInput: React.FC<Props> = ({ socket }) => {
   const [value, setValue] = useState('');
   const chatId = useSelector(
     (state: RootState) => state.chat.selectedChat?.chat.id,
@@ -28,7 +32,7 @@ const CreateMessageInput: React.FC = () => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       if (value.trim().length > 0 && chatId) {
-        dispatch(createMessage({ chatId, content: value }));
+        dispatch(createMessage({ chatId, content: value, socket }));
         setValue('');
       }
     }

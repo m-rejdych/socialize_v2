@@ -11,7 +11,7 @@ import {
 } from '../../interfaces/chat/chatActions';
 import {
   CreateMessageAction,
-  CreateMessageSuccessAction,
+  AddMessageAction,
 } from '../../interfaces/message/messageActions';
 
 const initialState: ChatState = {
@@ -27,7 +27,7 @@ const strategyMap: StrategyMap<ChatState, typeof CHAT & typeof MESSAGE> = {
   [CHAT.GET_SELECTED_CHAT]: getSelectedChatTransformer,
   [CHAT.GET_SELECTED_CHAT_SUCCESS]: getSelectedChatSuccessTransformer,
   [MESSAGE.CREATE_MESSAGE]: createMessageTransformer,
-  [MESSAGE.CREATE_MESSAGE_SUCCESS]: createMessageSuccessTransformer,
+  [MESSAGE.ADD_MESSAGE]: addMessageTransformer,
   [CHAT.ERROR]: setChatErrorTransformer,
 };
 
@@ -68,9 +68,9 @@ function createMessageTransformer(
   return state;
 }
 
-function createMessageSuccessTransformer(
+function addMessageTransformer(
   state: ChatState,
-  { payload }: ReturnType<CreateMessageSuccessAction>,
+  { payload }: ReturnType<AddMessageAction>,
 ): ChatState {
   return {
     ...state,

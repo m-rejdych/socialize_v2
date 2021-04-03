@@ -15,6 +15,7 @@ const useStyles = makeStyles((theme) => ({
   author: {
     position: 'absolute',
     bottom: `calc(100% + ${theme.spacing(0.5)}px)`,
+    whiteSpace: 'nowrap',
   },
   rightPosition: {
     right: theme.spacing(2),
