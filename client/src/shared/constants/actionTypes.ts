@@ -65,7 +65,7 @@ export const COMMENT = {
 export const CHAT = {
   GET_CHATS: 'CHAT_GET_CHATS' as const,
   GET_CHATS_SUCCESS: 'CHAT_GET_CHATS_SUCCESS' as const,
-  GET_CHAT: 'CHAT_GET_CHAT' as const,
-  GET_CHAT_SUCCESS: 'CHAT_GET_CHAT_SUCCESS' as const,
+  GET_SELECTED_CHAT: 'CHAT_GET_CHAT' as const,
+  GET_SELECTED_CHAT_SUCCESS: 'CHAT_GET_CHAT_SUCCESS' as const,
   ERROR: 'CHAT_ERROR' as const,
 };

@@ -35,16 +35,7 @@ class ChatController {
     return await this.chatService.findById(id, {
       validateMembership: true,
       validationId: userId,
-      relations: [
-        'members',
-        'type',
-        'messages',
-        'messages.author',
-        'messages.reactions',
-        'messages.reactions.user',
-        'messages.reactions.type',
-        'messages.seenBy',
-      ],
+      relations: ['members', 'type'],
     });
   }
 

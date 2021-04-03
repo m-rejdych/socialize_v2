@@ -2,8 +2,8 @@ import createAction from '../../util/actionFactory';
 import {
   GetChatsAction,
   GetChatsSuccessAction,
-  GetChatAction,
-  GetChatSuccessAction,
+  GetSelectedChatAciton,
+  GetSelectedChatSuccessAction,
   SetChatError,
 } from '../../interfaces/chat/chatActions';
 import { CHAT } from '../../shared/constants/actionTypes';
@@ -14,10 +14,12 @@ export const getChatsSuccess: GetChatsSuccessAction = createAction(
   CHAT.GET_CHATS_SUCCESS,
 );
 
-export const getChat: GetChatAction = createAction(CHAT.GET_CHAT);
+export const getSelectedChat: GetSelectedChatAciton = createAction(
+  CHAT.GET_SELECTED_CHAT,
+);
 
-export const getChatSuccess: GetChatSuccessAction = createAction(
-  CHAT.GET_CHAT_SUCCESS,
+export const getSelectedChatSuccess: GetSelectedChatSuccessAction = createAction(
+  CHAT.GET_SELECTED_CHAT_SUCCESS,
 );
 
 export const setChatError: SetChatError = createAction(CHAT.ERROR);

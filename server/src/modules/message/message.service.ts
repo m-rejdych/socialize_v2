@@ -32,6 +32,22 @@ class MessageService {
     return message || null;
   }
 
+  async findAllByChatId(chatId: number): Promise<Message[]> {
+    const messages = await this.messageRepository
+      .createQueryBuilder('message')
+      .leftJoin('message.chat', 'chat')
+      .leftJoinAndSelect('message.author', 'author')
+      .leftJoinAndSelect('message.seenBy', 'seenBy')
+      .leftJoinAndSelect('message.reactions', 'reactions')
+      .leftJoinAndSelect('reactions.user', 'reactionsUser')
+      .leftJoinAndSelect('reactions.type', 'reactionsType')
+      .where('chat.id = :chatId', { chatId })
+      .orderBy('message.createdAt', 'ASC')
+      .getMany();
+
+    return messages;
+  }
+
   async createMessage(
     userId: number,
     { content, chatId }: CreateMessageDto,

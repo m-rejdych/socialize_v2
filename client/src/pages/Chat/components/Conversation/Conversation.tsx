@@ -8,13 +8,15 @@ import {
   Typography,
 } from '@material-ui/core';
 
-import { getChat } from '../../../../store/actions/chatActions';
+import { getSelectedChat } from '../../../../store/actions/chatActions';
 import RootState from '../../../../interfaces/store';
+import MessagesList from './MessagesList';
 
 const useStyles = makeStyles((theme) => ({
   container: {
     position: 'relative',
     borderLeft: `1px solid ${theme.palette.divider}`,
+    borderRight: `1px solid ${theme.palette.divider}`,
   },
 }));
 
@@ -30,7 +32,7 @@ const Conversation: React.FC<Props> = ({ left }) => {
   const classes = useStyles();
 
   useEffect(() => {
-    if (id) dispatch(getChat(Number(id)));
+    if (id) dispatch(getSelectedChat(Number(id)));
   }, [id]);
 
   return (
@@ -41,7 +43,22 @@ const Conversation: React.FC<Props> = ({ left }) => {
       style={{ left }}
     >
       {chat && !loading ? (
-        <div>{chat.id}</div>
+        <Box display="flex" flexDirection="column">
+          {chat.messages?.length ? (
+            <MessagesList messages={chat.messages} />
+          ) : (
+            <Box
+              height="100vh"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Typography color="textSecondary" variant="h4">
+                No messages
+              </Typography>
+            </Box>
+          )}
+        </Box>
       ) : (
         <Box
           height="100vh"

@@ -1,13 +1,15 @@
 import { put, call, takeEvery } from 'redux-saga/effects';
 
-import { GetChatAction } from '../../interfaces/chat/chatActions';
+import { GetSelectedChatAciton } from '../../interfaces/chat/chatActions';
 import { GetChatsRes, GetChatRes } from '../../interfaces/chat/chatRes';
+import { GetMessagesByChatIdRes } from '../../interfaces/message/messageRes';
 import {
   getChatsSuccess,
-  getChatSuccess,
+  getSelectedChatSuccess,
   setChatError,
 } from '../actions/chatActions';
 import { getChats, getChat } from '../../services/chatService';
+import { getMessagesByChatId } from '../../services/messageService';
 import { CHAT } from '../../shared/constants/actionTypes';
 
 function* handleGetChats() {
@@ -22,12 +24,26 @@ function* handleGetChats() {
   }
 }
 
-function* handleGetChat({ payload }: ReturnType<GetChatAction>) {
+function* handleGetSelectedChat({
+  payload,
+}: ReturnType<GetSelectedChatAciton>) {
   try {
-    const response: GetChatRes = yield call(getChat, payload);
+    const chatResponse: GetChatRes = yield call(getChat, payload);
 
-    if (response.data) {
-      yield put(getChatSuccess(response.data));
+    if (chatResponse.data) {
+      const messagesResponse: GetMessagesByChatIdRes = yield call(
+        getMessagesByChatId,
+        payload,
+      );
+
+      if (messagesResponse.data) {
+        yield put(
+          getSelectedChatSuccess({
+            chat: chatResponse.data,
+            messages: messagesResponse.data,
+          }),
+        );
+      }
     }
   } catch (error) {
     yield put(setChatError(error.response.data.message));
@@ -38,6 +54,6 @@ export function* getChatsSaga() {
   yield takeEvery(CHAT.GET_CHATS, handleGetChats);
 }
 
-export function* getChatSaga() {
-  yield takeEvery(CHAT.GET_CHAT, handleGetChat);
+export function* getSelectedChatSaga() {
+  yield takeEvery(CHAT.GET_SELECTED_CHAT, handleGetSelectedChat);
 }

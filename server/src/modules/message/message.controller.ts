@@ -6,6 +6,7 @@ import {
   Body,
   Put,
   Delete,
+  Get,
   Query,
   ParseIntPipe,
 } from '@nestjs/common';
@@ -24,6 +25,14 @@ import MarkAllAsSeenResponseDto from './dto/markAllAsSeenResponse.dto';
 @Controller('message')
 class MessageController {
   constructor(private messageService: MessageService) {}
+
+  @UseGuards(JwtGuard)
+  @Get('get-by-chat-id')
+  async getByChatId(
+    @Query('chatId', ParseIntPipe) chatId: number,
+  ): Promise<Message[]> {
+    return await this.messageService.findAllByChatId(chatId);
+  }
 
   @UseGuards(JwtGuard)
   @Post('create-message')

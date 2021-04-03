@@ -42,28 +42,6 @@ class ChatService {
     return chat.members.some(({ id }) => id === userId);
   }
 
-  // async findConversationByChatId(
-  //   userId: number,
-  //   chatId: number,
-  // ): Promise<Chat> {
-  //   const isValid = await this.validateMembership(chatId, userId);
-  //   if (!isValid)
-  //     throw new ForbiddenException('You are not a member of this chat!');
-
-  //   const chat = await this.findById(chatId, {
-  //     relations: [
-  //       'type',
-  //       'members',
-  //       'messages',
-  //       'messages.reactions',
-  //       'messages.author',
-  //       'messages.seenBy',
-  //     ],
-  //   });
-
-  //   return chat;
-  // }
-
   async findByUserId(userId: number): Promise<Chat[] | null> {
     const selectedChats = await this.chatRepository
       .createQueryBuilder('chat')

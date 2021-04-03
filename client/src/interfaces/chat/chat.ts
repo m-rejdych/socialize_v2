@@ -9,5 +9,5 @@ export default interface Chat {
   updatedAt: Date;
   members?: User[];
   type?: ChatType;
-  messages: Message[];
+  messages?: Message[];
 }
