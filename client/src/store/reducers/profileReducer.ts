@@ -31,10 +31,7 @@ const strategyMap: StrategyMap<ProfileState, typeof PROFILE> = {
   [PROFILE.ERROR]: setProfileErrorTransformer,
 };
 
-const profileReducer = createReducer<ProfileState, typeof PROFILE>(
-  strategyMap,
-  initialState,
-);
+const profileReducer = createReducer(strategyMap, initialState);
 
 function getUserInfoTransformer(
   state: ProfileState,

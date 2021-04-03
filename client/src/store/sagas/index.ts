@@ -25,6 +25,7 @@ import {
   deleteCommentReactionSaga,
 } from './commentSaga';
 import { getChatsSaga, getSelectedChatSaga } from './chatSaga';
+import { createMessageSaga } from './messageSaga';
 
 export default function* rootSaga() {
   yield all([
@@ -51,5 +52,6 @@ export default function* rootSaga() {
     deleteCommentReactionSaga(),
     getChatsSaga(),
     getSelectedChatSaga(),
+    createMessageSaga(),
   ]);
 }

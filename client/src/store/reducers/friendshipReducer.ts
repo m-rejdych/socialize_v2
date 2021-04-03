@@ -38,10 +38,7 @@ const strategyMap: StrategyMap<FriendshipState, typeof FRIENDSHIP> = {
   [FRIENDSHIP.ERROR]: setFriendshipErrorTransformer,
 };
 
-const friendshipReducer = createReducer<FriendshipState, typeof FRIENDSHIP>(
-  strategyMap,
-  initialState,
-);
+const friendshipReducer = createReducer(strategyMap, initialState);
 
 function getAllFriendshipsTransformer(
   state: FriendshipState,

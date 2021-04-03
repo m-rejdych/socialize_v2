@@ -58,10 +58,7 @@ const strategyMap: StrategyMap<PostState, typeof POST & typeof COMMENT> = {
   [POST.ERROR]: setPostErrorTransformer,
 };
 
-const postReducer = createReducer<PostState, typeof POST & typeof COMMENT>(
-  strategyMap,
-  initialState,
-);
+const postReducer = createReducer(strategyMap, initialState);
 
 function createPostTransformer(
   state: PostState,

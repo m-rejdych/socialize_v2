@@ -10,10 +10,6 @@ export const USER = {
   ERROR: 'USER_ERROR' as const,
 };
 
-export const DASHBOARD = {
-  SET_NAVIGATION_ITEM: 'DASHBOARD_SET_NAVIGATION_ITEM' as const,
-};
-
 export const PROFILE = {
   GET_USER_INFO: 'PROFILE_GET_USER_INFO' as const,
   GET_USER_INFO_SUCCESS: 'PROFILE_GET_USER_INFO_SUCCESS' as const,
@@ -68,4 +64,9 @@ export const CHAT = {
   GET_SELECTED_CHAT: 'CHAT_GET_CHAT' as const,
   GET_SELECTED_CHAT_SUCCESS: 'CHAT_GET_CHAT_SUCCESS' as const,
   ERROR: 'CHAT_ERROR' as const,
+};
+
+export const MESSAGE = {
+  CREATE_MESSAGE: 'MESSAGE_CREATE_MESSAGE' as const,
+  CREATE_MESSAGE_SUCCESS: 'MESSAGE_CREATE_MESSAGE_SUCCESS' as const,
 };

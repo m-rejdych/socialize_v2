@@ -32,10 +32,7 @@ const strategyMap: StrategyMap<UserState, typeof AUTH & typeof USER> = {
   [USER.ERROR]: setUserErrorTransformer,
 };
 
-const userReducer = createReducer<UserState, typeof AUTH & typeof USER>(
-  strategyMap,
-  initialState,
-);
+const userReducer = createReducer(strategyMap, initialState);
 
 function registerTransformer(
   state: UserState,

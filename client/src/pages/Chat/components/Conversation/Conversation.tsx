@@ -11,6 +11,7 @@ import {
 import { getSelectedChat } from '../../../../store/actions/chatActions';
 import RootState from '../../../../interfaces/store';
 import MessagesList from './MessagesList';
+import CreateMessageInput from './CreateMessageInput';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -25,8 +26,10 @@ interface Props {
 }
 
 const Conversation: React.FC<Props> = ({ left }) => {
-  const { id } = useParams<{ id: string }>();
-  const chat = useSelector((state: RootState) => state.chat.selectedChat);
+  const { id } = useParams<{ id?: string }>();
+  const selectedChat = useSelector(
+    (state: RootState) => state.chat.selectedChat,
+  );
   const loading = useSelector((state: RootState) => state.chat.loading);
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -38,17 +41,20 @@ const Conversation: React.FC<Props> = ({ left }) => {
   return (
     <Box
       width={`calc(100% - ${left}px)`}
-      minHeight="100vh"
+      height="calc(100vh - 24px)"
       className={classes.container}
       style={{ left }}
     >
-      {chat && !loading ? (
-        <Box display="flex" flexDirection="column">
-          {chat.messages?.length ? (
-            <MessagesList messages={chat.messages} />
+      {selectedChat && id && !loading ? (
+        <Box height="100%" display="flex" flexDirection="column">
+          {selectedChat.messages?.length ? (
+            <>
+              <MessagesList />
+              <CreateMessageInput />
+            </>
           ) : (
             <Box
-              height="100vh"
+              height="100%"
               display="flex"
               alignItems="center"
               justifyContent="center"
@@ -61,7 +67,7 @@ const Conversation: React.FC<Props> = ({ left }) => {
         </Box>
       ) : (
         <Box
-          height="100vh"
+          height="100%"
           display="flex"
           alignItems="center"
           justifyContent="center"

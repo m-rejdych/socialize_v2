@@ -1,7 +1,7 @@
 import createReducer from '../../util/reducerFactory';
 import ChatState from '../../interfaces/chat/chatState';
 import StrategyMap from '../../interfaces/store/strategyMap';
-import { CHAT } from '../../shared/constants/actionTypes';
+import { CHAT, MESSAGE } from '../../shared/constants/actionTypes';
 import {
   GetChatsAction,
   GetChatsSuccessAction,
@@ -9,6 +9,10 @@ import {
   GetSelectedChatSuccessAction,
   SetChatError,
 } from '../../interfaces/chat/chatActions';
+import {
+  CreateMessageAction,
+  CreateMessageSuccessAction,
+} from '../../interfaces/message/messageActions';
 
 const initialState: ChatState = {
   chats: [],
@@ -17,11 +21,13 @@ const initialState: ChatState = {
   error: null,
 };
 
-const strategyMap: StrategyMap<ChatState, typeof CHAT> = {
+const strategyMap: StrategyMap<ChatState, typeof CHAT & typeof MESSAGE> = {
   [CHAT.GET_CHATS]: getChatsTransformer,
   [CHAT.GET_CHATS_SUCCESS]: getChatsSuccessTransfomer,
   [CHAT.GET_SELECTED_CHAT]: getSelectedChatTransformer,
   [CHAT.GET_SELECTED_CHAT_SUCCESS]: getSelectedChatSuccessTransformer,
+  [MESSAGE.CREATE_MESSAGE]: createMessageTransformer,
+  [MESSAGE.CREATE_MESSAGE_SUCCESS]: createMessageSuccessTransformer,
   [CHAT.ERROR]: setChatErrorTransformer,
 };
 
@@ -53,6 +59,29 @@ function getSelectedChatSuccessTransformer(
   { payload }: ReturnType<GetSelectedChatSuccessAction>,
 ): ChatState {
   return { ...state, loading: false, error: null, selectedChat: payload };
+}
+
+function createMessageTransformer(
+  state: ChatState,
+  _: ReturnType<CreateMessageAction>,
+): ChatState {
+  return state;
+}
+
+function createMessageSuccessTransformer(
+  state: ChatState,
+  { payload }: ReturnType<CreateMessageSuccessAction>,
+): ChatState {
+  return {
+    ...state,
+    error: null,
+    selectedChat: state.selectedChat
+      ? {
+          ...state.selectedChat,
+          messages: [...state.selectedChat?.messages, payload],
+        }
+      : null,
+  };
 }
 
 function setChatErrorTransformer(
