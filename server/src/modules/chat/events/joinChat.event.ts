@@ -8,7 +8,7 @@ import {
 import { Server } from 'socket.io';
 
 @WebSocketGateway({ namespace: 'chats' })
-class JoinChatEvent {
+class JoinChatGateway {
   @WebSocketServer()
   private server: Server;
 
@@ -22,4 +22,4 @@ class JoinChatEvent {
   }
 }
 
-export default JoinChatEvent;
+export default JoinChatGateway;

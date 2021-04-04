@@ -6,7 +6,10 @@ import io from 'socket.io-client';
 import Message from './Message';
 import MessageType from '../../../../../interfaces/message';
 import RootState from '../../../../../interfaces/store';
-import { addMessage } from '../../../../../store/actions/messageActions';
+import {
+  addMessage,
+  updateMessage,
+} from '../../../../../store/actions/messageActions';
 import { API_URI } from '../../../../../config';
 
 const useStyles = makeStyles((theme) => ({
@@ -20,9 +23,10 @@ const useStyles = makeStyles((theme) => ({
 
 interface Props {
   setSocket: (socket: SocketIOClient.Socket | null) => void;
+  socket: SocketIOClient.Socket | null;
 }
 
-const MessagesList: React.FC<Props> = ({ setSocket }) => {
+const MessagesList: React.FC<Props> = ({ setSocket, socket }) => {
   const listRef = useRef<HTMLDivElement | null>(null);
   const messages = useSelector(
     (state: RootState) => state.chat.selectedChat?.messages,
@@ -53,6 +57,11 @@ const MessagesList: React.FC<Props> = ({ setSocket }) => {
       dispatch(addMessage(message));
     });
 
+    socket.on('reaction', (message: MessageType): void => {
+      console.log('reaction');
+      dispatch(updateMessage(message));
+    });
+
     return () => {
       socket.disconnect();
     };
@@ -69,7 +78,9 @@ const MessagesList: React.FC<Props> = ({ setSocket }) => {
   return (
     <div ref={listRef} className={classes.listContainer}>
       {messages
-        ? messages.map((message) => <Message key={message.id} {...message} />)
+        ? messages.map((message) => (
+            <Message key={message.id} socket={socket} {...message} />
+          ))
         : null}
     </div>
   );

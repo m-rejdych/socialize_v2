@@ -8,7 +8,7 @@ import {
 import { Server } from 'socket.io';
 
 @WebSocketGateway({ namespace: 'chats' })
-class LeaveChatEvent {
+class LeaveChatGateway {
   @WebSocketServer()
   private server: Server;
 
@@ -22,4 +22,4 @@ class LeaveChatEvent {
   }
 }
 
-export default LeaveChatEvent;
+export default LeaveChatGateway;

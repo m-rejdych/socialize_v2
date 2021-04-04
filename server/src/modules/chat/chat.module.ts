@@ -8,8 +8,8 @@ import Message from '../message/message.entity';
 import ChatTypeModule from '../chatType/chatType.module';
 import UserModule from '../user/user.module';
 import ChatService from './chat.service';
-import JoinChatEvent from './events/joinChat.event';
-import LeaveChatEvent from './events/leaveChat.event';
+import JoinChatGateway from './events/joinChat.event';
+import LeaveChatGateway from './events/leaveChat.event';
 import ChatController from './chat.controller';
 
 @Module({
@@ -19,7 +19,7 @@ import ChatController from './chat.controller';
     UserModule,
   ],
   controllers: [ChatController],
-  providers: [ChatService, JoinChatEvent, LeaveChatEvent],
+  providers: [ChatService, JoinChatGateway, LeaveChatGateway],
   exports: [ChatService],
 })
 class ChatModule {}

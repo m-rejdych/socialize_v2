@@ -134,6 +134,7 @@ const Comment: React.FC<Props> = ({
           className={classes.reactionPopper}
           reactions={reactions}
           commentId={id}
+          variant="text"
         />
         <ReactionsCounter
           reactions={reactions}

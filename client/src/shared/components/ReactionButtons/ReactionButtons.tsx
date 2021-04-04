@@ -23,6 +23,7 @@ import {
   addCommentReaction,
   deleteCommentReaction,
 } from '../../../store/actions/commentActions';
+import { addMessageReaction } from '../../../store/actions/messageActions';
 import PostReaction from '../../../interfaces/post/postReaction';
 import CommentReaction from '../../../interfaces/comment/commentReaction';
 import MessageReaction from '../../../interfaces/message/messageReaction';
@@ -34,9 +35,17 @@ interface Props {
   reactions?: Reaction[];
   postId?: number;
   commentId?: number;
+  messageId?: number;
+  socket?: SocketIOClient.Socket | null;
 }
 
-const ReactionButtons: React.FC<Props> = ({ reactions, postId, commentId }) => {
+const ReactionButtons: React.FC<Props> = ({
+  reactions,
+  postId,
+  commentId,
+  messageId,
+  socket,
+}) => {
   const userId = useSelector((state: RootState) => state.user.id);
   const dispatch = useDispatch();
 
@@ -126,6 +135,8 @@ const ReactionButtons: React.FC<Props> = ({ reactions, postId, commentId }) => {
           ? deleteCommentReaction(commentId)
           : addCommentReaction({ commentId, reactionName: type }),
       );
+    } else if (messageId && socket) {
+      dispatch(addMessageReaction({ messageId, reactionName: type, socket }));
     }
   };
 

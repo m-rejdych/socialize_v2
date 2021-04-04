@@ -4,6 +4,8 @@ import { Box, makeStyles, Typography } from '@material-ui/core';
 
 import MessageType from '../../../../../interfaces/message';
 import RootState from '../../../../../interfaces/store';
+import ReactionPopper from '../../../../../shared/components/ReactionPopper';
+import ReactionsCounter from '../../../../../shared/components/ReactionsCounter';
 
 const useStyles = makeStyles((theme) => ({
   myMessageBg: {
@@ -23,11 +25,34 @@ const useStyles = makeStyles((theme) => ({
   leftPosition: {
     left: theme.spacing(2),
   },
+  reactionIcon: {
+    position: 'absolute',
+    top: '50%',
+    transform: 'translateY(-50%)',
+  },
+  myMessageReactionIcon: {
+    right: `calc(100% + ${theme.spacing(0.5)}px)`,
+  },
+  otherMessageReactionIcon: {
+    left: `calc(100% + ${theme.spacing(0.5)}px)`,
+  },
+  reactionsCounter: {
+    position: 'absolute',
+    bottom: '-11px',
+  },
 }));
 
-interface Props extends MessageType {}
+interface Props extends MessageType {
+  socket: SocketIOClient.Socket | null;
+}
 
-const Message: React.FC<Props> = ({ content, author }) => {
+const Message: React.FC<Props> = ({
+  id,
+  content,
+  author,
+  socket,
+  reactions,
+}) => {
   const userId = useSelector((state: RootState) => state.user.id);
   const classes = useStyles();
 
@@ -53,6 +78,26 @@ const Message: React.FC<Props> = ({ content, author }) => {
       >
         {author ? `${author.firstName} ${author.lastName}` : ''}
       </Typography>
+      <ReactionPopper
+        variant="icon"
+        messageId={id}
+        socket={socket}
+        reactions={reactions}
+        className={classNames(
+          classes.reactionIcon,
+          isMe
+            ? classes.myMessageReactionIcon
+            : classes.otherMessageReactionIcon,
+        )}
+      />
+      <ReactionsCounter
+        id={id}
+        reactions={reactions}
+        className={classNames(
+          classes.reactionsCounter,
+          isMe ? classes.rightPosition : classes.leftPosition,
+        )}
+      />
       {content}
     </Box>
   );

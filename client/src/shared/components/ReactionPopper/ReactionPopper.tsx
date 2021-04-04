@@ -5,19 +5,26 @@ import {
   Paper,
   Typography,
   TypographyVariant,
+  IconButton,
   makeStyles,
 } from '@material-ui/core';
+import { Mood } from '@material-ui/icons';
 
 import ReactionButtons from '../ReactionButtons';
 import CommentReaction from '../../../interfaces/comment/commentReaction';
 
 const useStyles = makeStyles((theme) => ({
-  textButton: {
+  pointer: {
     cursor: 'pointer',
+  },
+  textButton: {
     fontWeight: 600,
     '&:hover': {
       textDecoration: 'underline',
     },
+  },
+  icon: {
+    color: theme.palette.grey[500],
   },
   paper: {
     borderRadius: 30,
@@ -35,18 +42,24 @@ type TypographyColor =
 
 interface Props {
   className?: string;
-  variant?: TypographyVariant;
+  typographyVariant?: TypographyVariant;
   color?: TypographyColor;
   reactions?: CommentReaction[];
   commentId?: number;
+  messageId?: number;
+  socket?: SocketIOClient.Socket | null;
+  variant: 'text' | 'icon';
 }
 
 const ReactionPopper: React.FC<Props> = ({
   className,
-  variant,
+  typographyVariant,
   color,
   reactions,
   commentId,
+  messageId,
+  socket,
+  variant,
 }) => {
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLParagraphElement | null>(null);
@@ -94,18 +107,32 @@ const ReactionPopper: React.FC<Props> = ({
 
   return (
     <>
-      <Typography
-        variant={variant || 'body2'}
-        color={color || 'textSecondary'}
-        component="p"
-        onMouseEnter={handleOpen}
-        onMouseLeave={handleClose}
-        onTouchStart={handleOpen}
-        onTouchEnd={handleClose}
-        className={classNames(className, classes.textButton)}
-      >
-        React
-      </Typography>
+      {variant === 'text' && (
+        <Typography
+          variant={typographyVariant || 'body2'}
+          color={color || 'textSecondary'}
+          component="p"
+          onMouseEnter={handleOpen}
+          onMouseLeave={handleClose}
+          onTouchStart={handleOpen}
+          onTouchEnd={handleClose}
+          className={classNames(className, classes.textButton, classes.pointer)}
+        >
+          React
+        </Typography>
+      )}
+      {variant === 'icon' && (
+        <IconButton
+          component="p"
+          onMouseEnter={handleOpen}
+          onMouseLeave={handleClose}
+          onTouchStart={handleOpen}
+          onTouchEnd={handleClose}
+          className={classNames(className, classes.icon, classes.pointer)}
+        >
+          <Mood />
+        </IconButton>
+      )}
       <Popper open={open} anchorEl={anchorEl} placement="top">
         <Paper
           onMouseEnter={handlePersist}
@@ -114,7 +141,12 @@ const ReactionPopper: React.FC<Props> = ({
           onTouchEnd={handleClose}
           className={classes.paper}
         >
-          <ReactionButtons reactions={reactions} commentId={commentId} />
+          <ReactionButtons
+            reactions={reactions}
+            commentId={commentId}
+            messageId={messageId}
+            socket={socket}
+          />
         </Paper>
       </Popper>
     </>

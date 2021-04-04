@@ -145,7 +145,14 @@ class MessageService {
     { messageId, reactionName }: AddMessageReactionDto,
   ): Promise<Message> {
     const message = await this.findById(messageId, {
-      relations: ['reactions', 'chat'],
+      relations: [
+        'reactions',
+        'chat',
+        'author',
+        'seenBy',
+        'reactions.user',
+        'reactions.type',
+      ],
     });
     if (!message) {
       throw new NotFoundException('Message not found!');

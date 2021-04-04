@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import Message from './message.entity';
 import MessageService from './message.service';
 import MessageGateway from './events/message.event';
+import ReactionGateway from './events/reaction.event';
 import MessageController from './message.controller';
 import MessageReaction from '../messageReaction/messageReaction.entity';
 import Chat from '../chat/chat.entity';
@@ -19,7 +20,7 @@ import MessageReactionModule from '../messageReaction/messageReaction.module';
     ChatModule,
     MessageReactionModule,
   ],
-  providers: [MessageService, MessageGateway],
+  providers: [MessageService, MessageGateway, ReactionGateway],
   controllers: [MessageController],
 })
 class MessageModule {}

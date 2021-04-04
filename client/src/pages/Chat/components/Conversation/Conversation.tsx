@@ -50,7 +50,7 @@ const Conversation: React.FC<Props> = ({ left }) => {
         <Box height="100%" display="flex" flexDirection="column">
           {selectedChat.messages?.length ? (
             <>
-              <MessagesList setSocket={setSocket} />
+              <MessagesList setSocket={setSocket} socket={socket} />
               <CreateMessageInput socket={socket} />
             </>
           ) : (
