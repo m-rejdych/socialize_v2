@@ -23,7 +23,10 @@ import {
   addCommentReaction,
   deleteCommentReaction,
 } from '../../../store/actions/commentActions';
-import { addMessageReaction } from '../../../store/actions/messageActions';
+import {
+  addMessageReaction,
+  deleteMessageReaction,
+} from '../../../store/actions/messageActions';
 import PostReaction from '../../../interfaces/post/postReaction';
 import CommentReaction from '../../../interfaces/comment/commentReaction';
 import MessageReaction from '../../../interfaces/message/messageReaction';
@@ -136,7 +139,11 @@ const ReactionButtons: React.FC<Props> = ({
           : addCommentReaction({ commentId, reactionName: type }),
       );
     } else if (messageId && socket) {
-      dispatch(addMessageReaction({ messageId, reactionName: type, socket }));
+      dispatch(
+        isReacted
+          ? deleteMessageReaction({ messageId, socket })
+          : addMessageReaction({ messageId, reactionName: type, socket }),
+      );
     }
   };
 

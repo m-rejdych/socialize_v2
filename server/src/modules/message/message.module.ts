@@ -7,6 +7,7 @@ import MessageGateway from './events/message.event';
 import ReactionGateway from './events/reaction.event';
 import MessageController from './message.controller';
 import MessageReaction from '../messageReaction/messageReaction.entity';
+import ReactionDeleteGateway from './events/reaction-delete.event';
 import Chat from '../chat/chat.entity';
 import User from '../user/user.entity';
 import UserModule from '../user/user.module';
@@ -20,7 +21,12 @@ import MessageReactionModule from '../messageReaction/messageReaction.module';
     ChatModule,
     MessageReactionModule,
   ],
-  providers: [MessageService, MessageGateway, ReactionGateway],
+  providers: [
+    MessageService,
+    MessageGateway,
+    ReactionGateway,
+    ReactionDeleteGateway,
+  ],
   controllers: [MessageController],
 })
 class MessageModule {}

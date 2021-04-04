@@ -1,7 +1,8 @@
 import { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, Typography } from '@material-ui/core';
 import io from 'socket.io-client';
+import classNames from 'classnames';
 
 import Message from './Message';
 import MessageType from '../../../../../interfaces/message';
@@ -9,7 +10,9 @@ import RootState from '../../../../../interfaces/store';
 import {
   addMessage,
   updateMessage,
+  deleteMessageReactionSuccess,
 } from '../../../../../store/actions/messageActions';
+import { DeleteMessageReactionSuccessPayload } from '../../../../../interfaces/message/messagePayloads';
 import { API_URI } from '../../../../../config';
 
 const useStyles = makeStyles((theme) => ({
@@ -18,6 +21,11 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     overflow: 'auto',
+  },
+  noMessagesContainer: {
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 }));
 
@@ -58,9 +66,15 @@ const MessagesList: React.FC<Props> = ({ setSocket, socket }) => {
     });
 
     socket.on('reaction', (message: MessageType): void => {
-      console.log('reaction');
       dispatch(updateMessage(message));
     });
+
+    socket.on(
+      'reaction-delete',
+      (messageData: DeleteMessageReactionSuccessPayload): void => {
+        dispatch(deleteMessageReactionSuccess(messageData));
+      },
+    );
 
     return () => {
       socket.disconnect();
@@ -76,12 +90,22 @@ const MessagesList: React.FC<Props> = ({ setSocket, socket }) => {
   }, [messages]);
 
   return (
-    <div ref={listRef} className={classes.listContainer}>
-      {messages
-        ? messages.map((message) => (
-            <Message key={message.id} socket={socket} {...message} />
-          ))
-        : null}
+    <div
+      ref={listRef}
+      className={classNames(
+        classes.listContainer,
+        messages?.length || classes.noMessagesContainer,
+      )}
+    >
+      {messages?.length ? (
+        messages.map((message) => (
+          <Message key={message.id} socket={socket} {...message} />
+        ))
+      ) : (
+        <Typography color="textSecondary" variant="h4">
+          No messages
+        </Typography>
+      )}
     </div>
   );
 };

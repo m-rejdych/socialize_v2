@@ -11,3 +11,13 @@ export interface AddMessageReactionPayload {
   reactionName: ReactionName;
   socket: SocketIOClient.Socket | null;
 }
+
+export interface DeleteMessageReactionPayload {
+  messageId: number;
+  socket: SocketIOClient.Socket | null;
+}
+
+export interface DeleteMessageReactionSuccessPayload {
+  reactionId: number;
+  messageId: number;
+}

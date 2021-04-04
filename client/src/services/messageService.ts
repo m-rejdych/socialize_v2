@@ -2,6 +2,7 @@ import createJwtRequest from '../util/jwtRequestFactory';
 import {
   GetMessagesByChatIdRes,
   CreateMessageRes,
+  DeleteMessageReactionRes,
 } from '../interfaces/message/messageRes';
 import {
   CreateMessageReq,
@@ -33,4 +34,12 @@ export const addMessageReaction = (
     method: 'PUT',
     url: `${API_URI}/message/add-reaction`,
     body: data,
+  });
+
+export const deleteMessageReaction = (
+  messageId: number,
+): Promise<DeleteMessageReactionRes> =>
+  createJwtRequest<DeleteMessageReactionRes>({
+    method: 'DELETE',
+    url: `${API_URI}/message/delete-reaction?messageId=${messageId}`,
   });

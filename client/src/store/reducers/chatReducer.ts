@@ -14,6 +14,8 @@ import {
   AddMessageAction,
   AddMessageReactionAction,
   UpdateMessageAction,
+  DeleteMessageReactionAction,
+  DeleteMessageReactionSuccessAction,
 } from '../../interfaces/message/messageActions';
 
 const initialState: ChatState = {
@@ -32,6 +34,8 @@ const strategyMap: StrategyMap<ChatState, typeof CHAT & typeof MESSAGE> = {
   [MESSAGE.ADD_MESSAGE]: addMessageTransformer,
   [MESSAGE.ADD_MESSAGE_REACTION]: addMessageReactionTransformer,
   [MESSAGE.UPDATE_MESSAGE]: updateMessageTransformer,
+  [MESSAGE.DELETE_MESSAGE_REACTION]: deleteMessageReactionTransformer,
+  [MESSAGE.DELETE_MESSAGE_REACTION_SUCCESS]: deleteMessageReactionSuccessTransformer,
   [CHAT.ERROR]: setChatErrorTransformer,
 };
 
@@ -106,6 +110,39 @@ function updateMessageTransformer(
           ...state.selectedChat,
           messages: state.selectedChat.messages.map((message) =>
             message.id === payload.id ? payload : message,
+          ),
+        }
+      : null,
+  };
+}
+
+function deleteMessageReactionTransformer(
+  state: ChatState,
+  _: ReturnType<DeleteMessageReactionAction>,
+): ChatState {
+  return state;
+}
+
+function deleteMessageReactionSuccessTransformer(
+  state: ChatState,
+  { payload }: ReturnType<DeleteMessageReactionSuccessAction>,
+): ChatState {
+  return {
+    ...state,
+    selectedChat: state.selectedChat
+      ? {
+          ...state.selectedChat,
+          messages: state.selectedChat.messages.map((message) =>
+            message.id === payload.messageId
+              ? {
+                  ...message,
+                  reactions: message.reactions
+                    ? message.reactions.filter(
+                        ({ id }) => id !== payload.reactionId,
+                      )
+                    : [],
+                }
+              : message,
           ),
         }
       : null,

@@ -3,6 +3,8 @@ import Message from './message';
 import {
   CreateMessagePayload,
   AddMessageReactionPayload,
+  DeleteMessageReactionPayload,
+  DeleteMessageReactionSuccessPayload,
 } from './messagePayloads';
 import { MESSAGE } from '../../shared/constants/actionTypes';
 
@@ -21,4 +23,14 @@ export type AddMessageReactionAction = Action<
 export type UpdateMessageAction = Action<
   typeof MESSAGE.UPDATE_MESSAGE,
   Message
+>;
+
+export type DeleteMessageReactionAction = Action<
+  typeof MESSAGE.DELETE_MESSAGE_REACTION,
+  DeleteMessageReactionPayload
+>;
+
+export type DeleteMessageReactionSuccessAction = Action<
+  typeof MESSAGE.DELETE_MESSAGE_REACTION_SUCCESS,
+  DeleteMessageReactionSuccessPayload
 >;

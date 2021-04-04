@@ -102,6 +102,7 @@ class MessageReactionService {
     const messageReaction = await this.messageReactionRepository
       .createQueryBuilder('messageReaction')
       .leftJoinAndSelect('messageReaction.message', 'message')
+      .leftJoinAndSelect('message.chat', 'chat')
       .leftJoinAndSelect('messageReaction.user', 'user')
       .where('message.id = :messageId', { messageId })
       .andWhere('user.id = :userId', { userId })
@@ -111,6 +112,7 @@ class MessageReactionService {
     }
 
     const reactionId = messageReaction.id;
+    const chatId = messageReaction.message.chat.id;
 
     await this.messageReactionRepository.remove(messageReaction);
 
@@ -118,6 +120,7 @@ class MessageReactionService {
       userId,
       messageId,
       reactionId,
+      chatId,
       deleted: true,
     };
   }

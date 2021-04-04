@@ -48,23 +48,8 @@ const Conversation: React.FC<Props> = ({ left }) => {
     >
       {selectedChat && id && !loading ? (
         <Box height="100%" display="flex" flexDirection="column">
-          {selectedChat.messages?.length ? (
-            <>
-              <MessagesList setSocket={setSocket} socket={socket} />
-              <CreateMessageInput socket={socket} />
-            </>
-          ) : (
-            <Box
-              height="100%"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-            >
-              <Typography color="textSecondary" variant="h4">
-                No messages
-              </Typography>
-            </Box>
-          )}
+          <MessagesList setSocket={setSocket} socket={socket} />
+          <CreateMessageInput socket={socket} />
         </Box>
       ) : (
         <Box

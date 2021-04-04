@@ -7,3 +7,13 @@ export interface GetMessagesByChatIdRes {
 export interface CreateMessageRes {
   data?: Message;
 }
+
+export interface DeleteMessageReactionRes {
+  data?: {
+    reactionId: number;
+    messageId: number;
+    chatId: number;
+    userId: number;
+    deleted: boolean;
+  };
+}
