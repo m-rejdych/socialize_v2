@@ -3,7 +3,10 @@ import {
   GetMessagesByChatIdRes,
   CreateMessageRes,
 } from '../interfaces/message/messageRes';
-import { CreateMessageReq } from '../interfaces/message/messageReq';
+import {
+  CreateMessageReq,
+  AddMessageReactionReq,
+} from '../interfaces/message/messageReq';
 import { API_URI } from '../config';
 
 export const getMessagesByChatId = (
@@ -20,5 +23,14 @@ export const createMessage = (
   createJwtRequest<CreateMessageRes>({
     method: 'POST',
     url: `${API_URI}/message/create-message`,
+    body: data,
+  });
+
+export const addMessageReaction = (
+  data: AddMessageReactionReq,
+): Promise<CreateMessageRes> =>
+  createJwtRequest<CreateMessageRes>({
+    method: 'PUT',
+    url: `${API_URI}/message/add-reaction`,
     body: data,
   });

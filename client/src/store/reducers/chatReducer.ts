@@ -12,6 +12,8 @@ import {
 import {
   CreateMessageAction,
   AddMessageAction,
+  AddMessageReactionAction,
+  UpdateMessageAction,
 } from '../../interfaces/message/messageActions';
 
 const initialState: ChatState = {
@@ -28,6 +30,8 @@ const strategyMap: StrategyMap<ChatState, typeof CHAT & typeof MESSAGE> = {
   [CHAT.GET_SELECTED_CHAT_SUCCESS]: getSelectedChatSuccessTransformer,
   [MESSAGE.CREATE_MESSAGE]: createMessageTransformer,
   [MESSAGE.ADD_MESSAGE]: addMessageTransformer,
+  [MESSAGE.ADD_MESSAGE_REACTION]: addMessageReactionTransformer,
+  [MESSAGE.UPDATE_MESSAGE]: updateMessageTransformer,
   [CHAT.ERROR]: setChatErrorTransformer,
 };
 
@@ -79,6 +83,30 @@ function addMessageTransformer(
       ? {
           ...state.selectedChat,
           messages: [...state.selectedChat?.messages, payload],
+        }
+      : null,
+  };
+}
+
+function addMessageReactionTransformer(
+  state: ChatState,
+  _: ReturnType<AddMessageReactionAction>,
+): ChatState {
+  return state;
+}
+
+function updateMessageTransformer(
+  state: ChatState,
+  { payload }: ReturnType<UpdateMessageAction>,
+): ChatState {
+  return {
+    ...state,
+    selectedChat: state.selectedChat
+      ? {
+          ...state.selectedChat,
+          messages: state.selectedChat.messages.map((message) =>
+            message.id === payload.id ? payload : message,
+          ),
         }
       : null,
   };
