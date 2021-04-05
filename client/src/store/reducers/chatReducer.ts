@@ -12,6 +12,7 @@ import {
 import {
   CreateMessageAction,
   AddMessageAction,
+  AddMessageSuccessAction,
   AddMessageReactionAction,
   UpdateMessageAction,
   DeleteMessageReactionAction,
@@ -32,6 +33,7 @@ const strategyMap: StrategyMap<ChatState, typeof CHAT & typeof MESSAGE> = {
   [CHAT.GET_SELECTED_CHAT_SUCCESS]: getSelectedChatSuccessTransformer,
   [MESSAGE.CREATE_MESSAGE]: createMessageTransformer,
   [MESSAGE.ADD_MESSAGE]: addMessageTransformer,
+  [MESSAGE.ADD_MESSAGE_SUCCESS]: addMessageSuccessTransformer,
   [MESSAGE.ADD_MESSAGE_REACTION]: addMessageReactionTransformer,
   [MESSAGE.UPDATE_MESSAGE]: updateMessageTransformer,
   [MESSAGE.DELETE_MESSAGE_REACTION]: deleteMessageReactionTransformer,
@@ -78,7 +80,14 @@ function createMessageTransformer(
 
 function addMessageTransformer(
   state: ChatState,
-  { payload }: ReturnType<AddMessageAction>,
+  _: ReturnType<AddMessageAction>,
+): ChatState {
+  return state;
+}
+
+function addMessageSuccessTransformer(
+  state: ChatState,
+  { payload }: ReturnType<AddMessageSuccessAction>,
 ): ChatState {
   return {
     ...state,

@@ -2,6 +2,7 @@ import createAction from '../../util/actionFactory';
 import {
   CreateMessageAction,
   AddMessageAction,
+  AddMessageSuccessAction,
   AddMessageReactionAction,
   UpdateMessageAction,
   DeleteMessageReactionAction,
@@ -14,6 +15,10 @@ export const createMessage: CreateMessageAction = createAction(
 );
 
 export const addMessage: AddMessageAction = createAction(MESSAGE.ADD_MESSAGE);
+
+export const addMessageSuccess: AddMessageSuccessAction = createAction(
+  MESSAGE.ADD_MESSAGE_SUCCESS,
+);
 
 export const addMessageReaction: AddMessageReactionAction = createAction(
   MESSAGE.ADD_MESSAGE_REACTION,

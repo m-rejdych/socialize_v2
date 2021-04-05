@@ -27,6 +27,7 @@ import {
 import { getChatsSaga, getSelectedChatSaga } from './chatSaga';
 import {
   createMessageSaga,
+  addMessageSaga,
   addMessageReactionSaga,
   deleteMessageReactionSaga,
 } from './messageSaga';
@@ -57,6 +58,7 @@ export default function* rootSaga() {
     getChatsSaga(),
     getSelectedChatSaga(),
     createMessageSaga(),
+    addMessageSaga(),
     addMessageReactionSaga(),
     deleteMessageReactionSaga(),
   ]);

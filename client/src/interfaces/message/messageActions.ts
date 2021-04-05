@@ -15,6 +15,11 @@ export type CreateMessageAction = Action<
 
 export type AddMessageAction = Action<typeof MESSAGE.ADD_MESSAGE, Message>;
 
+export type AddMessageSuccessAction = Action<
+  typeof MESSAGE.ADD_MESSAGE_SUCCESS,
+  Message
+>;
+
 export type AddMessageReactionAction = Action<
   typeof MESSAGE.ADD_MESSAGE_REACTION,
   AddMessageReactionPayload

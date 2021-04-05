@@ -1,13 +1,16 @@
-import { call, put, takeEvery } from 'redux-saga/effects';
+import { call, put, takeEvery, select } from 'redux-saga/effects';
 
 import { setChatError } from '../actions/chatActions';
+import { addMessageSuccess } from '../../store/actions/messageActions';
 import {
   createMessage,
   addMessageReaction,
+  markAsSeen,
   deleteMessageReaction,
 } from '../../services/messageService';
 import {
   CreateMessageAction,
+  AddMessageAction,
   AddMessageReactionAction,
   DeleteMessageReactionAction,
 } from '../../interfaces/message/messageActions';
@@ -16,6 +19,7 @@ import {
   DeleteMessageReactionRes,
 } from '../../interfaces/message/messageRes';
 import { MESSAGE } from '../../shared/constants/actionTypes';
+import RootState from '../../interfaces/store';
 
 function* handleCreateMessage({ payload }: ReturnType<CreateMessageAction>) {
   try {
@@ -24,6 +28,22 @@ function* handleCreateMessage({ payload }: ReturnType<CreateMessageAction>) {
 
     if (response.data && socket) {
       socket.emit('message', response.data);
+    }
+  } catch (error) {
+    yield put(setChatError(error.response.data.message));
+  }
+}
+
+function* handleAddMessage({ payload }: ReturnType<AddMessageAction>) {
+  try {
+    const userId: number = yield select((state: RootState) => state.user.id);
+    if (payload.author?.id === userId) yield put(addMessageSuccess(payload));
+    else {
+      const response: CreateMessageRes = yield call(markAsSeen, payload.id);
+
+      if (response.data) {
+        yield put(addMessageSuccess(response.data));
+      }
     }
   } catch (error) {
     yield put(setChatError(error.response.data.message));
@@ -70,6 +90,10 @@ function* handleDeleteMessageReaction({
 
 export function* createMessageSaga() {
   yield takeEvery(MESSAGE.CREATE_MESSAGE, handleCreateMessage);
+}
+
+export function* addMessageSaga() {
+  yield takeEvery(MESSAGE.ADD_MESSAGE, handleAddMessage);
 }
 
 export function* addMessageReactionSaga() {

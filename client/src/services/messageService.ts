@@ -43,3 +43,10 @@ export const deleteMessageReaction = (
     method: 'DELETE',
     url: `${API_URI}/message/delete-reaction?messageId=${messageId}`,
   });
+
+export const markAsSeen = (messageId: number): Promise<CreateMessageRes> =>
+  createJwtRequest({
+    method: 'PUT',
+    url: `${API_URI}/message/mark-as-seen`,
+    body: { messageId },
+  });

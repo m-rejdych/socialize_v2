@@ -15,7 +15,7 @@ import MessageReaction from '../../../interfaces/message/messageReaction';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    display: 'inline-flex',
+    display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     padding: theme.spacing(0.5),
@@ -98,7 +98,7 @@ const ReactionsCounter: React.FC<Props> = ({
 
   return (
     <Box display="flex" alignItems="center" className={className}>
-      <Box>
+      <Box display="flex" alignItems="flex-start" flexWrap="nowrap">
         {icons
           .filter(({ hidden }) => !hidden)
           .map(({ id, type, icon }, index) => (

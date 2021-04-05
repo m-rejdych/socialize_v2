@@ -90,9 +90,7 @@ class MessageService {
     }
 
     if (message.seenBy.some(({ id }) => id === userId)) {
-      throw new BadRequestException(
-        'This message is already marked as seen by you!',
-      );
+      return message;
     }
 
     const user = await this.userService.findById(userId);
