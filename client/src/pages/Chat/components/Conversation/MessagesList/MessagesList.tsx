@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, LegacyRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles, Typography } from '@material-ui/core';
 import io from 'socket.io-client';
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   listContainer: {
     flexGrow: 1,
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'column-reverse',
     overflow: 'auto',
   },
   noMessagesContainer: {
@@ -32,9 +32,14 @@ const useStyles = makeStyles((theme) => ({
 interface Props {
   setSocket: (socket: SocketIOClient.Socket | null) => void;
   socket: SocketIOClient.Socket | null;
+  lastMessageRef: LegacyRef<HTMLDivElement> | null;
 }
 
-const MessagesList: React.FC<Props> = ({ setSocket, socket }) => {
+const MessagesList: React.FC<Props> = ({
+  setSocket,
+  socket,
+  lastMessageRef,
+}) => {
   const listRef = useRef<HTMLDivElement | null>(null);
   const messages = useSelector(
     (state: RootState) => state.chat.selectedChat?.messages,
@@ -63,6 +68,9 @@ const MessagesList: React.FC<Props> = ({ setSocket, socket }) => {
 
     socket.on('message', (message: MessageType): void => {
       dispatch(addMessage(message));
+      if (listRef.current) {
+        listRef.current.scrollTop = listRef.current.scrollHeight;
+      }
     });
 
     socket.on('reaction', (message: MessageType): void => {
@@ -87,7 +95,7 @@ const MessagesList: React.FC<Props> = ({ setSocket, socket }) => {
         listRef.current.scrollTop = listRef.current.scrollHeight;
       }
     }, 0);
-  }, [messages]);
+  }, []);
 
   return (
     <div
@@ -98,8 +106,13 @@ const MessagesList: React.FC<Props> = ({ setSocket, socket }) => {
       )}
     >
       {messages?.length ? (
-        messages.map((message) => (
-          <Message key={message.id} socket={socket} {...message} />
+        messages.map((message, index) => (
+          <Message
+            key={message.id}
+            socket={socket}
+            messageRef={index === messages.length - 1 ? lastMessageRef : null}
+            {...message}
+          />
         ))
       ) : (
         <Typography color="textSecondary" variant="h4">

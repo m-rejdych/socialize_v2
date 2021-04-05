@@ -23,6 +23,7 @@ const initialState: ChatState = {
   chats: [],
   selectedChat: null,
   loading: false,
+  messagesLoading: false,
   error: null,
 };
 
@@ -61,14 +62,30 @@ function getSelectedChatTransformer(
   state: ChatState,
   _: ReturnType<GetSelectedChatAciton>,
 ): ChatState {
-  return { ...state, loading: true };
+  return {
+    ...state,
+    loading: state.selectedChat ? state.loading : true,
+    messagesLoading: state.selectedChat ? true : state.messagesLoading,
+  };
 }
 
 function getSelectedChatSuccessTransformer(
   state: ChatState,
   { payload }: ReturnType<GetSelectedChatSuccessAction>,
 ): ChatState {
-  return { ...state, loading: false, error: null, selectedChat: payload };
+  return {
+    ...state,
+    loading: false,
+    messagesLoading: false,
+    error: null,
+    selectedChat: payload && {
+      ...payload,
+      messages:
+        payload.chat.id === state.selectedChat?.chat.id
+          ? [...state.selectedChat.messages, ...payload.messages]
+          : payload.messages,
+    },
+  };
 }
 
 function createMessageTransformer(
@@ -95,7 +112,8 @@ function addMessageSuccessTransformer(
     selectedChat: state.selectedChat
       ? {
           ...state.selectedChat,
-          messages: [...state.selectedChat?.messages, payload],
+          messages: [payload, ...state.selectedChat?.messages],
+          messagesCount: state.selectedChat.messagesCount + 1,
         }
       : null,
   };

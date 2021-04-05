@@ -1,21 +1,33 @@
 import createJwtRequest from '../util/jwtRequestFactory';
 import {
   GetMessagesByChatIdRes,
+  GetMessagesCountByChatIdRes,
   CreateMessageRes,
   DeleteMessageReactionRes,
 } from '../interfaces/message/messageRes';
 import {
   CreateMessageReq,
   AddMessageReactionReq,
+  GetMessagesByChatIdReq,
 } from '../interfaces/message/messageReq';
 import { API_URI } from '../config';
 
 export const getMessagesByChatId = (
-  chatId: number,
+  data: GetMessagesByChatIdReq,
 ): Promise<GetMessagesByChatIdRes> =>
   createJwtRequest<GetMessagesByChatIdRes>({
     method: 'GET',
-    url: `${API_URI}/message/get-by-chat-id?chatId=${chatId}`,
+    url: `${API_URI}/message/get-by-chat-id?chatId=${data.chatId}${
+      data.take ? `&take=${data.take}` : ''
+    }${data.skip ? `&skip=${data.skip}` : ''}`,
+  });
+
+export const getMessagesCountByChatId = (
+  chatId: number,
+): Promise<GetMessagesCountByChatIdRes> =>
+  createJwtRequest<GetMessagesCountByChatIdRes>({
+    method: 'GET',
+    url: `${API_URI}/message/get-count-by-chat-id?chatId=${chatId}`,
   });
 
 export const createMessage = (

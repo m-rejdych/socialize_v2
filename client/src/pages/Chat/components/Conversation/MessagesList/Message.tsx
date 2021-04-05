@@ -1,6 +1,7 @@
+import { LegacyRef } from 'react';
 import classNames from 'classnames';
 import { useSelector } from 'react-redux';
-import { Box, makeStyles, Typography } from '@material-ui/core';
+import { makeStyles, Typography } from '@material-ui/core';
 
 import MessageType from '../../../../../interfaces/message';
 import RootState from '../../../../../interfaces/store';
@@ -8,6 +9,19 @@ import ReactionPopper from '../../../../../shared/components/ReactionPopper';
 import ReactionsCounter from '../../../../../shared/components/ReactionsCounter';
 
 const useStyles = makeStyles((theme) => ({
+  message: {
+    position: 'relative',
+    padding: theme.spacing(2),
+    margin: theme.spacing(2),
+    maxWidth: '90%',
+    borderRadius: 30,
+  },
+  alignSelfEnd: {
+    alignSelf: 'flex-end',
+  },
+  alignSelfStart: {
+    alignSelf: 'flex-start',
+  },
   myMessageBg: {
     backgroundColor: theme.palette.secondary.main,
   },
@@ -44,6 +58,7 @@ const useStyles = makeStyles((theme) => ({
 
 interface Props extends MessageType {
   socket: SocketIOClient.Socket | null;
+  messageRef: LegacyRef<HTMLDivElement> | null;
 }
 
 const Message: React.FC<Props> = ({
@@ -52,6 +67,7 @@ const Message: React.FC<Props> = ({
   author,
   socket,
   reactions,
+  messageRef,
 }) => {
   const userId = useSelector((state: RootState) => state.user.id);
   const classes = useStyles();
@@ -59,14 +75,13 @@ const Message: React.FC<Props> = ({
   const isMe = userId === author?.id;
 
   return (
-    <Box
-      position="relative"
-      p={2}
-      m={2}
-      maxWidth="90%"
-      borderRadius={30}
-      alignSelf={isMe ? 'flex-end' : 'flex-start'}
-      className={isMe ? classes.myMessageBg : classes.otherMessageBg}
+    <div
+      className={classNames(
+        classes.message,
+        isMe ? classes.alignSelfEnd : classes.alignSelfStart,
+        isMe ? classes.myMessageBg : classes.otherMessageBg,
+      )}
+      ref={messageRef}
     >
       <Typography
         variant="caption"
@@ -99,7 +114,7 @@ const Message: React.FC<Props> = ({
         )}
       />
       {content}
-    </Box>
+    </div>
   );
 };
 

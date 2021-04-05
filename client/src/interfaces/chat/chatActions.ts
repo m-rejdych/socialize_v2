@@ -1,7 +1,10 @@
 import Action from '../store/action';
 import Chat from './chat';
 import { CHAT } from '../../shared/constants/actionTypes';
-import { GetSelectedChatSuccessPayload } from './chatPayloads';
+import {
+  GetSelectedChatPayload,
+  GetSelectedChatSuccessPayload,
+} from './chatPayloads';
 
 export type GetChatsAction = Action<typeof CHAT.GET_CHATS, null>;
 
@@ -12,12 +15,12 @@ export type GetChatsSuccessAction = Action<
 
 export type GetSelectedChatAciton = Action<
   typeof CHAT.GET_SELECTED_CHAT,
-  number
+  GetSelectedChatPayload
 >;
 
 export type GetSelectedChatSuccessAction = Action<
   typeof CHAT.GET_SELECTED_CHAT_SUCCESS,
-  GetSelectedChatSuccessPayload
+  GetSelectedChatSuccessPayload | null
 >;
 
 export type SetChatError = Action<typeof CHAT.ERROR, string | null>;

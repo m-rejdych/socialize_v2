@@ -21,6 +21,7 @@ import DeleteReactionResponseDto from '../messageReaction/dto/deleteReaction.dto
 import MarkAsSeenDto from './dto/markAsSeen.dto';
 import MarkAllAsSeenDto from './dto/markAllAsSeen.dto';
 import MarkAllAsSeenResponseDto from './dto/markAllAsSeenResponse.dto';
+import FindAllByChadIdOptionsDto from './dto/findAllByChatIdOptions.dto';
 
 @Controller('message')
 class MessageController {
@@ -30,8 +31,23 @@ class MessageController {
   @Get('get-by-chat-id')
   async getByChatId(
     @Query('chatId', ParseIntPipe) chatId: number,
+    @Query('take') take?: number,
+    @Query('skip') skip?: number,
   ): Promise<Message[]> {
-    return await this.messageService.findAllByChatId(chatId);
+    const options: FindAllByChadIdOptionsDto = {};
+
+    if (!isNaN(take)) options.take = Number(take);
+    if (!isNaN(skip)) options.skip = Number(skip);
+
+    return await this.messageService.findAllByChatId(chatId, options);
+  }
+
+  @UseGuards(JwtGuard)
+  @Get('get-count-by-chat-id')
+  async getCountByChatId(
+    @Query('chatId', ParseIntPipe) chatId: number,
+  ): Promise<number> {
+    return await this.messageService.getMessagesCountByChatId(chatId);
   }
 
   @UseGuards(JwtGuard)

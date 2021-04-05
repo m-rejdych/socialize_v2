@@ -2,7 +2,6 @@ import {
   Injectable,
   ForbiddenException,
   NotFoundException,
-  BadRequestException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -15,6 +14,7 @@ import AddMessageReactionDto from './dto/addMessageReaction.dto';
 import CreateMessageDto from './dto/createMessage.dto';
 import DeleteReactionResponseDto from '../messageReaction/dto/deleteReaction.dto';
 import MarkAllAsSeenResponseDto from './dto/markAllAsSeenResponse.dto';
+import FindAllByChadIdOptionsDto from './dto/findAllByChatIdOptions.dto';
 import FindOptions from './interface/findOptions.interface';
 
 @Injectable()
@@ -32,8 +32,57 @@ class MessageService {
     return message || null;
   }
 
-  async findAllByChatId(chatId: number): Promise<Message[]> {
-    const messages = await this.messageRepository
+  async findAllByChatId(
+    chatId: number,
+    options?: FindAllByChadIdOptionsDto,
+  ): Promise<Message[]> {
+    if (options?.take && options?.skip) {
+      return await this.messageRepository
+        .createQueryBuilder('message')
+        .leftJoin('message.chat', 'chat')
+        .leftJoinAndSelect('message.author', 'author')
+        .leftJoinAndSelect('message.seenBy', 'seenBy')
+        .leftJoinAndSelect('message.reactions', 'reactions')
+        .leftJoinAndSelect('reactions.user', 'reactionsUser')
+        .leftJoinAndSelect('reactions.type', 'reactionsType')
+        .where('chat.id = :chatId', { chatId })
+        .take(options.take)
+        .skip(options.skip)
+        .orderBy('message.createdAt', 'DESC')
+        .getMany();
+    }
+
+    if (options?.take) {
+      return await this.messageRepository
+        .createQueryBuilder('message')
+        .leftJoin('message.chat', 'chat')
+        .leftJoinAndSelect('message.author', 'author')
+        .leftJoinAndSelect('message.seenBy', 'seenBy')
+        .leftJoinAndSelect('message.reactions', 'reactions')
+        .leftJoinAndSelect('reactions.user', 'reactionsUser')
+        .leftJoinAndSelect('reactions.type', 'reactionsType')
+        .where('chat.id = :chatId', { chatId })
+        .take(options.take)
+        .orderBy('message.createdAt', 'DESC')
+        .getMany();
+    }
+
+    if (options?.skip) {
+      return await this.messageRepository
+        .createQueryBuilder('message')
+        .leftJoin('message.chat', 'chat')
+        .leftJoinAndSelect('message.author', 'author')
+        .leftJoinAndSelect('message.seenBy', 'seenBy')
+        .leftJoinAndSelect('message.reactions', 'reactions')
+        .leftJoinAndSelect('reactions.user', 'reactionsUser')
+        .leftJoinAndSelect('reactions.type', 'reactionsType')
+        .where('chat.id = :chatId', { chatId })
+        .skip(options.skip)
+        .orderBy('message.createdAt', 'DESC')
+        .getMany();
+    }
+
+    return await this.messageRepository
       .createQueryBuilder('message')
       .leftJoin('message.chat', 'chat')
       .leftJoinAndSelect('message.author', 'author')
@@ -42,10 +91,18 @@ class MessageService {
       .leftJoinAndSelect('reactions.user', 'reactionsUser')
       .leftJoinAndSelect('reactions.type', 'reactionsType')
       .where('chat.id = :chatId', { chatId })
-      .orderBy('message.createdAt', 'ASC')
+      .orderBy('message.createdAt', 'DESC')
       .getMany();
+  }
 
-    return messages;
+  async getMessagesCountByChatId(chatId: number): Promise<number> {
+    const messagesCount = await this.messageRepository
+      .createQueryBuilder('messages')
+      .leftJoin('messages.chat', 'chat')
+      .where('chat.id = :chatId', { chatId })
+      .getCount();
+
+    return messagesCount;
   }
 
   async createMessage(

@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useState, useCallback, useRef } from 'react';
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import {
   Box,
@@ -8,10 +8,10 @@ import {
   Typography,
 } from '@material-ui/core';
 
-import { getSelectedChat } from '../../../../store/actions/chatActions';
 import RootState from '../../../../interfaces/store';
 import MessagesList from './MessagesList';
 import CreateMessageInput from './CreateMessageInput';
+import useChatPagination from '../../hooks/useChatPagination';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -27,17 +27,34 @@ interface Props {
 
 const Conversation: React.FC<Props> = ({ left }) => {
   const [socket, setSocket] = useState<SocketIOClient.Socket | null>(null);
-  const { id } = useParams<{ id?: string }>();
-  const selectedChat = useSelector(
-    (state: RootState) => state.chat.selectedChat,
+  const chatId = useSelector(
+    (state: RootState) => state.chat.selectedChat?.chat.id,
   );
   const loading = useSelector((state: RootState) => state.chat.loading);
-  const dispatch = useDispatch();
+  const messagesLoading = useSelector(
+    (state: RootState) => state.chat.messagesLoading,
+  );
+  const messages = useSelector(
+    (state: RootState) => state.chat.selectedChat?.messages,
+  );
+  const { id } = useParams<{ id?: string }>();
+  const { hasMore, setSkip } = useChatPagination(Number(id));
+  const observerRef = useRef<IntersectionObserver | null>(null);
   const classes = useStyles();
 
-  useEffect(() => {
-    if (id) dispatch(getSelectedChat(Number(id)));
-  }, [id]);
+  const lastMessageRef = useCallback(
+    (node: HTMLDivElement) => {
+      if (messagesLoading) return;
+      if (observerRef.current) observerRef.current.disconnect();
+      observerRef.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          setSkip((prev) => (messages ? messages.length : prev + 15));
+        }
+      });
+      if (node) observerRef.current.observe(node);
+    },
+    [messagesLoading, hasMore, messages],
+  );
 
   return (
     <Box
@@ -46,9 +63,13 @@ const Conversation: React.FC<Props> = ({ left }) => {
       className={classes.container}
       style={{ left }}
     >
-      {selectedChat && id && !loading ? (
+      {id && chatId && !loading ? (
         <Box height="100%" display="flex" flexDirection="column">
-          <MessagesList setSocket={setSocket} socket={socket} />
+          <MessagesList
+            setSocket={setSocket}
+            socket={socket}
+            lastMessageRef={lastMessageRef}
+          />
           <CreateMessageInput socket={socket} />
         </Box>
       ) : (

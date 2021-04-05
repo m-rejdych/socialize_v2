@@ -4,6 +4,10 @@ export interface GetMessagesByChatIdRes {
   data?: Message[];
 }
 
+export interface GetMessagesCountByChatIdRes {
+  data?: number;
+}
+
 export interface CreateMessageRes {
   data?: Message;
 }
