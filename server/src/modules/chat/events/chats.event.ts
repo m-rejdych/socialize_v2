@@ -21,7 +21,6 @@ class ChatsGateway {
     @MessageBody() id: number,
     @ConnectedSocket() socket: Socket,
   ): void {
-    console.log('rooms befoer', socket.rooms);
     socket.join(id.toString(), (err: Error) => {
       if (err) throw new BadGatewayException();
     });
@@ -33,20 +32,27 @@ class ChatsGateway {
   }
 
   @SubscribeMessage('message')
-  handleMessage(@MessageBody() message: Message): void {
-    this.server.to(message.chat.id.toString()).emit('message', message);
+  handleMessage(
+    @MessageBody() message: Message,
+    @ConnectedSocket() socket: Socket,
+  ): void {
+    socket.broadcast.to(message.chat.id.toString()).emit('message', message);
   }
 
   @SubscribeMessage('reaction')
-  handleReaction(@MessageBody() message: Message): void {
-    this.server.to(message.chat.id.toString()).emit('reaction', message);
+  handleReaction(
+    @MessageBody() message: Message,
+    @ConnectedSocket() socket: Socket,
+  ): void {
+    socket.broadcast.to(message.chat.id.toString()).emit('reaction', message);
   }
 
   @SubscribeMessage('reaction-delete')
   handleReactionDelete(
     @MessageBody() { chatId, ...rest }: ReactionDeleteEventDto,
+    @ConnectedSocket() socket: Socket,
   ): void {
-    this.server.to(chatId.toString()).emit('reaction-delete', rest);
+    socket.broadcast.to(chatId.toString()).emit('reaction-delete', rest);
   }
 }
 

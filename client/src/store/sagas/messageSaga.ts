@@ -1,7 +1,11 @@
 import { call, put, takeEvery, select } from 'redux-saga/effects';
 
 import { setChatError } from '../actions/chatActions';
-import { addMessageSuccess } from '../../store/actions/messageActions';
+import {
+  addMessageSuccess,
+  updateMessage,
+  deleteMessageReactionSuccess,
+} from '../../store/actions/messageActions';
 import {
   createMessage,
   addMessageReaction,
@@ -27,6 +31,7 @@ function* handleCreateMessage({ payload }: ReturnType<CreateMessageAction>) {
     const response: CreateMessageRes = yield call(createMessage, rest);
 
     if (response.data && socket) {
+      yield put(addMessageSuccess(response.data));
       socket.emit('message', response.data);
     }
   } catch (error) {
@@ -58,6 +63,7 @@ function* handleAddMessageReaction({
     const response: CreateMessageRes = yield call(addMessageReaction, rest);
 
     if (response.data && socket) {
+      yield put(updateMessage(response.data));
       socket.emit('reaction', response.data);
     }
   } catch (error) {
@@ -78,6 +84,7 @@ function* handleDeleteMessageReaction({
     if (response.data && socket) {
       const { deleted, messageId, reactionId, chatId } = response.data;
       if (deleted) {
+        yield put(deleteMessageReactionSuccess({ messageId, reactionId }));
         socket.emit('reaction-delete', { messageId, reactionId, chatId });
       } else {
         yield put(setChatError('Message reaction could not be deleted!'));
