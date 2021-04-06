@@ -1,4 +1,4 @@
-import { useEffect, useRef, LegacyRef } from 'react';
+import { useEffect, useRef, LegacyRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles, Typography } from '@material-ui/core';
 import io from 'socket.io-client';
@@ -40,6 +40,7 @@ const MessagesList: React.FC<Props> = ({
   socket,
   lastMessageRef,
 }) => {
+  const [currentRoom, setCurrentRoom] = useState<number | null>(null);
   const listRef = useRef<HTMLDivElement | null>(null);
   const messages = useSelector(
     (state: RootState) => state.chat.selectedChat?.messages,
@@ -58,13 +59,9 @@ const MessagesList: React.FC<Props> = ({
     });
 
     socket.on('disconnect', (): void => {
-      socket.emit('leave-chat', chatId);
+      setCurrentRoom(null);
       setSocket(null);
     });
-
-    if (chatId) {
-      socket.emit('join-chat', chatId);
-    }
 
     socket.on('message', (message: MessageType): void => {
       dispatch(addMessage(message));
@@ -88,6 +85,14 @@ const MessagesList: React.FC<Props> = ({
       socket.disconnect();
     };
   }, []);
+
+  useEffect(() => {
+    if (socket && chatId !== currentRoom) {
+      socket.emit('leave-rooms');
+      socket.emit('join-room', chatId);
+      setCurrentRoom(chatId!);
+    }
+  }, [chatId, socket, currentRoom]);
 
   useEffect(() => {
     setTimeout(() => {
