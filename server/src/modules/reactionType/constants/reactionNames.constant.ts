@@ -1,3 +1,3 @@
-const reactionNames = ['like', 'dislike', 'love', 'laugh', 'idea'] as const;
+const REACTION_NAMES = ['like', 'dislike', 'love', 'laugh', 'idea'] as const;
 
-export default reactionNames;
+export default REACTION_NAMES;

@@ -12,7 +12,7 @@ class NotificationTypeService {
     private notificationTypeRepository: Repository<NotificationType>,
   ) {}
 
-  async findOneByName(name: NotificationName): Promise<NotificationType> {
+  async findByName(name: NotificationName): Promise<NotificationType> {
     const notificationType = await this.notificationTypeRepository.findOne({
       where: { name },
     });

@@ -1,4 +1,4 @@
-const notificationNames = [
+const NOTIFICATION_NAMES = [
   'message',
   'messageReaction',
   'post',
@@ -6,6 +6,6 @@ const notificationNames = [
   'comment',
   'commentReaction',
   'friendshipRequest',
-];
+] as const;
 
-export default notificationNames;
+export default NOTIFICATION_NAMES;

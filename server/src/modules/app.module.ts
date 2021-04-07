@@ -18,6 +18,7 @@ import ChatModule from './chat/chat.module';
 import ChatTypeModule from './chatType/chatType.module';
 import MessageModule from './message/message.module';
 import MessageReactionModule from './messageReaction/messageReaction.module';
+import NotificationModule from './notification/notification.module';
 import NotificationTypeModule from './notificationType/notificationType.module';
 
 @Module({
@@ -40,6 +41,7 @@ import NotificationTypeModule from './notificationType/notificationType.module';
     ChatTypeModule,
     MessageModule,
     MessageReactionModule,
+    NotificationModule,
     NotificationTypeModule,
   ],
 })

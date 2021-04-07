@@ -1,13 +1,13 @@
 import { IsInt, IsIn } from 'class-validator';
 
 import ReactionName from '../../reactionType/types/reactionName.type';
-import reactionNames from '../../reactionType/constants/reactionNames.constant';
+import REACTION_NAMES from '../../reactionType/constants/reactionNames.constant';
 
 class AddPostReacitnDto {
   @IsInt()
   postId: number;
 
-  @IsIn(reactionNames)
+  @IsIn(REACTION_NAMES)
   reactionName: ReactionName;
 }
 

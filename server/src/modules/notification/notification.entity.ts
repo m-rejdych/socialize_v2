@@ -15,7 +15,7 @@ class Notification {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ default: false })
   seen: boolean;
 
   @Column()
@@ -27,7 +27,7 @@ class Notification {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToOne(() => NotificationType)
+  @ManyToOne(() => NotificationType, { eager: true })
   type: NotificationType;
 
   @ManyToOne(() => User, (user) => user.notifications, {
@@ -36,7 +36,7 @@ class Notification {
   })
   user: User;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, { eager: true })
   sender: User;
 }
 
