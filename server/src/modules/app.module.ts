@@ -18,6 +18,7 @@ import ChatModule from './chat/chat.module';
 import ChatTypeModule from './chatType/chatType.module';
 import MessageModule from './message/message.module';
 import MessageReactionModule from './messageReaction/messageReaction.module';
+import NotificationTypeModule from './notificationType/notificationType.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import MessageReactionModule from './messageReaction/messageReaction.module';
     ChatTypeModule,
     MessageModule,
     MessageReactionModule,
+    NotificationTypeModule,
   ],
 })
 export class AppModule {}
