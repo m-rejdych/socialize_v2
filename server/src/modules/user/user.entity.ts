@@ -18,6 +18,7 @@ import CommentReaction from '../commentReaction/commentReaction.entity';
 import Chat from '../chat/chat.entity';
 import Message from '../message/message.entity';
 import MessageReaction from '../messageReaction/messageReaction.entity';
+import Notification from '../notification/notification.entity';
 
 @Entity()
 class User {
@@ -89,6 +90,12 @@ class User {
     nullable: true,
   })
   messageReactions?: MessageReaction[];
+
+  @OneToMany(() => Notification, (notification) => notification.user, {
+    cascade: ['insert', 'update'],
+    nullable: true,
+  })
+  notifications: Notification[];
 }
 
 export default User;
