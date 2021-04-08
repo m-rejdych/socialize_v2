@@ -38,9 +38,12 @@ class NotificationController {
   @UseGuards(JwtGuard)
   @Post('create-notification')
   async createNotification(
+    @Req() req: JwtRequest,
     @Body() data: CreateNotificationDto,
   ): Promise<Notification> {
-    return await this.notificationService.createNotification(data);
+    const { id } = req.user;
+
+    return await this.notificationService.createNotification(id, data);
   }
 
   @UseGuards(JwtGuard)

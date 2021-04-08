@@ -1,7 +1,6 @@
 const NOTIFICATION_NAMES = [
   'message',
   'messageReaction',
-  'post',
   'postReaction',
   'comment',
   'commentReaction',

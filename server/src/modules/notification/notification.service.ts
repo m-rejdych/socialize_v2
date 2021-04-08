@@ -31,17 +31,15 @@ class NotificationService {
     return notification.user.id === userId;
   }
 
-  async createNotification({
-    from,
-    to,
-    notificationName,
-    ...rest
-  }: CreateNotificationDto): Promise<Notification> {
+  async createNotification(
+    userId: number,
+    { to, notificationName, ...rest }: CreateNotificationDto,
+  ): Promise<Notification> {
     const notificationType = await this.notificationTypeService.findByName(
       notificationName,
     );
 
-    const fromUser = await this.userService.findById(from);
+    const fromUser = await this.userService.findById(userId);
     if (!fromUser) throw new NotFoundException('User not found!');
 
     const toUser = await this.userService.findById(to);
@@ -69,11 +67,13 @@ class NotificationService {
           .leftJoin('notification.user', 'user')
           .where('user.id = :userId', { userId })
           .andWhere('notification.seen = :isSeen', { isSeen: false })
+          .orderBy('notification.createdAt', 'ASC')
           .getMany()
       : await this.notificationRepository
           .createQueryBuilder('notification')
           .leftJoin('notification.user', 'user')
           .where('user.id = :userId', { userId })
+          .orderBy('notification.createdAt', 'ASC')
           .getMany();
 
     return notifications;
