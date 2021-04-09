@@ -3,6 +3,7 @@ import {
   RegisterAction,
   LoginAction,
   AutoLoginAction,
+  LogoutAction,
 } from '../../interfaces/auth/authActions';
 import {
   GetUserAction,
@@ -26,6 +27,7 @@ const initialState: UserState = {
 const strategyMap: StrategyMap<UserState, typeof AUTH & typeof USER> = {
   [AUTH.REGISTER]: registerTransformer,
   [AUTH.LOGIN]: loginTransformer,
+  [AUTH.LOGOUT]: logoutTransformer,
   [AUTH.AUTO_LOGIN]: autoLoginTransformer,
   [USER.GET_USER]: getUserTransformer,
   [USER.GET_USER_SUCCESS]: getUserSuccessTransformer,
@@ -46,6 +48,13 @@ function loginTransformer(
   _: ReturnType<LoginAction>,
 ): UserState {
   return { ...state, loading: true };
+}
+
+function logoutTransformer(
+  state: UserState,
+  _: ReturnType<LogoutAction>,
+): UserState {
+  return { ...state, initialLoad: true };
 }
 
 function autoLoginTransformer(

@@ -17,6 +17,7 @@ import {
   getMessagesCountByChatId,
 } from '../../services/messageService';
 import { CHAT } from '../../shared/constants/actionTypes';
+import handleError from '../../util/errorHandler';
 
 function* handleGetChats() {
   try {
@@ -26,7 +27,7 @@ function* handleGetChats() {
       yield put(getChatsSuccess(response.data));
     }
   } catch (error) {
-    yield put(setChatError(error.response.data.message));
+    yield put(handleError(setChatError, error));
   }
 }
 
@@ -58,7 +59,7 @@ function* handleGetSelectedChat({
       }
     }
   } catch (error) {
-    yield put(setChatError(error.response.data.message));
+    yield put(handleError(setChatError, error));
   }
 }
 

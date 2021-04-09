@@ -6,4 +6,6 @@ export type RegisterAction = Action<typeof AUTH.REGISTER, RegisterPayload>;
 
 export type LoginAction = Action<typeof AUTH.LOGIN, LoginPayload>;
 
+export type LogoutAction = Action<typeof AUTH.LOGOUT, null>;
+
 export type AutoLoginAction = Action<typeof AUTH.AUTO_LOGIN, null>;

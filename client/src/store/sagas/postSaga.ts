@@ -30,6 +30,7 @@ import {
   deletePostReaction,
 } from '../../services/postService';
 import { POST } from '../../shared/constants/actionTypes';
+import handleError from '../../util/errorHandler';
 
 function* handleCreatePost({ payload }: ReturnType<CreatePostAction>) {
   try {
@@ -39,7 +40,7 @@ function* handleCreatePost({ payload }: ReturnType<CreatePostAction>) {
       yield put(createPostSuccess(response.data));
     }
   } catch (error) {
-    yield put(setPostError(error.response.data.message));
+    yield put(handleError(setPostError, error));
   }
 }
 
@@ -51,7 +52,7 @@ function* handleGetFeed() {
       yield put(getFeedSuccess(response.data));
     }
   } catch (error) {
-    yield put(setPostError(error.response.data.message));
+    yield put(handleError(setPostError, error));
   }
 }
 
@@ -63,7 +64,7 @@ function* handleUpdatePost({ payload }: ReturnType<UpdatePostAction>) {
       yield put(updatePostSuccess(response.data));
     }
   } catch (error) {
-    yield put(setPostError(error.response.data.message));
+    yield put(handleError(setPostError, error));
   }
 }
 
@@ -75,7 +76,7 @@ function* handleDeletePost({ payload }: ReturnType<DeletePostAction>) {
       yield put(deletePostSuccess(response.data.postId));
     }
   } catch (error) {
-    yield put(setPostError(error.response.data.message));
+    yield put(handleError(setPostError, error));
   }
 }
 
@@ -89,7 +90,7 @@ function* handleAddPostReaction({
       yield put(updatePostSuccess(response.data));
     }
   } catch (error) {
-    yield put(setPostError(error.response.data.message));
+    yield put(handleError(setPostError, error));
   }
 }
 
@@ -112,7 +113,7 @@ export function* handleDeletePostReaction({
       );
     }
   } catch (error) {
-    yield put(setPostError(error.response.data.message));
+    yield put(handleError(setPostError, error));
   }
 }
 

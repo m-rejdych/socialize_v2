@@ -25,6 +25,7 @@ import {
   DeleteCommentRes,
   DeleteCommentReactionRes,
 } from '../../interfaces/comment/commentRes';
+import handleError from '../../util/errorHandler';
 
 function* handleCreateComment({ payload }: ReturnType<CreateCommentAction>) {
   try {
@@ -34,7 +35,7 @@ function* handleCreateComment({ payload }: ReturnType<CreateCommentAction>) {
       yield put(createCommentSuccess(response.data));
     }
   } catch (error) {
-    yield put(setPostError(error.response.data.message));
+    yield put(handleError(setPostError, error));
   }
 }
 
@@ -51,7 +52,7 @@ function* handleDeleteComment({ payload }: ReturnType<DeleteCommentAction>) {
       );
     }
   } catch (error) {
-    yield put(setPostError(error.response.data.message));
+    yield put(handleError(setPostError, error));
   }
 }
 
@@ -73,7 +74,7 @@ function* handleDeleteCommentReaction({
       );
     }
   } catch (error) {
-    yield put(setPostError(error.response.data.message));
+    yield put(handleError(setPostError, error));
   }
 }
 
@@ -87,7 +88,7 @@ export function* handleAddCommentReaction({
       yield put(addCommentReactionSuccess(response.data));
     }
   } catch (error) {
-    yield put(setPostError(error.response.data.message));
+    yield put(handleError(setPostError, error));
   }
 }
 

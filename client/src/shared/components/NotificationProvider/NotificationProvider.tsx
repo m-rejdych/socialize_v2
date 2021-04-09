@@ -18,6 +18,10 @@ const NotificationProvider: React.FC = ({ children }) => {
       console.log('connected');
     });
 
+    socket.on('disconnect', (): void => {
+      console.log('disconnected');
+    });
+
     socket.on('notification', (notification: Notification): void => {
       console.log(notification);
     });

@@ -1,6 +1,7 @@
 export const AUTH = {
   REGISTER: 'AUTH_REGISTER' as const,
   LOGIN: 'AUTH_LOGIN' as const,
+  LOGOUT: 'AUTH_LOGOUT' as const,
   AUTO_LOGIN: 'AUTH_AUTO_LOGIN' as const,
 };
 

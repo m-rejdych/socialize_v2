@@ -29,6 +29,7 @@ import {
   acceptFriendship,
   deleteFriendship,
 } from '../../services/friendshipService';
+import handleError from '../../util/errorHandler';
 
 function* handleGetAllFriendships() {
   try {
@@ -38,7 +39,7 @@ function* handleGetAllFriendships() {
       yield put(getAllFriendshipsSuccess(response.data));
     }
   } catch (error) {
-    yield put(setFriendshipError(error.response.data.message));
+    yield put(handleError(setFriendshipError, error));
   }
 }
 
@@ -48,7 +49,7 @@ function* handleGetFriendship({ payload }: ReturnType<GetFriendshipAction>) {
 
     yield put(getFriendshipSuccess(response.data || null));
   } catch (error) {
-    yield put(setFriendshipError(error.response.data.message));
+    yield put(handleError(setFriendshipError, error));
   }
 }
 
@@ -62,7 +63,7 @@ function* handleCreateFriendship({
       yield put(createFriendshipSuccess(response.data));
     }
   } catch (error) {
-    yield put(setFriendshipError(error.response.data.message));
+    yield put(handleError(setFriendshipError, error));
   }
 }
 
@@ -78,7 +79,7 @@ export function* handleAcceptFriendship({
       yield put(acceptFriendshipSuccess(friendship));
     }
   } catch (error) {
-    yield put(setFriendshipError(error.response.data.message));
+    yield put(handleError(setFriendshipError, error));
   }
 }
 
@@ -98,7 +99,7 @@ export function* handleDeleteFriendship({
       );
     }
   } catch (error) {
-    yield put(setFriendshipError(error.response.data.message));
+    yield put(handleError(setFriendshipError, error));
   }
 }
 

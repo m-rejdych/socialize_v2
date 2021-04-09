@@ -12,6 +12,7 @@ import {
 } from '../actions/profileActions';
 import { ProfileRes } from '../../interfaces/profile/profileRes';
 import { getUserInfo, updateUserInfo } from '../../services/userInfoService';
+import handleError from '../../util/errorHandler';
 
 function* handleGetUserInfo({ payload }: ReturnType<GetUserInfoAction>) {
   try {
@@ -21,7 +22,7 @@ function* handleGetUserInfo({ payload }: ReturnType<GetUserInfoAction>) {
       yield put(getUserInfoSuccess(response.data));
     }
   } catch (error) {
-    yield put(setProfileError(error.response.data.message));
+    yield put(handleError(setProfileError, error));
   }
 }
 
@@ -33,7 +34,7 @@ function* handleUpdateUserInfo({ payload }: ReturnType<UpdateUserInfoAction>) {
       yield put(updateUserInfoSuccess(response.data));
     }
   } catch (error) {
-    yield put(setProfileError(error.response.data.message));
+    yield put(handleError(setProfileError, error));
   }
 }
 

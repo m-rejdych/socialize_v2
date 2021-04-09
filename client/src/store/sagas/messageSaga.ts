@@ -24,6 +24,7 @@ import {
 } from '../../interfaces/message/messageRes';
 import { MESSAGE } from '../../shared/constants/actionTypes';
 import RootState from '../../interfaces/store';
+import handleError from '../../util/errorHandler';
 
 function* handleCreateMessage({ payload }: ReturnType<CreateMessageAction>) {
   try {
@@ -35,7 +36,7 @@ function* handleCreateMessage({ payload }: ReturnType<CreateMessageAction>) {
       socket.emit('message', response.data);
     }
   } catch (error) {
-    yield put(setChatError(error.response.data.message));
+    yield put(handleError(setChatError, error));
   }
 }
 
@@ -51,7 +52,7 @@ function* handleAddMessage({ payload }: ReturnType<AddMessageAction>) {
       }
     }
   } catch (error) {
-    yield put(setChatError(error.response.data.message));
+    yield put(handleError(setChatError, error));
   }
 }
 
@@ -67,7 +68,7 @@ function* handleAddMessageReaction({
       socket.emit('reaction', response.data);
     }
   } catch (error) {
-    yield put(setChatError(error.response.data.message));
+    yield put(handleError(setChatError, error));
   }
 }
 
@@ -91,7 +92,7 @@ function* handleDeleteMessageReaction({
       }
     }
   } catch (error) {
-    yield put(setChatError(error.response.data.message));
+    yield put(handleError(setChatError, error));
   }
 }
 
