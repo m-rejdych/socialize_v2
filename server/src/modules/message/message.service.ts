@@ -16,6 +16,7 @@ import DeleteReactionResponseDto from '../messageReaction/dto/deleteReaction.dto
 import MarkAllAsSeenResponseDto from './dto/markAllAsSeenResponse.dto';
 import FindAllByChadIdOptionsDto from './dto/findAllByChatIdOptions.dto';
 import FindOptions from './interface/findOptions.interface';
+import NotificationsGateway from '../notification/events/notifications.event';
 
 @Injectable()
 class MessageService {
@@ -24,6 +25,7 @@ class MessageService {
     private userService: UserService,
     private chatService: ChatService,
     private messageReactionService: MessageReactionService,
+    private notificationsGateway: NotificationsGateway,
   ) {}
 
   async findById(id: number, options?: FindOptions): Promise<Message | null> {
@@ -114,7 +116,9 @@ class MessageService {
       throw new ForbiddenException('You are not a member of the chat!');
     }
 
-    const chat = await this.chatService.findById(chatId);
+    const chat = await this.chatService.findById(chatId, {
+      relations: ['members'],
+    });
 
     const author = await this.userService.findById(userId);
     if (!author) throw new NotFoundException('User not found!');
@@ -126,6 +130,21 @@ class MessageService {
       seenBy: [author],
     });
     await this.messageRepository.save(message);
+
+    const promises: Promise<void>[] = [];
+    chat.members
+      .filter(({ id }) => id !== userId)
+      .forEach(({ id }) => {
+        promises.push(
+          this.notificationsGateway.sendNotification({
+            from: userId,
+            to: id,
+            targetId: chatId,
+            notificationName: 'message',
+          }),
+        );
+      });
+    Promise.all(promises);
 
     return message;
   }
@@ -248,6 +267,15 @@ class MessageService {
     }
 
     await this.messageRepository.save(message);
+
+    if (!foundReaction) {
+      await this.notificationsGateway.sendNotification({
+        from: userId,
+        to: message.author.id,
+        targetId: message.chat.id,
+        notificationName: 'messageReaction',
+      });
+    }
 
     return message;
   }

@@ -6,6 +6,7 @@ import NotificationTypeModule from '../notificationType/notificationType.module'
 import UserModule from '../user/user.module';
 import NotificationService from './notification.service';
 import NotificationController from './notification.controller';
+import NotificationsGateway from './events/notifications.event';
 
 @Module({
   imports: [
@@ -13,8 +14,9 @@ import NotificationController from './notification.controller';
     NotificationTypeModule,
     UserModule,
   ],
-  providers: [NotificationService],
+  providers: [NotificationService, NotificationsGateway],
   controllers: [NotificationController],
+  exports: [NotificationsGateway],
 })
 class NotificationModule {}
 

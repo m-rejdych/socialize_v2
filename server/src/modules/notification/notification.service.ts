@@ -31,15 +31,17 @@ class NotificationService {
     return notification.user.id === userId;
   }
 
-  async createNotification(
-    userId: number,
-    { to, notificationName, ...rest }: CreateNotificationDto,
-  ): Promise<Notification> {
+  async createNotification({
+    from,
+    to,
+    notificationName,
+    ...rest
+  }: CreateNotificationDto): Promise<Notification> {
     const notificationType = await this.notificationTypeService.findByName(
       notificationName,
     );
 
-    const fromUser = await this.userService.findById(userId);
+    const fromUser = await this.userService.findById(from);
     if (!fromUser) throw new NotFoundException('User not found!');
 
     const toUser = await this.userService.findById(to);

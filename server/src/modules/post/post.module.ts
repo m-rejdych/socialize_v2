@@ -7,6 +7,7 @@ import PostService from './post.service';
 import FriendshipModule from '../friendship/friendship.module';
 import PostController from './post.controller';
 import PostReactionModule from '../postReaction/postReaction.module';
+import NotificationModule from '../notification/notification.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import PostReactionModule from '../postReaction/postReaction.module';
     UserModule,
     PostReactionModule,
     FriendshipModule,
+    NotificationModule,
   ],
   providers: [PostService],
   controllers: [PostController],

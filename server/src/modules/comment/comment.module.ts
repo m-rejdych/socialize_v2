@@ -7,6 +7,7 @@ import UserModule from '../user/user.module';
 import CommentService from './comment.service';
 import CommentController from './comment.controller';
 import CommentReactionModule from '../commentReaction/commentReaction.module';
+import NotificationModule from '../notification/notification.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import CommentReactionModule from '../commentReaction/commentReaction.module';
     PostModule,
     UserModule,
     CommentReactionModule,
+    NotificationModule,
   ],
   providers: [CommentService],
   controllers: [CommentController],

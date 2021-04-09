@@ -7,6 +7,7 @@ import MessageController from './message.controller';
 import UserModule from '../user/user.module';
 import ChatModule from '../chat/chat.module';
 import MessageReactionModule from '../messageReaction/messageReaction.module';
+import NotificationModule from '../notification/notification.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import MessageReactionModule from '../messageReaction/messageReaction.module';
     UserModule,
     ChatModule,
     MessageReactionModule,
+    NotificationModule,
   ],
   providers: [MessageService],
   controllers: [MessageController],

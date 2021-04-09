@@ -5,6 +5,9 @@ import NOTIFICATION_NAMES from '../../notificationType/constants/notificationNam
 
 class CreateNotificationDto {
   @IsInt()
+  from: number;
+
+  @IsInt()
   to: number;
 
   @IsInt()

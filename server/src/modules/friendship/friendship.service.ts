@@ -12,6 +12,7 @@ import UserService from '../user/user.service';
 import ChatService from '../chat/chat.service';
 import DeleteFriendshipReponseDto from './dto/deleteFriendshipResponse.dto';
 import CreateFriendshipResponseDto from './dto/createFriendshipResponse.dto';
+import NotificationGateway from '../notification/events/notifications.event';
 
 @Injectable()
 class FriendshipService {
@@ -20,6 +21,7 @@ class FriendshipService {
     private friendshipRepository: Repository<Friendship>,
     private userService: UserService,
     private chatService: ChatService,
+    private notificationGateway: NotificationGateway,
   ) {}
 
   async findOne(
@@ -124,6 +126,13 @@ class FriendshipService {
     });
     await this.friendshipRepository.save(friendship);
 
+    this.notificationGateway.sendNotification({
+      from: userId,
+      to: friendId,
+      targetId: userId,
+      notificationName: 'friendshipRequest',
+    });
+
     return friendship;
   }
 
@@ -159,6 +168,13 @@ class FriendshipService {
         membersIds: [userId, friendId],
       });
     }
+
+    this.notificationGateway.sendNotification({
+      from: userId,
+      to: friendId,
+      targetId: userId,
+      notificationName: 'friendshipAccept',
+    });
 
     return {
       friendship,

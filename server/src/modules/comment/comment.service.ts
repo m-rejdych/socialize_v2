@@ -15,6 +15,7 @@ import AddCommentReactionDto from './dto/addCommentReaction.dto';
 import PostService from '../post/post.service';
 import UserService from '../user/user.service';
 import CommentReacitonService from '../commentReaction/commentReaction.service';
+import NotificationGateway from '../notification/events/notifications.event';
 
 @Injectable()
 class CommentService {
@@ -23,6 +24,7 @@ class CommentService {
     private postService: PostService,
     private userService: UserService,
     private commentReactionService: CommentReacitonService,
+    private notificationGateway: NotificationGateway,
   ) {}
 
   async findById(commentId: number): Promise<Comment | null> {
@@ -55,6 +57,13 @@ class CommentService {
       author: user,
     });
     await this.commentRepository.save(comment);
+
+    this.notificationGateway.sendNotification({
+      from: userId,
+      to: post.author.id,
+      targetId: post.id,
+      notificationName: 'comment',
+    });
 
     return comment;
   }
@@ -129,6 +138,15 @@ class CommentService {
     }
 
     await this.commentRepository.save(comment);
+
+    if (!foundCommentReaction) {
+      this.notificationGateway.sendNotification({
+        from: userId,
+        to: comment.author.id,
+        targetId: comment.post.id,
+        notificationName: 'commentReaction',
+      });
+    }
 
     return comment;
   }

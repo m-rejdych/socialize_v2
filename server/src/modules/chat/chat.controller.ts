@@ -31,7 +31,6 @@ class ChatController {
   ): Promise<Chat> {
     const { id: userId } = req.user;
 
-    // DELETE RELATIONS OTHER THAN MEMBERS LATER
     return await this.chatService.findById(id, {
       validateMembership: true,
       validationId: userId,

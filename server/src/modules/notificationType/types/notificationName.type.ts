@@ -4,6 +4,7 @@ type NotificationName =
   | 'postReaction'
   | 'comment'
   | 'commentReaction'
-  | 'friendshipRequest';
+  | 'friendshipRequest'
+  | 'friendshipAccept';
 
 export default NotificationName;

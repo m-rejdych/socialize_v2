@@ -5,6 +5,7 @@ const NOTIFICATION_NAMES = [
   'comment',
   'commentReaction',
   'friendshipRequest',
+  'friendshipAccept',
 ] as const;
 
 export default NOTIFICATION_NAMES;

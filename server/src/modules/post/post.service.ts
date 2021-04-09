@@ -15,6 +15,7 @@ import DeleteByPostAndUserIdsResponseDto from '../postReaction/dto/deletePostRea
 import UserService from '../user/user.service';
 import FriendshipService from '../friendship/friendship.service';
 import PostReactionService from '../postReaction/postReaction.service';
+import NotificationGateway from '../notification/events/notifications.event';
 
 @Injectable()
 class PostService {
@@ -23,6 +24,7 @@ class PostService {
     private userService: UserService,
     private postReactionService: PostReactionService,
     private friendshipService: FriendshipService,
+    private notificationGateway: NotificationGateway,
   ) {}
 
   async findById(id: number): Promise<Post | null> {
@@ -150,6 +152,15 @@ class PostService {
     }
 
     await this.postRepository.save(post);
+
+    if (!foundReaction) {
+      this.notificationGateway.sendNotification({
+        from: userId,
+        to: post.author.id,
+        targetId: post.id,
+        notificationName: 'postReaction',
+      });
+    }
 
     return post;
   }
