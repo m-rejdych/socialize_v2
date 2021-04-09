@@ -7,6 +7,7 @@ import Auth from '../../../pages/Auth';
 import Home from '../../../pages/Home';
 import Profile from '../../../pages/Profile';
 import Chat from '../../../pages/Chat';
+import NotificationProvider from '../NotificationProvider';
 
 const Routes: React.FC = () => {
   const userId = useSelector((state: RootState) => state.user.id);
@@ -14,13 +15,15 @@ const Routes: React.FC = () => {
   const isAuth = !!userId;
 
   return isAuth ? (
-    <Switch>
-      <Route path={ROUTES.HOME} component={Home} />
-      <Route path={`${ROUTES.PROFILE}/:id`} component={Profile} />
-      <Route path={`${ROUTES.CHAT}/:id`} component={Chat} />
-      <Route path={ROUTES.CHAT} component={Chat} />
-      <Redirect to={ROUTES.HOME} />
-    </Switch>
+    <NotificationProvider>
+      <Switch>
+        <Route path={ROUTES.HOME} component={Home} />
+        <Route path={`${ROUTES.PROFILE}/:id`} component={Profile} />
+        <Route path={`${ROUTES.CHAT}/:id`} component={Chat} />
+        <Route path={ROUTES.CHAT} component={Chat} />
+        <Redirect to={ROUTES.HOME} />
+      </Switch>
+    </NotificationProvider>
   ) : (
     <Switch>
       <Route path={ROUTES.REGISTER} component={Auth} />
