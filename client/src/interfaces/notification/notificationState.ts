@@ -1,7 +1,9 @@
 import Notification from './notification';
 
 export default interface NotificationState {
-  notifications: Notification[];
+  open: boolean;
+  notifications: Notification[] | null;
+  newNotifications: number[] | null;
   notSeenNotificationsCount: number;
   skip: number;
   loading: boolean;

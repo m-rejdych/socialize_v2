@@ -1,6 +1,9 @@
 import createJwtRequest from '../util/jwtRequestFactory';
 import { GetMyNotificationsReq } from '../interfaces/notification/notificationReq';
-import { GetMyNotificationsRes } from '../interfaces/notification/notificationRes';
+import {
+  GetMyNotificationsRes,
+  GetNotSeenNotificationsCountRes,
+} from '../interfaces/notification/notificationRes';
 import { API_URI } from '../config';
 
 export const getMyNotifications = (
@@ -15,4 +18,10 @@ export const getMyNotifications = (
           }`
         : ''
     }`,
+  });
+
+export const getNotSeenNotificationsCount = (): Promise<GetNotSeenNotificationsCountRes> =>
+  createJwtRequest<GetNotSeenNotificationsCountRes>({
+    method: 'GET',
+    url: `${API_URI}/notification/get-not-seen-notifications-count`,
   });

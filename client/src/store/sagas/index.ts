@@ -31,6 +31,10 @@ import {
   addMessageReactionSaga,
   deleteMessageReactionSaga,
 } from './messageSaga';
+import {
+  getMyNotificationsSaga,
+  getNotSeenNotificationsCountSaga,
+} from './notificationSaga';
 
 export default function* rootSaga() {
   yield all([
@@ -61,5 +65,7 @@ export default function* rootSaga() {
     addMessageSaga(),
     addMessageReactionSaga(),
     deleteMessageReactionSaga(),
+    getMyNotificationsSaga(),
+    getNotSeenNotificationsCountSaga(),
   ]);
 }
