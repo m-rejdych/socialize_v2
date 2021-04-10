@@ -3,17 +3,17 @@ import {
   UseGuards,
   Get,
   Req,
-  Post,
   Body,
   Put,
+  Query,
 } from '@nestjs/common';
 
 import JwtGuard from '../../guards/jwt.guard';
 import JwtRequest from '../auth/interfaces/jwtRequest.interface';
 import NotificationService from './notification.service';
 import Notification from './notification.entity';
-import CreateNotificationDto from './dto/createNotification.dto';
 import MarkAsSeenByIdDto from './dto/markAsSeenById.dto';
+import FindByUserIdOptions from './dto/findByUserIdOptions.dto';
 
 @Controller('notification')
 class NotificationController {
@@ -21,10 +21,18 @@ class NotificationController {
 
   @UseGuards(JwtGuard)
   @Get('get-my-notifications')
-  async getMyNotifications(@Req() req: JwtRequest): Promise<Notification[]> {
+  async getMyNotifications(
+    @Req() req: JwtRequest,
+    @Query('take') take?: string,
+    @Query('skip') skip?: string,
+  ): Promise<Notification[]> {
     const { id } = req.user;
 
-    return await this.notificationService.findByUserId(id);
+    const options: FindByUserIdOptions = {};
+    if (take) options.take = Number(take);
+    if (skip) options.skip = Number(skip);
+
+    return await this.notificationService.findByUserId(id, options);
   }
 
   @UseGuards(JwtGuard)

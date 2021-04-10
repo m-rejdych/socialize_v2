@@ -63,20 +63,81 @@ class NotificationService {
     userId: number,
     options?: FindByUserIdOptions,
   ): Promise<Notification[]> {
-    const notifications = options?.notSeenOnly
-      ? await this.notificationRepository
+    let notifications: Notification[] = [];
+
+    if (options?.notSeenOnly) {
+      if (options?.skip && options?.take) {
+        notifications = await this.notificationRepository
+          .createQueryBuilder('notification')
+          .leftJoin('notification.user', 'user')
+          .where('user.id = :userId', { userId })
+          .andWhere('notification.seen = :isSeen', { isSeen: false })
+          .take(options.take)
+          .skip(options.skip)
+          .orderBy('notification.createdAt', 'ASC')
+          .getMany();
+      } else if (options?.skip) {
+        notifications = await this.notificationRepository
+          .createQueryBuilder('notification')
+          .leftJoin('notification.user', 'user')
+          .where('user.id = :userId', { userId })
+          .andWhere('notification.seen = :isSeen', { isSeen: false })
+          .skip(options.skip)
+          .orderBy('notification.createdAt', 'ASC')
+          .getMany();
+      } else if (options?.take) {
+        notifications = await this.notificationRepository
+          .createQueryBuilder('notification')
+          .leftJoin('notification.user', 'user')
+          .where('user.id = :userId', { userId })
+          .andWhere('notification.seen = :isSeen', { isSeen: false })
+          .take(options.take)
+          .orderBy('notification.createdAt', 'ASC')
+          .getMany();
+      } else {
+        notifications = await this.notificationRepository
           .createQueryBuilder('notification')
           .leftJoin('notification.user', 'user')
           .where('user.id = :userId', { userId })
           .andWhere('notification.seen = :isSeen', { isSeen: false })
           .orderBy('notification.createdAt', 'ASC')
-          .getMany()
-      : await this.notificationRepository
+          .getMany();
+      }
+    } else {
+      if (options?.skip && options?.take) {
+        notifications = await this.notificationRepository
+          .createQueryBuilder('notification')
+          .leftJoin('notification.user', 'user')
+          .where('user.id = :userId', { userId })
+          .take(options.take)
+          .skip(options.skip)
+          .orderBy('notification.createdAt', 'ASC')
+          .getMany();
+      } else if (options?.skip) {
+        notifications = await this.notificationRepository
+          .createQueryBuilder('notification')
+          .leftJoin('notification.user', 'user')
+          .where('user.id = :userId', { userId })
+          .skip(options.skip)
+          .orderBy('notification.createdAt', 'ASC')
+          .getMany();
+      } else if (options?.take) {
+        notifications = await this.notificationRepository
+          .createQueryBuilder('notification')
+          .leftJoin('notification.user', 'user')
+          .where('user.id = :userId', { userId })
+          .take(options.take)
+          .orderBy('notification.createdAt', 'ASC')
+          .getMany();
+      } else {
+        notifications = await this.notificationRepository
           .createQueryBuilder('notification')
           .leftJoin('notification.user', 'user')
           .where('user.id = :userId', { userId })
           .orderBy('notification.createdAt', 'ASC')
           .getMany();
+      }
+    }
 
     return notifications;
   }

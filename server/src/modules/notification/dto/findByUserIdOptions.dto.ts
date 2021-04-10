@@ -1,5 +1,7 @@
 class FindByUserIdOptions {
-  notSeenOnly: boolean;
+  notSeenOnly?: boolean;
+  skip?: number;
+  take?: number;
 }
 
 export default FindByUserIdOptions;
