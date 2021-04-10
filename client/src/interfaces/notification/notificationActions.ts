@@ -32,6 +32,16 @@ export type ResetNotificationsAction = Action<
   null
 >;
 
+export type MarkAsSeenByIdAction = Action<
+  typeof NOTIFICATION.MARK_AS_SEEN_BY_ID,
+  number
+>;
+
+export type MarkAsSeenByIdSuccessAction = Action<
+  typeof NOTIFICATION.MARK_AS_SEEN_BY_ID_SUCCESS,
+  Notification
+>;
+
 export type SetNotificationErrorAction = Action<
   typeof NOTIFICATION.ERROR,
   string | null

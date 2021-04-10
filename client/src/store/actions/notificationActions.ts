@@ -4,6 +4,8 @@ import {
   GetMyNotificationsSuccessAction,
   GetNotSeenNotificationsCountAction,
   GetNotSeenNotificationsCountSuccessAction,
+  MarkAsSeenByIdAction,
+  MarkAsSeenByIdSuccessAction,
   SetNotificationErrorAction,
 } from '../../interfaces/notification/notificationActions';
 import { NOTIFICATION } from '../../shared/constants/actionTypes';
@@ -22,6 +24,14 @@ export const getNotSeenNotificationsCount: GetNotSeenNotificationsCountAction = 
 
 export const getNotSeenNotificationsCountSuccess: GetNotSeenNotificationsCountSuccessAction = createAction(
   NOTIFICATION.GET_NOT_SEEN_NOTIFICATIONS_COUNT_SUCCESS,
+);
+
+export const markAsSeenById: MarkAsSeenByIdAction = createAction(
+  NOTIFICATION.MARK_AS_SEEN_BY_ID,
+);
+
+export const markAsSeenByIdSuccess: MarkAsSeenByIdSuccessAction = createAction(
+  NOTIFICATION.MARK_AS_SEEN_BY_ID_SUCCESS,
 );
 
 export const setNotificationsError: SetNotificationErrorAction = createAction(

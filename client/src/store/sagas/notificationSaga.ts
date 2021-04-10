@@ -1,8 +1,9 @@
-import { put, call, takeEvery, select } from 'redux-saga/effects';
+import { put, call, fork, takeEvery, select } from 'redux-saga/effects';
 
 import {
   getMyNotifications,
   getNotSeenNotificationsCount,
+  markAllAsSeen,
 } from '../../services/notificationService';
 import {
   GetMyNotificationsRes,
@@ -31,6 +32,7 @@ function* handleGetMyNotifications() {
     });
 
     if (response.data) {
+      yield fork(markAllAsSeen);
       yield put(getMyNotificationsSuccess(response.data));
     }
   } catch (error) {

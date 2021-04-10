@@ -7,3 +7,7 @@ export interface GetMyNotificationsRes {
 export interface GetNotSeenNotificationsCountRes {
   data?: number;
 }
+
+export interface MarkAsSeenByIdRes {
+  data?: Notification;
+}

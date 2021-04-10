@@ -10,12 +10,8 @@ import {
   SetChatError,
 } from '../../interfaces/chat/chatActions';
 import {
-  CreateMessageAction,
-  AddMessageAction,
   AddMessageSuccessAction,
-  AddMessageReactionAction,
   UpdateMessageAction,
-  DeleteMessageReactionAction,
   DeleteMessageReactionSuccessAction,
 } from '../../interfaces/message/messageActions';
 
@@ -32,12 +28,8 @@ const strategyMap: StrategyMap<ChatState, typeof CHAT & typeof MESSAGE> = {
   [CHAT.GET_CHATS_SUCCESS]: getChatsSuccessTransfomer,
   [CHAT.GET_SELECTED_CHAT]: getSelectedChatTransformer,
   [CHAT.GET_SELECTED_CHAT_SUCCESS]: getSelectedChatSuccessTransformer,
-  [MESSAGE.CREATE_MESSAGE]: createMessageTransformer,
-  [MESSAGE.ADD_MESSAGE]: addMessageTransformer,
   [MESSAGE.ADD_MESSAGE_SUCCESS]: addMessageSuccessTransformer,
-  [MESSAGE.ADD_MESSAGE_REACTION]: addMessageReactionTransformer,
   [MESSAGE.UPDATE_MESSAGE]: updateMessageTransformer,
-  [MESSAGE.DELETE_MESSAGE_REACTION]: deleteMessageReactionTransformer,
   [MESSAGE.DELETE_MESSAGE_REACTION_SUCCESS]: deleteMessageReactionSuccessTransformer,
   [CHAT.ERROR]: setChatErrorTransformer,
 };
@@ -88,20 +80,6 @@ function getSelectedChatSuccessTransformer(
   };
 }
 
-function createMessageTransformer(
-  state: ChatState,
-  _: ReturnType<CreateMessageAction>,
-): ChatState {
-  return state;
-}
-
-function addMessageTransformer(
-  state: ChatState,
-  _: ReturnType<AddMessageAction>,
-): ChatState {
-  return state;
-}
-
 function addMessageSuccessTransformer(
   state: ChatState,
   { payload }: ReturnType<AddMessageSuccessAction>,
@@ -119,13 +97,6 @@ function addMessageSuccessTransformer(
   };
 }
 
-function addMessageReactionTransformer(
-  state: ChatState,
-  _: ReturnType<AddMessageReactionAction>,
-): ChatState {
-  return state;
-}
-
 function updateMessageTransformer(
   state: ChatState,
   { payload }: ReturnType<UpdateMessageAction>,
@@ -141,13 +112,6 @@ function updateMessageTransformer(
         }
       : null,
   };
-}
-
-function deleteMessageReactionTransformer(
-  state: ChatState,
-  _: ReturnType<DeleteMessageReactionAction>,
-): ChatState {
-  return state;
 }
 
 function deleteMessageReactionSuccessTransformer(
