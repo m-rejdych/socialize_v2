@@ -8,6 +8,7 @@ import {
   GetNotSeenNotificationsCountAction,
   GetNotSeenNotificationsCountSuccessAction,
   AddNotificationAction,
+  HideNewNotificationAction,
   SetNotificationErrorAction,
   MarkAsSeenByIdSuccessAction,
   ResetNotificationsAction,
@@ -30,6 +31,7 @@ const strategyMap: StrategyMap<NotificationState, typeof NOTIFICATION> = {
   [NOTIFICATION.GET_NOT_SEEN_NOTIFICATIONS_COUNT]: getNotSeenNotificationsCountTransformer,
   [NOTIFICATION.GET_NOT_SEEN_NOTIFICATIONS_COUNT_SUCCESS]: getNotSeenNotificationsCountSuccessTransformer,
   [NOTIFICATION.ADD_NOTIFICATION]: addNotificationTransformer,
+  [NOTIFICATION.HIDE_NEW_NOTIFICATION]: hideNewNotificationTransformer,
   [NOTIFICATION.RESET_NOTIFICATIONS]: resetNotificationsTransformer,
   [NOTIFICATION.MARK_AS_SEEN_BY_ID]: markAsSeenByIdSuccessTransformer,
   [NOTIFICATION.ERROR]: setNotificationErrorTransformer,
@@ -56,6 +58,7 @@ function getMyNotificationsSuccessTransformer(
     notifications: state.notifications
       ? [...state.notifications, ...payload]
       : payload,
+    newNotifications: null,
     notSeenNotificationsCount: 0,
     skip: state.skip + 20,
   };
@@ -99,6 +102,18 @@ function addNotificationTransformer(
   };
 }
 
+function hideNewNotificationTransformer(
+  state: NotificationState,
+  { payload }: ReturnType<HideNewNotificationAction>,
+): NotificationState {
+  return {
+    ...state,
+    newNotifications: state.newNotifications
+      ? state.newNotifications.filter((id) => id !== payload)
+      : null,
+  };
+}
+
 function resetNotificationsTransformer(
   _: NotificationState,
   __: ReturnType<ResetNotificationsAction>,
@@ -119,9 +134,7 @@ function markAsSeenByIdSuccessTransformer(
             : notification,
         )
       : null,
-    newNotifications: state.newNotifications
-      ? state.newNotifications.filter((id) => id !== payload.id)
-      : null,
+    notSeenNotificationsCount: state.notSeenNotificationsCount - 1,
   };
 }
 

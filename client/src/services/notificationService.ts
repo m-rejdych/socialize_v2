@@ -41,6 +41,6 @@ export const markAsSeenById = (
 ): Promise<MarkAsSeenByIdRes> =>
   createJwtRequest<MarkAsSeenByIdRes>({
     method: 'PUT',
-    url: `${API_URI}/notification/makr-as-seen-by-id`,
+    url: `${API_URI}/notification/mark-as-seen-by-id`,
     body: data,
   });

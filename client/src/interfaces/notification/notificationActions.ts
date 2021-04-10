@@ -27,6 +27,11 @@ export type AddNotificationAction = Action<
   Notification
 >;
 
+export type HideNewNotificationAction = Action<
+  typeof NOTIFICATION.HIDE_NEW_NOTIFICATION,
+  number
+>;
+
 export type ResetNotificationsAction = Action<
   typeof NOTIFICATION.RESET_NOTIFICATIONS,
   null

@@ -4,14 +4,18 @@ import {
   getMyNotifications,
   getNotSeenNotificationsCount,
   markAllAsSeen,
+  markAsSeenById,
 } from '../../services/notificationService';
 import {
   GetMyNotificationsRes,
   GetNotSeenNotificationsCountRes,
+  MarkAsSeenByIdRes,
 } from '../../interfaces/notification/notificationRes';
+import { MarkAsSeenByIdAction } from '../../interfaces/notification/notificationActions';
 import {
   getMyNotificationsSuccess,
   getNotSeenNotificationsCountSuccess,
+  markAsSeenByIdSuccess,
   setNotificationsError,
 } from '../actions/notificationActions';
 import { NOTIFICATION } from '../../shared/constants/actionTypes';
@@ -54,6 +58,20 @@ function* handleGetNotSeenNotificationsCount() {
   }
 }
 
+function* handleMarkAsSeenById({ payload }: ReturnType<MarkAsSeenByIdAction>) {
+  try {
+    const response: MarkAsSeenByIdRes = yield call(markAsSeenById, {
+      notificationId: payload,
+    });
+
+    if (response.data) {
+      yield put(markAsSeenByIdSuccess(response.data));
+    }
+  } catch (error) {
+    yield put(handleError(setNotificationsError, error));
+  }
+}
+
 export function* getMyNotificationsSaga() {
   yield takeEvery(NOTIFICATION.GET_MY_NOTIFICATIONS, handleGetMyNotifications);
 }
@@ -63,4 +81,8 @@ export function* getNotSeenNotificationsCountSaga() {
     NOTIFICATION.GET_NOT_SEEN_NOTIFICATIONS_COUNT,
     handleGetNotSeenNotificationsCount,
   );
+}
+
+export function* markAsSeenByIdSaga() {
+  yield takeEvery(NOTIFICATION.MARK_AS_SEEN_BY_ID, handleMarkAsSeenById);
 }
