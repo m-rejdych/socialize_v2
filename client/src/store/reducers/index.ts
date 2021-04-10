@@ -5,6 +5,7 @@ import profileReducer from './profileReducer';
 import friendshipReducer from './friendshipReducer';
 import postReducer from './postReducer';
 import chatReducer from './chatReducer';
+import notificationReducer from './notificationReducer';
 import { ActionObject } from '../../interfaces/store/action';
 import { AUTH } from '../../shared/constants/actionTypes';
 
@@ -14,6 +15,7 @@ const appReducer = combineReducers({
   friendship: friendshipReducer,
   post: postReducer,
   chat: chatReducer,
+  notification: notificationReducer,
 });
 
 const rootReducer = (
@@ -24,6 +26,7 @@ const rootReducer = (
         friendship: never;
         post: never;
         chat: never;
+        notification: never;
       }>
     | undefined,
   action: ActionObject<any, any>,

@@ -3,6 +3,7 @@ import ProfileState from '../profile/profileState';
 import FriendshipState from '../friendship/friendshipState';
 import PostState from '../post/postState';
 import ChatState from '../chat/chatState';
+import NotificationState from '../notification/notificationState';
 
 export default interface RootState {
   user: UserState;
@@ -10,4 +11,5 @@ export default interface RootState {
   friendship: FriendshipState;
   post: PostState;
   chat: ChatState;
+  notification: NotificationState;
 }

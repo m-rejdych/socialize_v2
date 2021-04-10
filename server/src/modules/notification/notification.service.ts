@@ -74,7 +74,7 @@ class NotificationService {
           .andWhere('notification.seen = :isSeen', { isSeen: false })
           .take(options.take)
           .skip(options.skip)
-          .orderBy('notification.createdAt', 'ASC')
+          .orderBy('notification.createdAt', 'DESC')
           .getMany();
       } else if (options?.skip) {
         notifications = await this.notificationRepository
@@ -83,7 +83,7 @@ class NotificationService {
           .where('user.id = :userId', { userId })
           .andWhere('notification.seen = :isSeen', { isSeen: false })
           .skip(options.skip)
-          .orderBy('notification.createdAt', 'ASC')
+          .orderBy('notification.createdAt', 'DESC')
           .getMany();
       } else if (options?.take) {
         notifications = await this.notificationRepository
@@ -92,7 +92,7 @@ class NotificationService {
           .where('user.id = :userId', { userId })
           .andWhere('notification.seen = :isSeen', { isSeen: false })
           .take(options.take)
-          .orderBy('notification.createdAt', 'ASC')
+          .orderBy('notification.createdAt', 'DESC')
           .getMany();
       } else {
         notifications = await this.notificationRepository
@@ -100,7 +100,7 @@ class NotificationService {
           .leftJoin('notification.user', 'user')
           .where('user.id = :userId', { userId })
           .andWhere('notification.seen = :isSeen', { isSeen: false })
-          .orderBy('notification.createdAt', 'ASC')
+          .orderBy('notification.createdAt', 'DESC')
           .getMany();
       }
     } else {
@@ -111,7 +111,7 @@ class NotificationService {
           .where('user.id = :userId', { userId })
           .take(options.take)
           .skip(options.skip)
-          .orderBy('notification.createdAt', 'ASC')
+          .orderBy('notification.createdAt', 'DESC')
           .getMany();
       } else if (options?.skip) {
         notifications = await this.notificationRepository
@@ -119,7 +119,7 @@ class NotificationService {
           .leftJoin('notification.user', 'user')
           .where('user.id = :userId', { userId })
           .skip(options.skip)
-          .orderBy('notification.createdAt', 'ASC')
+          .orderBy('notification.createdAt', 'DESC')
           .getMany();
       } else if (options?.take) {
         notifications = await this.notificationRepository
@@ -127,14 +127,14 @@ class NotificationService {
           .leftJoin('notification.user', 'user')
           .where('user.id = :userId', { userId })
           .take(options.take)
-          .orderBy('notification.createdAt', 'ASC')
+          .orderBy('notification.createdAt', 'DESC')
           .getMany();
       } else {
         notifications = await this.notificationRepository
           .createQueryBuilder('notification')
           .leftJoin('notification.user', 'user')
           .where('user.id = :userId', { userId })
-          .orderBy('notification.createdAt', 'ASC')
+          .orderBy('notification.createdAt', 'DESC')
           .getMany();
       }
     }
