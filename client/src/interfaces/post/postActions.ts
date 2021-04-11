@@ -15,6 +15,16 @@ export type GetFeedAction = Action<typeof POST.GET_FEED, null>;
 
 export type GetFeedSuccessAction = Action<typeof POST.GET_FEED_SUCCESS, Post[]>;
 
+export type GetSelectedPostAction = Action<
+  typeof POST.GET_SELECTED_POST,
+  number
+>;
+
+export type GetSelectedPostSuccesAction = Action<
+  typeof POST.GET_SELECTED_POST_SUCCESS,
+  Post | null
+>;
+
 export type UpdatePostAction = Action<typeof POST.UPDATE_POST, UpdatePostReq>;
 
 export type UpdatePostSuccessAction = Action<

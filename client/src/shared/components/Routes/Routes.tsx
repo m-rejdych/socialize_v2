@@ -6,6 +6,7 @@ import RootState from '../../../interfaces/store';
 import Auth from '../../../pages/Auth';
 import Home from '../../../pages/Home';
 import Profile from '../../../pages/Profile';
+import Post from '../../../pages/Post';
 import Chat from '../../../pages/Chat';
 import NotificationProvider from '../NotificationProvider';
 
@@ -19,6 +20,7 @@ const Routes: React.FC = () => {
       <Switch>
         <Route path={ROUTES.HOME} component={Home} />
         <Route path={`${ROUTES.PROFILE}/:id`} component={Profile} />
+        <Route path={`${ROUTES.POST}/:id`} component={Post} />
         <Route path={`${ROUTES.CHAT}/:id`} component={Chat} />
         <Route path={ROUTES.CHAT} component={Chat} />
         <Redirect to={ROUTES.HOME} />

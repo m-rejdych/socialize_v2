@@ -5,6 +5,8 @@ import {
   CreatePostSuccessAction,
   GetFeedAction,
   GetFeedSuccessAction,
+  GetSelectedPostAction,
+  GetSelectedPostSuccesAction,
   UpdatePostAction,
   UpdatePostSuccessAction,
   DeletePostAction,
@@ -40,6 +42,8 @@ const strategyMap: StrategyMap<PostState, typeof POST & typeof COMMENT> = {
   [POST.CREATE_POST_SUCCESS]: createPostSuccessTransformer,
   [POST.GET_FEED]: getFeedTransformer,
   [POST.GET_FEED_SUCCESS]: getFeedSuccessTransformer,
+  [POST.GET_SELECTED_POST]: getSelectedPostTransformer,
+  [POST.GET_SELECTED_POST_SUCCESS]: getSelectedPostSuccessTransformer,
   [POST.UPDATE_POST]: updatePostTransformer,
   [POST.UPDATE_POST_SUCCESS]: updatePostSuccessTransformer,
   [POST.DELETE_POST]: deletePostTransformer,
@@ -99,6 +103,20 @@ function getFeedSuccessTransformer(
   };
 }
 
+function getSelectedPostTransformer(
+  state: PostState,
+  _: ReturnType<GetSelectedPostAction>,
+): PostState {
+  return { ...state, loading: true };
+}
+
+function getSelectedPostSuccessTransformer(
+  state: PostState,
+  { payload }: ReturnType<GetSelectedPostSuccesAction>,
+): PostState {
+  return { ...state, loading: false, error: null, selectedPost: payload };
+}
+
 function updatePostTransformer(
   state: PostState,
   _: ReturnType<UpdatePostAction>,
@@ -115,6 +133,8 @@ function updatePostSuccessTransformer(
     loading: false,
     error: null,
     feed: state.feed.map((post) => (post.id === payload.id ? payload : post)),
+    selectedPost:
+      state.selectedPost?.id === payload.id ? payload : state.selectedPost,
   };
 }
 
@@ -134,6 +154,8 @@ function deletePostSuccessTransformer(
     loading: false,
     error: null,
     feed: state.feed.filter(({ id }) => id !== payload),
+    selectedPost:
+      state.selectedPost?.id === payload ? null : state.selectedPost,
   };
 }
 
@@ -170,6 +192,16 @@ function deletePostReactionSuccessTransformer(
           }
         : post,
     ),
+    selectedPost:
+      state.selectedPost?.id === payload.postId
+        ? {
+            ...state.selectedPost,
+            reactions:
+              state.selectedPost.reactions?.filter(
+                (reaction) => reaction.id !== payload.reactionId,
+              ) || [],
+          }
+        : state.selectedPost,
   };
 }
 
@@ -196,6 +228,15 @@ function createCommentSuccessTransformer(
           }
         : post,
     ),
+    selectedPost:
+      state.selectedPost?.id === payload.post!.id
+        ? {
+            ...state.selectedPost,
+            comments: state.selectedPost?.comments
+              ? [...state.selectedPost.comments, payload]
+              : [payload],
+          }
+        : state.selectedPost,
   };
 }
 
@@ -224,6 +265,17 @@ function deleteCommentSuccessTransformer(
           }
         : post,
     ),
+    selectedPost:
+      state.selectedPost?.id === payload.postId
+        ? {
+            ...state.selectedPost,
+            comments: state.selectedPost.comments
+              ? state.selectedPost.comments.filter(
+                  ({ id }) => id !== payload.commentId,
+                )
+              : [],
+          }
+        : state.selectedPost,
   };
 }
 
@@ -254,6 +306,17 @@ function addCommentREactionSuccessTransfomer(
           }
         : post,
     ),
+    selectedPost:
+      state.selectedPost?.id === payload.post!.id
+        ? {
+            ...state.selectedPost,
+            comments: state.selectedPost.comments
+              ? state.selectedPost.comments.map((comment) =>
+                  comment.id === payload.id ? payload : comment,
+                )
+              : [payload],
+          }
+        : state.selectedPost,
   };
 }
 
@@ -293,6 +356,26 @@ function deleteCommentReactionSuccessTransformer(
           }
         : post,
     ),
+    selectedPost:
+      state.selectedPost?.id === payload.postId
+        ? {
+            ...state.selectedPost,
+            comments: state.selectedPost.comments
+              ? state.selectedPost.comments.map((comment) =>
+                  comment.id === payload.commentId
+                    ? {
+                        ...comment,
+                        reactions: comment.reactions
+                          ? comment.reactions.filter(
+                              ({ id }) => id !== payload.reactionId,
+                            )
+                          : [],
+                      }
+                    : comment,
+                )
+              : [],
+          }
+        : state.selectedPost,
   };
 }
 

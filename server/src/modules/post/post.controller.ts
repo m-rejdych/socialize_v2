@@ -6,7 +6,6 @@ import {
   Get,
   Delete,
   Body,
-  Param,
   Query,
   Req,
   ParseIntPipe,
@@ -28,9 +27,9 @@ class PostController {
   constructor(private postService: PostService) {}
 
   @UseGuards(JwtGuard)
-  @Get('get-post/:id')
+  @Get('get-post')
   async getPost(
-    @Param('id', ParseIntPipe) postId: number,
+    @Query('postId', ParseIntPipe) postId: number,
   ): Promise<PostEntity> {
     const post = await this.postService.findById(postId);
     if (!post) throw new NotFoundException();

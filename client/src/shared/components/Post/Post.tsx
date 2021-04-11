@@ -29,6 +29,7 @@ import { deletePost } from '../../../store/actions/postActions';
 
 const useStyles = makeStyles((theme) => ({
   card: {
+    width: '100%',
     '&:not(:last-child)': {
       marginBottom: theme.spacing(2),
     },

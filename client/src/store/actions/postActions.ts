@@ -4,6 +4,8 @@ import {
   CreatePostSuccessAction,
   GetFeedAction,
   GetFeedSuccessAction,
+  GetSelectedPostAction,
+  GetSelectedPostSuccesAction,
   UpdatePostAction,
   UpdatePostSuccessAction,
   DeletePostAction,
@@ -25,6 +27,14 @@ export const getFeed: GetFeedAction = createAction(POST.GET_FEED);
 
 export const getFeedSuccess: GetFeedSuccessAction = createAction(
   POST.GET_FEED_SUCCESS,
+);
+
+export const getSelectedPost: GetSelectedPostAction = createAction(
+  POST.GET_SELECTED_POST,
+);
+
+export const getSelectedPostSuccess: GetSelectedPostSuccesAction = createAction(
+  POST.GET_SELECTED_POST_SUCCESS,
 );
 
 export const updatePost: UpdatePostAction = createAction(POST.UPDATE_POST);

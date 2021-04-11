@@ -25,6 +25,12 @@ export const getFeed = (): Promise<GetFeedRes> =>
     url: `${API_URI}/post/get-feed`,
   });
 
+export const getPost = (postId: number): Promise<CreatePostRes> =>
+  createJwtRequest({
+    method: 'GET',
+    url: `${API_URI}/post/get-post?postId=${postId}`,
+  });
+
 export const updatePost = (data: UpdatePostReq): Promise<CreatePostRes> =>
   createJwtRequest<CreatePostRes>({
     method: 'PUT',

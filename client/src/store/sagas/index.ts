@@ -13,6 +13,7 @@ import {
 import {
   createPostSaga,
   getFeedSaga,
+  getSelectedPostSaga,
   updatePostSaga,
   deletePostSaga,
   addPostReactionSaga,
@@ -53,6 +54,7 @@ export default function* rootSaga() {
     deleteFriendshipSaga(),
     createPostSaga(),
     getFeedSaga(),
+    getSelectedPostSaga(),
     updatePostSaga(),
     deletePostSaga(),
     addPostReactionSaga(),
