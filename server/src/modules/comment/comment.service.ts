@@ -58,12 +58,14 @@ class CommentService {
     });
     await this.commentRepository.save(comment);
 
-    this.notificationGateway.sendNotification({
-      from: userId,
-      to: post.author.id,
-      targetId: post.id,
-      notificationName: 'comment',
-    });
+    if (post.author.id !== userId) {
+      this.notificationGateway.sendNotification({
+        from: userId,
+        to: post.author.id,
+        targetId: post.id,
+        notificationName: 'comment',
+      });
+    }
 
     return comment;
   }
@@ -139,7 +141,7 @@ class CommentService {
 
     await this.commentRepository.save(comment);
 
-    if (!foundCommentReaction) {
+    if (!foundCommentReaction && comment.author.id !== userId) {
       this.notificationGateway.sendNotification({
         from: userId,
         to: comment.author.id,

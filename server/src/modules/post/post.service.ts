@@ -153,7 +153,7 @@ class PostService {
 
     await this.postRepository.save(post);
 
-    if (!foundReaction) {
+    if (!foundReaction && userId !== post.author.id) {
       this.notificationGateway.sendNotification({
         from: userId,
         to: post.author.id,

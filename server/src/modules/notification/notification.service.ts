@@ -2,6 +2,7 @@ import {
   Injectable,
   NotFoundException,
   ForbiddenException,
+  BadRequestException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -37,6 +38,12 @@ class NotificationService {
     notificationName,
     ...rest
   }: CreateNotificationDto): Promise<Notification> {
+    if (from === to) {
+      throw new BadRequestException(
+        'You can not send notifications to yourself!',
+      );
+    }
+
     const notificationType = await this.notificationTypeService.findByName(
       notificationName,
     );

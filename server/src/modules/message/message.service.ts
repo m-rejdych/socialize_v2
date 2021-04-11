@@ -268,7 +268,7 @@ class MessageService {
 
     await this.messageRepository.save(message);
 
-    if (!foundReaction) {
+    if (!foundReaction && userId !== message.author.id) {
       await this.notificationsGateway.sendNotification({
         from: userId,
         to: message.author.id,
