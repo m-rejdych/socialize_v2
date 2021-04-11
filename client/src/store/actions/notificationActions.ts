@@ -5,6 +5,7 @@ import {
   GetNotSeenNotificationsCountAction,
   GetNotSeenNotificationsCountSuccessAction,
   AddNotificationAction,
+  AddNotificationSuccessAction,
   HideNewNotificationAction,
   MarkAsSeenByIdAction,
   MarkAsSeenByIdSuccessAction,
@@ -30,6 +31,10 @@ export const getNotSeenNotificationsCountSuccess: GetNotSeenNotificationsCountSu
 
 export const addNotification: AddNotificationAction = createAction(
   NOTIFICATION.ADD_NOTIFICATION,
+);
+
+export const addNotificationSuccess: AddNotificationSuccessAction = createAction(
+  NOTIFICATION.ADD_NOTIFICATION_SUCCESS,
 );
 
 export const hideNewNotification: HideNewNotificationAction = createAction(

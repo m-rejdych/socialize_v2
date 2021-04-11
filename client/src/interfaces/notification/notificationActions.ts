@@ -27,6 +27,11 @@ export type AddNotificationAction = Action<
   Notification
 >;
 
+export type AddNotificationSuccessAction = Action<
+  typeof NOTIFICATION.ADD_NOTIFICATION_SUCCESS,
+  Notification
+>;
+
 export type HideNewNotificationAction = Action<
   typeof NOTIFICATION.HIDE_NEW_NOTIFICATION,
   number

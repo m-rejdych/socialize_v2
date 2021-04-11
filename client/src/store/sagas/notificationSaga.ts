@@ -11,11 +11,15 @@ import {
   GetNotSeenNotificationsCountRes,
   MarkAsSeenByIdRes,
 } from '../../interfaces/notification/notificationRes';
-import { MarkAsSeenByIdAction } from '../../interfaces/notification/notificationActions';
+import {
+  MarkAsSeenByIdAction,
+  AddNotificationAction,
+} from '../../interfaces/notification/notificationActions';
 import {
   getMyNotificationsSuccess,
   getNotSeenNotificationsCountSuccess,
   markAsSeenByIdSuccess,
+  addNotificationSuccess,
   setNotificationsError,
 } from '../actions/notificationActions';
 import { NOTIFICATION } from '../../shared/constants/actionTypes';
@@ -58,6 +62,28 @@ function* handleGetNotSeenNotificationsCount() {
   }
 }
 
+function* handleAddNotification({
+  payload,
+}: ReturnType<AddNotificationAction>) {
+  try {
+    const chatId: number | undefined = yield select(
+      (state: RootState) => state.chat.selectedChat?.chat.id,
+    );
+
+    if (
+      (payload.type.name === 'message' ||
+        payload.type.name === 'messageReaction') &&
+      payload.targetId === chatId
+    ) {
+      yield fork(markAsSeenById, { notificationId: payload.id });
+    } else {
+      yield put(addNotificationSuccess(payload));
+    }
+  } catch (error) {
+    yield put(handleError(setNotificationsError, error));
+  }
+}
+
 function* handleMarkAsSeenById({ payload }: ReturnType<MarkAsSeenByIdAction>) {
   try {
     const response: MarkAsSeenByIdRes = yield call(markAsSeenById, {
@@ -81,6 +107,10 @@ export function* getNotSeenNotificationsCountSaga() {
     NOTIFICATION.GET_NOT_SEEN_NOTIFICATIONS_COUNT,
     handleGetNotSeenNotificationsCount,
   );
+}
+
+export function* addNotificationSaga() {
+  yield takeEvery(NOTIFICATION.ADD_NOTIFICATION, handleAddNotification);
 }
 
 export function* markAsSeenByIdSaga() {

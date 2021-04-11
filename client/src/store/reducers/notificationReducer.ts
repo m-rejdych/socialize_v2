@@ -30,7 +30,7 @@ const strategyMap: StrategyMap<NotificationState, typeof NOTIFICATION> = {
   [NOTIFICATION.GET_MY_NOTIFICATIONS_SUCCESS]: getMyNotificationsSuccessTransformer,
   [NOTIFICATION.GET_NOT_SEEN_NOTIFICATIONS_COUNT]: getNotSeenNotificationsCountTransformer,
   [NOTIFICATION.GET_NOT_SEEN_NOTIFICATIONS_COUNT_SUCCESS]: getNotSeenNotificationsCountSuccessTransformer,
-  [NOTIFICATION.ADD_NOTIFICATION]: addNotificationTransformer,
+  [NOTIFICATION.ADD_NOTIFICATION_SUCCESS]: addNotificationSuccessTransformer,
   [NOTIFICATION.HIDE_NEW_NOTIFICATION]: hideNewNotificationTransformer,
   [NOTIFICATION.RESET_NOTIFICATIONS]: resetNotificationsTransformer,
   [NOTIFICATION.MARK_AS_SEEN_BY_ID]: markAsSeenByIdSuccessTransformer,
@@ -83,7 +83,7 @@ function getNotSeenNotificationsCountSuccessTransformer(
   };
 }
 
-function addNotificationTransformer(
+function addNotificationSuccessTransformer(
   state: NotificationState,
   { payload }: ReturnType<AddNotificationAction>,
 ): NotificationState {

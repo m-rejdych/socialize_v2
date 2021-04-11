@@ -35,6 +35,7 @@ import {
   getMyNotificationsSaga,
   getNotSeenNotificationsCountSaga,
   markAsSeenByIdSaga,
+  addNotificationSaga,
 } from './notificationSaga';
 
 export default function* rootSaga() {
@@ -68,6 +69,7 @@ export default function* rootSaga() {
     deleteMessageReactionSaga(),
     getMyNotificationsSaga(),
     getNotSeenNotificationsCountSaga(),
+    addNotificationSaga(),
     markAsSeenByIdSaga(),
   ]);
 }
