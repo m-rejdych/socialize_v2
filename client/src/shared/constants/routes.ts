@@ -5,6 +5,7 @@ const ROUTES = {
   PROFILE: '/profile',
   CHAT: '/chat',
   POST: '/post',
+  NOTIFICATIONS: '/notifications',
 } as const;
 
 export default ROUTES;

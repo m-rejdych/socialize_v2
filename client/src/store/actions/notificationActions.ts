@@ -10,6 +10,7 @@ import {
   MarkAsSeenByIdAction,
   MarkAsSeenByIdSuccessAction,
   SetNotificationErrorAction,
+  ResetNotificationsAction,
 } from '../../interfaces/notification/notificationActions';
 import { NOTIFICATION } from '../../shared/constants/actionTypes';
 
@@ -47,6 +48,10 @@ export const markAsSeenById: MarkAsSeenByIdAction = createAction(
 
 export const markAsSeenByIdSuccess: MarkAsSeenByIdSuccessAction = createAction(
   NOTIFICATION.MARK_AS_SEEN_BY_ID_SUCCESS,
+);
+
+export const resetNotifications: ResetNotificationsAction = createAction(
+  NOTIFICATION.RESET_NOTIFICATIONS,
 );
 
 export const setNotificationsError: SetNotificationErrorAction = createAction(

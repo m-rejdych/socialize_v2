@@ -39,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 15,
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'space-between',
     cursor: 'pointer',
     animation: '$slide-in 0.5s ease-out',
     backgroundColor: theme.palette.grey[700],
@@ -56,22 +57,26 @@ const useStyles = makeStyles((theme) => ({
 
 interface Props {
   id: number;
+  hideNotification?: boolean;
 }
 
-const Notification: React.FC<Props> = ({ id }) => {
+const Notification: React.FC<Props> = ({ id, hideNotification }) => {
   const [hide, setHide] = useState(false);
   const notifications = useSelector(
     (state: RootState) => state.notification.notifications,
   );
+  const open = useSelector((state: RootState) => state.notification.open);
   const history = useHistory();
   const dispatch = useDispatch();
   const classes = useStyles();
 
   useEffect(() => {
-    setTimeout(() => {
-      handleHide(false);
-    }, 7000);
-  }, []);
+    if (hideNotification) {
+      setTimeout(() => {
+        handleHide(false);
+      }, 7000);
+    }
+  }, [hideNotification]);
 
   const notificationData = notifications?.find(
     ({ id: notificationId }) => notificationId === id,
@@ -94,7 +99,7 @@ const Notification: React.FC<Props> = ({ id }) => {
       );
     }
 
-    handleHide(true);
+    if (!open) handleHide(true);
   };
 
   return notificationData ? (

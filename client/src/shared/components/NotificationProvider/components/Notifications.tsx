@@ -49,7 +49,11 @@ const Notifications: React.FC = () => {
   return (
     <Box position="fixed" left={24} bottom={24}>
       {newNotifications?.map((id) => (
-        <NotificationElement key={`notification-${id}`} id={id} />
+        <NotificationElement
+          hideNotification
+          key={`notification-${id}`}
+          id={id}
+        />
       )) || null}
     </Box>
   );

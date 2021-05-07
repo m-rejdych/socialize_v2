@@ -9,6 +9,7 @@ import {
 } from '@material-ui/core';
 import { Home, AccountBox, Chat } from '@material-ui/icons';
 
+import NotificationsBadge from './NotificationsBadge';
 import RootState from '../../../../interfaces/store';
 import ROUTES from '../../../constants/routes';
 
@@ -53,6 +54,15 @@ const Navigation: React.FC = () => {
       Icon: Chat,
       handleClick: () => {
         history.push(ROUTES.CHAT);
+      },
+    },
+    {
+      value: 'notifications',
+      label: 'Notifications',
+      selected: pathname === ROUTES.NOTIFICATIONS,
+      Icon: NotificationsBadge,
+      handleClick: () => {
+        history.push(ROUTES.NOTIFICATIONS);
       },
     },
   ] as const;

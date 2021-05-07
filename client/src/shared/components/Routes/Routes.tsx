@@ -8,6 +8,7 @@ import Home from '../../../pages/Home';
 import Profile from '../../../pages/Profile';
 import Post from '../../../pages/Post';
 import Chat from '../../../pages/Chat';
+import Notifications from '../../../pages/Notifications';
 import NotificationProvider from '../NotificationProvider';
 
 const Routes: React.FC = () => {
@@ -23,6 +24,7 @@ const Routes: React.FC = () => {
         <Route path={`${ROUTES.POST}/:id`} component={Post} />
         <Route path={`${ROUTES.CHAT}/:id`} component={Chat} />
         <Route path={ROUTES.CHAT} component={Chat} />
+        <Route path={ROUTES.NOTIFICATIONS} component={Notifications} />
         <Redirect to={ROUTES.HOME} />
       </Switch>
     </NotificationProvider>

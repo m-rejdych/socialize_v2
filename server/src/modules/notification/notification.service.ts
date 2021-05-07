@@ -76,7 +76,9 @@ class NotificationService {
       if (options?.skip && options?.take) {
         notifications = await this.notificationRepository
           .createQueryBuilder('notification')
-          .leftJoin('notification.user', 'user')
+          .leftJoinAndSelect('notification.user', 'user')
+          .leftJoinAndSelect('notification.sender', 'sender')
+          .leftJoinAndSelect('notification.type', 'type')
           .where('user.id = :userId', { userId })
           .andWhere('notification.seen = :isSeen', { isSeen: false })
           .take(options.take)
@@ -86,7 +88,9 @@ class NotificationService {
       } else if (options?.skip) {
         notifications = await this.notificationRepository
           .createQueryBuilder('notification')
-          .leftJoin('notification.user', 'user')
+          .leftJoinAndSelect('notification.user', 'user')
+          .leftJoinAndSelect('notification.sender', 'sender')
+          .leftJoinAndSelect('notification.type', 'type')
           .where('user.id = :userId', { userId })
           .andWhere('notification.seen = :isSeen', { isSeen: false })
           .skip(options.skip)
@@ -95,7 +99,9 @@ class NotificationService {
       } else if (options?.take) {
         notifications = await this.notificationRepository
           .createQueryBuilder('notification')
-          .leftJoin('notification.user', 'user')
+          .leftJoinAndSelect('notification.user', 'user')
+          .leftJoinAndSelect('notification.sender', 'sender')
+          .leftJoinAndSelect('notification.type', 'type')
           .where('user.id = :userId', { userId })
           .andWhere('notification.seen = :isSeen', { isSeen: false })
           .take(options.take)
@@ -104,7 +110,9 @@ class NotificationService {
       } else {
         notifications = await this.notificationRepository
           .createQueryBuilder('notification')
-          .leftJoin('notification.user', 'user')
+          .leftJoinAndSelect('notification.user', 'user')
+          .leftJoinAndSelect('notification.sender', 'sender')
+          .leftJoinAndSelect('notification.type', 'type')
           .where('user.id = :userId', { userId })
           .andWhere('notification.seen = :isSeen', { isSeen: false })
           .orderBy('notification.createdAt', 'DESC')
@@ -114,7 +122,9 @@ class NotificationService {
       if (options?.skip && options?.take) {
         notifications = await this.notificationRepository
           .createQueryBuilder('notification')
-          .leftJoin('notification.user', 'user')
+          .leftJoinAndSelect('notification.user', 'user')
+          .leftJoinAndSelect('notification.sender', 'sender')
+          .leftJoinAndSelect('notification.type', 'type')
           .where('user.id = :userId', { userId })
           .take(options.take)
           .skip(options.skip)
@@ -123,7 +133,9 @@ class NotificationService {
       } else if (options?.skip) {
         notifications = await this.notificationRepository
           .createQueryBuilder('notification')
-          .leftJoin('notification.user', 'user')
+          .leftJoinAndSelect('notification.user', 'user')
+          .leftJoinAndSelect('notification.sender', 'sender')
+          .leftJoinAndSelect('notification.type', 'type')
           .where('user.id = :userId', { userId })
           .skip(options.skip)
           .orderBy('notification.createdAt', 'DESC')
@@ -131,7 +143,9 @@ class NotificationService {
       } else if (options?.take) {
         notifications = await this.notificationRepository
           .createQueryBuilder('notification')
-          .leftJoin('notification.user', 'user')
+          .leftJoinAndSelect('notification.user', 'user')
+          .leftJoinAndSelect('notification.sender', 'sender')
+          .leftJoinAndSelect('notification.type', 'type')
           .where('user.id = :userId', { userId })
           .take(options.take)
           .orderBy('notification.createdAt', 'DESC')
@@ -139,7 +153,9 @@ class NotificationService {
       } else {
         notifications = await this.notificationRepository
           .createQueryBuilder('notification')
-          .leftJoin('notification.user', 'user')
+          .leftJoinAndSelect('notification.user', 'user')
+          .leftJoinAndSelect('notification.sender', 'sender')
+          .leftJoinAndSelect('notification.type', 'type')
           .where('user.id = :userId', { userId })
           .orderBy('notification.createdAt', 'DESC')
           .getMany();
