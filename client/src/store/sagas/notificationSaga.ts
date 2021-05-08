@@ -2,22 +2,24 @@ import { put, call, fork, takeEvery, select } from 'redux-saga/effects';
 
 import {
   getMyNotifications,
+  getNotificationsCount,
   getNotSeenNotificationsCount,
   markAllAsSeen,
   markAsSeenById,
 } from '../../services/notificationService';
 import {
   GetMyNotificationsRes,
-  GetNotSeenNotificationsCountRes,
+  GetNotificationsCountRes,
   MarkAsSeenByIdRes,
 } from '../../interfaces/notification/notificationRes';
 import {
   MarkAsSeenByIdAction,
   AddNotificationAction,
 } from '../../interfaces/notification/notificationActions';
+import { GetNotificationsCountPayload } from '../../interfaces/notification/notificationPayloads';
 import {
   getMyNotificationsSuccess,
-  getNotSeenNotificationsCountSuccess,
+  getNotificationsCountSuccess,
   markAsSeenByIdSuccess,
   addNotificationSuccess,
   setNotificationsError,
@@ -48,15 +50,28 @@ function* handleGetMyNotifications() {
   }
 }
 
-function* handleGetNotSeenNotificationsCount() {
+function* handleGetNotificationsCount() {
   try {
-    const response: GetNotSeenNotificationsCountRes = yield call(
+    const data: GetNotificationsCountPayload = {
+      notificationsCount: 0,
+      notSeenNotificationsCount: 0,
+    };
+
+    const notSeenNotificationsResponse: GetNotificationsCountRes = yield call(
       getNotSeenNotificationsCount,
     );
+    const notificationsResponse: GetNotificationsCountRes = yield call(
+      getNotificationsCount,
+    );
 
-    if (response.data) {
-      yield put(getNotSeenNotificationsCountSuccess(response.data));
+    if (notSeenNotificationsResponse.data) {
+      data.notSeenNotificationsCount = notSeenNotificationsResponse.data;
     }
+    if (notificationsResponse.data) {
+      data.notificationsCount = notificationsResponse.data;
+    }
+
+    yield put(getNotificationsCountSuccess(data));
   } catch (error) {
     yield put(handleError(setNotificationsError, error));
   }
@@ -104,8 +119,8 @@ export function* getMyNotificationsSaga() {
 
 export function* getNotSeenNotificationsCountSaga() {
   yield takeEvery(
-    NOTIFICATION.GET_NOT_SEEN_NOTIFICATIONS_COUNT,
-    handleGetNotSeenNotificationsCount,
+    NOTIFICATION.GET_NOTIFICATIONS_COUNT,
+    handleGetNotificationsCount,
   );
 }
 

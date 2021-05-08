@@ -2,14 +2,15 @@ import createAction from '../../util/actionFactory';
 import {
   GetMyNotificationsAction,
   GetMyNotificationsSuccessAction,
-  GetNotSeenNotificationsCountAction,
-  GetNotSeenNotificationsCountSuccessAction,
+  GetNotificationsCountAction,
+  GetNotificationsCountSuccessAction,
   AddNotificationAction,
   AddNotificationSuccessAction,
   HideNewNotificationAction,
   MarkAsSeenByIdAction,
   MarkAsSeenByIdSuccessAction,
   SetNotificationErrorAction,
+  SetSkipAction,
   ResetNotificationsAction,
 } from '../../interfaces/notification/notificationActions';
 import { NOTIFICATION } from '../../shared/constants/actionTypes';
@@ -22,12 +23,12 @@ export const getMyNotificationsSuccess: GetMyNotificationsSuccessAction = create
   NOTIFICATION.GET_MY_NOTIFICATIONS_SUCCESS,
 );
 
-export const getNotSeenNotificationsCount: GetNotSeenNotificationsCountAction = createAction(
-  NOTIFICATION.GET_NOT_SEEN_NOTIFICATIONS_COUNT,
+export const getNotificationsCount: GetNotificationsCountAction = createAction(
+  NOTIFICATION.GET_NOTIFICATIONS_COUNT,
 );
 
-export const getNotSeenNotificationsCountSuccess: GetNotSeenNotificationsCountSuccessAction = createAction(
-  NOTIFICATION.GET_NOT_SEEN_NOTIFICATIONS_COUNT_SUCCESS,
+export const getNotificationsCountSuccess: GetNotificationsCountSuccessAction = createAction(
+  NOTIFICATION.GET_NOTIFICATIONS_COUNT_SUCCESS,
 );
 
 export const addNotification: AddNotificationAction = createAction(
@@ -53,6 +54,8 @@ export const markAsSeenByIdSuccess: MarkAsSeenByIdSuccessAction = createAction(
 export const resetNotifications: ResetNotificationsAction = createAction(
   NOTIFICATION.RESET_NOTIFICATIONS,
 );
+
+export const setSkip: SetSkipAction = createAction(NOTIFICATION.SET_SKIP);
 
 export const setNotificationsError: SetNotificationErrorAction = createAction(
   NOTIFICATION.ERROR,

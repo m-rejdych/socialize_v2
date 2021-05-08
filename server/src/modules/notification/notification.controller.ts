@@ -36,8 +36,16 @@ class NotificationController {
   }
 
   @UseGuards(JwtGuard)
+  @Get('get-notifications-count')
+  async getNotificationsCount(@Req() req: JwtRequest): Promise<number> {
+    const { id } = req.user;
+
+    return this.notificationService.countByUserId(id);
+  }
+
+  @UseGuards(JwtGuard)
   @Get('get-not-seen-notifications-count')
-  async getMyNotificationsCount(@Req() req: JwtRequest): Promise<number> {
+  async getNotSeenNotificationsCount(@Req() req: JwtRequest): Promise<number> {
     const { id } = req.user;
 
     return await this.notificationService.countNotSeenByUserId(id);

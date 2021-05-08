@@ -81,8 +81,8 @@ class NotificationService {
           .leftJoinAndSelect('notification.type', 'type')
           .where('user.id = :userId', { userId })
           .andWhere('notification.seen = :isSeen', { isSeen: false })
-          .take(options.take)
           .skip(options.skip)
+          .take(options.take)
           .orderBy('notification.createdAt', 'DESC')
           .getMany();
       } else if (options?.skip) {
@@ -163,6 +163,16 @@ class NotificationService {
     }
 
     return notifications;
+  }
+
+  async countByUserId(userId: number): Promise<number> {
+    const notificationsCount = this.notificationRepository
+      .createQueryBuilder('notification')
+      .leftJoin('notification.user', 'user')
+      .where('user.id = :userId', { userId })
+      .getCount();
+
+    return notificationsCount;
   }
 
   async countNotSeenByUserId(userId: number): Promise<number> {

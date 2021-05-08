@@ -8,7 +8,7 @@ import Notification from '../../../../interfaces/notification';
 import NotificationElement from './Notification';
 import {
   addNotification,
-  getNotSeenNotificationsCount,
+  getNotificationsCount,
 } from '../../../../store/actions/notificationActions';
 import { API_URI } from '../../../../config';
 
@@ -20,7 +20,7 @@ const Notifications: React.FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getNotSeenNotificationsCount(null));
+    dispatch(getNotificationsCount(null));
   }, []);
 
   useEffect(() => {

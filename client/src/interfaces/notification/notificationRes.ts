@@ -4,7 +4,7 @@ export interface GetMyNotificationsRes {
   data?: Notification[];
 }
 
-export interface GetNotSeenNotificationsCountRes {
+export interface GetNotificationsCountRes {
   data?: number;
 }
 

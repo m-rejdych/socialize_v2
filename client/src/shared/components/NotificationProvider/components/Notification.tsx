@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Ref } from 'react';
 import classNames from 'classnames';
+import { formatDistance } from 'date-fns';
 import { useHistory } from 'react-router-dom';
 import { Paper, Typography, makeStyles } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
@@ -58,9 +59,16 @@ const useStyles = makeStyles((theme) => ({
 interface Props {
   id: number;
   hideNotification?: boolean;
+  notificationRef?: Ref<HTMLDivElement> | null;
+  addTime?: boolean;
 }
 
-const Notification: React.FC<Props> = ({ id, hideNotification }) => {
+const Notification: React.FC<Props> = ({
+  id,
+  hideNotification,
+  notificationRef,
+  addTime,
+}) => {
   const [hide, setHide] = useState(false);
   const notifications = useSelector(
     (state: RootState) => state.notification.notifications,
@@ -106,12 +114,22 @@ const Notification: React.FC<Props> = ({ id, hideNotification }) => {
     <Paper
       className={classNames(classes.paper, hide && classes.slideOut)}
       onClick={handleClick}
+      ref={notificationRef}
     >
-      <Typography variant="body2" className={classes.text}>{`${
-        notificationData.sender.firstName
-      } ${notificationData.sender.lastName} ${
-        NOTIFICATION_SUFFIXES[notificationData.type.name]
-      }`}</Typography>
+      <div>
+        <Typography variant="body2" className={classes.text}>{`${
+          notificationData.sender.firstName
+        } ${notificationData.sender.lastName} ${
+          NOTIFICATION_SUFFIXES[notificationData.type.name]
+        }`}</Typography>
+        {addTime && (
+          <Typography variant="caption" color="textSecondary">
+            {formatDistance(new Date(notificationData.createdAt), new Date(), {
+              addSuffix: true,
+            })}
+          </Typography>
+        )}
+      </div>
       {NOTIFICATION_ICONS[notificationData.type.name]}
     </Paper>
   ) : null;

@@ -1,5 +1,6 @@
 import Action from '../store/action';
 import Notification from './notification';
+import { GetNotificationsCountPayload } from './notificationPayloads';
 import { NOTIFICATION } from '../../shared/constants/actionTypes';
 
 export type GetMyNotificationsAction = Action<
@@ -12,14 +13,14 @@ export type GetMyNotificationsSuccessAction = Action<
   Notification[]
 >;
 
-export type GetNotSeenNotificationsCountAction = Action<
-  typeof NOTIFICATION.GET_NOT_SEEN_NOTIFICATIONS_COUNT,
+export type GetNotificationsCountAction = Action<
+  typeof NOTIFICATION.GET_NOTIFICATIONS_COUNT,
   null
 >;
 
-export type GetNotSeenNotificationsCountSuccessAction = Action<
-  typeof NOTIFICATION.GET_NOT_SEEN_NOTIFICATIONS_COUNT_SUCCESS,
-  number
+export type GetNotificationsCountSuccessAction = Action<
+  typeof NOTIFICATION.GET_NOTIFICATIONS_COUNT_SUCCESS,
+  GetNotificationsCountPayload
 >;
 
 export type AddNotificationAction = Action<
@@ -51,6 +52,8 @@ export type MarkAsSeenByIdSuccessAction = Action<
   typeof NOTIFICATION.MARK_AS_SEEN_BY_ID_SUCCESS,
   Notification
 >;
+
+export type SetSkipAction = Action<typeof NOTIFICATION.SET_SKIP, number>;
 
 export type SetNotificationErrorAction = Action<
   typeof NOTIFICATION.ERROR,

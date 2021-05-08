@@ -43,7 +43,7 @@ const Conversation: React.FC<Props> = ({ left }) => {
   const classes = useStyles();
 
   const lastMessageRef = useCallback(
-    (node: HTMLDivElement) => {
+    (node: HTMLDivElement): void => {
       if (messagesLoading) return;
       if (observerRef.current) observerRef.current.disconnect();
       observerRef.current = new IntersectionObserver((entries) => {

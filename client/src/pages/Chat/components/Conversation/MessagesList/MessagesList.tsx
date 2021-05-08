@@ -1,4 +1,4 @@
-import { useEffect, useRef, LegacyRef, useState } from 'react';
+import { useEffect, useRef, Ref, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles, Typography } from '@material-ui/core';
 import io from 'socket.io-client';
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
 interface Props {
   setSocket: (socket: SocketIOClient.Socket | null) => void;
   socket: SocketIOClient.Socket | null;
-  lastMessageRef: LegacyRef<HTMLDivElement> | null;
+  lastMessageRef: Ref<HTMLDivElement> | null;
 }
 
 const MessagesList: React.FC<Props> = ({

@@ -5,12 +5,13 @@ import { NOTIFICATION } from '../../shared/constants/actionTypes';
 import {
   GetMyNotificationsAction,
   GetMyNotificationsSuccessAction,
-  GetNotSeenNotificationsCountAction,
-  GetNotSeenNotificationsCountSuccessAction,
+  GetNotificationsCountAction,
+  GetNotificationsCountSuccessAction,
   AddNotificationAction,
   HideNewNotificationAction,
   SetNotificationErrorAction,
   MarkAsSeenByIdSuccessAction,
+  SetSkipAction,
   ResetNotificationsAction,
 } from '../../interfaces/notification/notificationActions';
 
@@ -18,6 +19,7 @@ const initialState: NotificationState = {
   open: false,
   notifications: null,
   newNotifications: null,
+  notificationsCount: 0,
   notSeenNotificationsCount: 0,
   loading: false,
   skip: 0,
@@ -28,12 +30,13 @@ const initialState: NotificationState = {
 const strategyMap: StrategyMap<NotificationState, typeof NOTIFICATION> = {
   [NOTIFICATION.GET_MY_NOTIFICATIONS]: getMyNotificationsTransformer,
   [NOTIFICATION.GET_MY_NOTIFICATIONS_SUCCESS]: getMyNotificationsSuccessTransformer,
-  [NOTIFICATION.GET_NOT_SEEN_NOTIFICATIONS_COUNT]: getNotSeenNotificationsCountTransformer,
-  [NOTIFICATION.GET_NOT_SEEN_NOTIFICATIONS_COUNT_SUCCESS]: getNotSeenNotificationsCountSuccessTransformer,
+  [NOTIFICATION.GET_NOTIFICATIONS_COUNT]: getNotificationsCountTransformer,
+  [NOTIFICATION.GET_NOTIFICATIONS_COUNT_SUCCESS]: getNotificationsCountSuccessTransformer,
   [NOTIFICATION.ADD_NOTIFICATION_SUCCESS]: addNotificationSuccessTransformer,
   [NOTIFICATION.HIDE_NEW_NOTIFICATION]: hideNewNotificationTransformer,
   [NOTIFICATION.RESET_NOTIFICATIONS]: resetNotificationsTransformer,
   [NOTIFICATION.MARK_AS_SEEN_BY_ID]: markAsSeenByIdSuccessTransformer,
+  [NOTIFICATION.SET_SKIP]: setSkipTransformer,
   [NOTIFICATION.ERROR]: setNotificationErrorTransformer,
 };
 
@@ -43,7 +46,7 @@ function getMyNotificationsTransformer(
   state: NotificationState,
   _: ReturnType<GetMyNotificationsAction>,
 ): NotificationState {
-  return { ...state, loading: true };
+  return { ...state, notificationsLoading: true };
 }
 
 function getMyNotificationsSuccessTransformer(
@@ -52,7 +55,7 @@ function getMyNotificationsSuccessTransformer(
 ): NotificationState {
   return {
     ...state,
-    loading: false,
+    notificationsLoading: false,
     error: null,
     open: true,
     notifications: state.notifications
@@ -60,26 +63,28 @@ function getMyNotificationsSuccessTransformer(
       : payload,
     newNotifications: null,
     notSeenNotificationsCount: 0,
-    skip: state.skip + 20,
   };
 }
 
-function getNotSeenNotificationsCountTransformer(
+function getNotificationsCountTransformer(
   state: NotificationState,
-  _: ReturnType<GetNotSeenNotificationsCountAction>,
+  _: ReturnType<GetNotificationsCountAction>,
 ): NotificationState {
   return { ...state, loading: true };
 }
 
-function getNotSeenNotificationsCountSuccessTransformer(
+function getNotificationsCountSuccessTransformer(
   state: NotificationState,
-  { payload }: ReturnType<GetNotSeenNotificationsCountSuccessAction>,
+  {
+    payload: { notificationsCount, notSeenNotificationsCount },
+  }: ReturnType<GetNotificationsCountSuccessAction>,
 ): NotificationState {
   return {
     ...state,
     loading: false,
     error: null,
-    notSeenNotificationsCount: payload,
+    notificationsCount,
+    notSeenNotificationsCount,
   };
 }
 
@@ -98,7 +103,7 @@ function addNotificationSuccessTransformer(
     notSeenNotificationsCount: state.open
       ? 0
       : state.notSeenNotificationsCount + 1,
-    skip: state.skip + 1,
+    notificationsCount: state.notificationsCount + 1,
   };
 }
 
@@ -115,10 +120,10 @@ function hideNewNotificationTransformer(
 }
 
 function resetNotificationsTransformer(
-  _: NotificationState,
+  state: NotificationState,
   __: ReturnType<ResetNotificationsAction>,
 ): NotificationState {
-  return initialState;
+  return { ...initialState, notificationsCount: state.notificationsCount };
 }
 
 function markAsSeenByIdSuccessTransformer(
@@ -136,6 +141,13 @@ function markAsSeenByIdSuccessTransformer(
       : null,
     notSeenNotificationsCount: state.notSeenNotificationsCount - 1,
   };
+}
+
+function setSkipTransformer(
+  state: NotificationState,
+  { payload }: ReturnType<SetSkipAction>,
+): NotificationState {
+  return { ...state, skip: payload };
 }
 
 function setNotificationErrorTransformer(

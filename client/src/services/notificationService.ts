@@ -5,7 +5,7 @@ import {
 } from '../interfaces/notification/notificationReq';
 import {
   GetMyNotificationsRes,
-  GetNotSeenNotificationsCountRes,
+  GetNotificationsCountRes,
   MarkAsSeenByIdRes,
 } from '../interfaces/notification/notificationRes';
 import { API_URI } from '../config';
@@ -18,14 +18,20 @@ export const getMyNotifications = (
     url: `${API_URI}/notification/get-my-notifications${
       options
         ? `?${options.take ? `take=${options.take}` : ''}${
-            options.skip ? `skip=${options.skip}` : ''
+            options.skip ? `&skip=${options.skip}` : ''
           }`
         : ''
     }`,
   });
 
-export const getNotSeenNotificationsCount = (): Promise<GetNotSeenNotificationsCountRes> =>
-  createJwtRequest<GetNotSeenNotificationsCountRes>({
+export const getNotificationsCount = (): Promise<GetNotificationsCountRes> =>
+  createJwtRequest({
+    method: 'GET',
+    url: `${API_URI}/notification/get-notifications-count`,
+  });
+
+export const getNotSeenNotificationsCount = (): Promise<GetNotificationsCountRes> =>
+  createJwtRequest<GetNotificationsCountRes>({
     method: 'GET',
     url: `${API_URI}/notification/get-not-seen-notifications-count`,
   });
